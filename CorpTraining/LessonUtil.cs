@@ -11,7 +11,7 @@ namespace CorpTraining
 {
 	public static class LessonUtil
 	{
-		private static string LESSONS_URL="http://mgl.usask.ca:8080/usis/rest/lessons/";
+		private static string LESSONS_URL="http://mgl.usask.ca:8080/ct/api/lessons/";
 
 		private static string SCREENS_URL="screens/";
 
