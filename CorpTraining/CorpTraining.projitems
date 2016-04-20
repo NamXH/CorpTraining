@@ -8,4 +8,11 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>CorpTraining</Import_RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Image.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Lesson.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Option.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Screen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LessonUtil.cs" />
+  </ItemGroup>
 </Project>
