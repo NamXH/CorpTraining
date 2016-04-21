@@ -17,9 +17,9 @@ namespace CorpTraining.iOS
             Title = "Login";
             View.BackgroundColor = UIColor.FromHSB(UIConstants.MainColorHue, UIConstants.MainColorSaturation, UIConstants.MainColorBrightness);
 
-            var logoImageView = new UIImageView();
-            View.AddSubview(logoImageView);
-            logoImageView.Image = UIImage.FromBundle("logo.png");
+//            var logoImageView = new UIImageView();
+//            View.AddSubview(logoImageView);
+//            logoImageView.Image = UIImage.FromBundle("logo.png");
 //            logo.Layer.BorderColor = new CGColor(255, 255, 255);
 //            logo.Layer.BorderWidth = 1f;
 //            logo.Layer.CornerRadius = 25f;
@@ -70,43 +70,42 @@ namespace CorpTraining.iOS
             signUpButton.Layer.CornerRadius = UIConstants.CornerRadius;
 
             #region UI Layout
-//            var topPad = (float)NavigationController.NavigationBar.Frame.Size.Height + UIConstants.VerticalPad + 30f;
-            var topPad = View.Frame.GetCenterY() - 170f - 100f; // 170 is half the total heights of all controls
+            var topPad = View.Frame.GetCenterY() - (UIConstants.ControlsHeight * 4 / 2) - UIConstants.ControlsHeight; // Half the total heights of all controls: the controls will be centered then go up a bit
 
             View.ConstrainLayout(() =>
-                logoImageView.Frame.Top == View.Frame.Top + topPad &&
-                logoImageView.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
-                logoImageView.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
-                logoImageView.Frame.GetCenterX() == View.Frame.GetCenterX() &&
-                logoImageView.Frame.Width == 500f &&
+//                logoImageView.Frame.Top == View.Frame.Top + topPad &&
+//                logoImageView.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
+//                logoImageView.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
+//                logoImageView.Frame.GetCenterX() == View.Frame.GetCenterX() &&
+//                logoImageView.Frame.Width == 500f &&
 
-                usernameTextField.Frame.Top == logoImageView.Frame.Bottom + 40f &&
+                usernameTextField.Frame.Top == View.Frame.Top + topPad &&
+                usernameTextField.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 usernameTextField.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
                 usernameTextField.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
-                usernameTextField.Frame.Height == UIConstants.ControlsHeight &&
-                usernameTextField.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 usernameTextField.Frame.Width <= UIConstants.MaximumControlsWidth &&
+                usernameTextField.Frame.Height == UIConstants.ControlsHeight &&
 
-                passwordTextField.Frame.Top == usernameTextField.Frame.Bottom + 10f &&
+                passwordTextField.Frame.Top == usernameTextField.Frame.Bottom + UIConstants.SmallGap &&
+                passwordTextField.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 passwordTextField.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
                 passwordTextField.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
-                passwordTextField.Frame.Height == UIConstants.ControlsHeight &&
-                passwordTextField.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 passwordTextField.Frame.Width <= UIConstants.MaximumControlsWidth &&
+                passwordTextField.Frame.Height == UIConstants.ControlsHeight &&
 
-                loginButton.Frame.Top == passwordTextField.Frame.Bottom + 40f &&
+                loginButton.Frame.Top == passwordTextField.Frame.Bottom + UIConstants.BigGap &&
+                loginButton.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 loginButton.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
                 loginButton.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
-                loginButton.Frame.Height == UIConstants.ControlsHeight &&
-                loginButton.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 loginButton.Frame.Width <= UIConstants.MaximumControlsWidth &&
+                loginButton.Frame.Height == UIConstants.ControlsHeight &&
 
-                signUpButton.Frame.Top == loginButton.Frame.Bottom + 10f &&
+                signUpButton.Frame.Top == loginButton.Frame.Bottom + UIConstants.SmallGap &&
+                signUpButton.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 signUpButton.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
                 signUpButton.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
-                signUpButton.Frame.Height == UIConstants.ControlsHeight &&
-                signUpButton.Frame.GetCenterX() == View.Frame.GetCenterX() &&
-                signUpButton.Frame.Width <= UIConstants.MaximumControlsWidth
+                signUpButton.Frame.Width <= UIConstants.MaximumControlsWidth &&
+                signUpButton.Frame.Height == UIConstants.ControlsHeight
             );
             #endregion
         }

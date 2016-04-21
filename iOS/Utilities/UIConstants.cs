@@ -9,13 +9,15 @@ namespace CorpTraining.iOS
         // The consumer of this class is in the same assembly (since it is a Shared Project) so const is ok.
 
         public const float BorderWidth = 1;
-        public const float CornerRadius = 5;
+        public const float CornerRadius = 10;
 
         public const float HorizontalPad = 30;
         public const float VerticalPad = 30;
 
-        public const float ControlsHeight = 60;
         public const float MaximumControlsWidth = 400;
+        public const float ControlsHeight = 50; // Height is fixed for specific device, hard to be adaptive!!
+        public const float SmallGap = 10f;
+        public const float BigGap = 20f;
 
         public const float NormalFontSize = 20;
 

@@ -40,7 +40,7 @@ namespace CorpTraining.iOS
             View.AddSubview(getStartedButton);
             getStartedButton.SetTitle("GET STARTED", UIControlState.Normal);
             getStartedButton.SetTitleColor(UIColor.White, UIControlState.Normal);
-            getStartedButton.Layer.CornerRadius = 30f;
+            getStartedButton.Layer.CornerRadius = 15f;
             getStartedButton.TouchUpInside += (sender, e) =>
             {
                 NavigationController.PushViewController(new LoginViewController(), true);
@@ -48,12 +48,12 @@ namespace CorpTraining.iOS
 
             #region Layout
             View.ConstrainLayout(() =>
-                getStartedButton.Frame.Top == View.Frame.GetCenterY() + 60f &&
+                getStartedButton.Frame.Top == View.Frame.GetCenterY() + 80f &&
+                getStartedButton.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 getStartedButton.Frame.Left >= View.Frame.Left + UIConstants.HorizontalPad &&
                 getStartedButton.Frame.Right >= View.Frame.Right - UIConstants.HorizontalPad &&
-                getStartedButton.Frame.GetCenterX() == View.Frame.GetCenterX() &&
-                getStartedButton.Frame.Height == 70f &&
-                getStartedButton.Frame.Width == 300f 
+                getStartedButton.Frame.Width <= UIConstants.MaximumControlsWidth &&
+                getStartedButton.Frame.Height == UIConstants.ControlsHeight // Fix for iphone 
             );
             #endregion
         }
