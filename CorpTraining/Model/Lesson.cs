@@ -6,12 +6,12 @@ namespace CorpTraining
 	public class Lesson
 	{
 
-		public int id { get; set;}
-		public string description { get; set;}
-		public IList<Screen> screens { get; set;}
-		public int screenCount { get; set;}
-		public string title { get; set;}
-		public string url { get; set;}
+		public int Id { get; set;}
+		public string Description { get; set;}
+		public IList<Screen> Screens { get; set;}
+		public int ScreenCount { get; set;}
+		public string Title { get; set;}
+		public string Url { get; set;}
 
 		public Lesson ()
 		{

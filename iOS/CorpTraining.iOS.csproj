@@ -86,9 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -98,7 +96,35 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="ViewControllers\LandingViewController.cs" />
+    <Compile Include="Utilities\EasyLayout.cs" />
+    <Compile Include="Utilities\LessonScreenSelector.cs" />
+    <Compile Include="Utilities\UIConstants.cs" />
+    <Compile Include="ViewControllers\AccountViewController.cs" />
+    <Compile Include="ViewControllers\AdminViewController.cs" />
+    <Compile Include="ViewControllers\LessonScreenAudioViewController.cs" />
+    <Compile Include="ViewControllers\LessonScreenBaseViewController.cs" />
+    <Compile Include="ViewControllers\LessonScreenRecorderViewController.cs" />
+    <Compile Include="ViewControllers\LessonScreenVideoViewController.cs" />
+    <Compile Include="ViewControllers\LessonsViewController.cs" />
+    <Compile Include="ViewControllers\LoginViewController.cs" />
+    <Compile Include="ViewControllers\SettingsViewController.cs" />
+    <Compile Include="ViewControllers\TabViewController.cs" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="ViewControllers\" />
+    <Folder Include="Utilities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\landing%403x~iphone.png" />
+    <BundleResource Include="Resources\landing%402x~iphone.png" />
+    <BundleResource Include="Resources\landing5%402x~iphone.png" />
+    <BundleResource Include="Resources\landing4%402x~iphone.png" />
+    <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_4.png" />
+    <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_5.png" />
+    <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_6.png" />
+    <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_6p.png" />
+  </ItemGroup>
 </Project>

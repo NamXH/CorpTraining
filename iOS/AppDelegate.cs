@@ -24,6 +24,11 @@ namespace CorpTraining.iOS
             // create a new window instance based on the screen size
             Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
+            var landingViewController = new LandingViewController();
+            var navigationController = new UINavigationController(landingViewController);
+
+            Window.RootViewController = navigationController;
+
             // make the window visible
             Window.MakeKeyAndVisible();
 
