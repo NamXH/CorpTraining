@@ -7,7 +7,7 @@ namespace CorpTraining.iOS
 {
     public class LessonsViewController : UIViewController
     {
-        public UITableView LessonsTable { get; set; }
+        public IList<Lesson> Lessons { get; set; }
 
         public LessonsViewController()
             : base()
@@ -16,38 +16,32 @@ namespace CorpTraining.iOS
             TabBarItem.Title = "Lessons";
         }
 
-        public override void ViewDidLoad()
+        public async override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
             View.BackgroundColor = UIColor.White;
 
-            LessonsTable = new UITableView();
-            View.AddSubview(LessonsTable);
+            var lessonsTable = new UITableView();
+            View.AddSubview(lessonsTable);
 
-            #region Hardcoded
-            var lesson1 = new Lesson();
-            lesson1.Title = "Clay Debray & the Muskrat";
-            var lesson2 = new Lesson();
-            lesson2.Title = "Jason Horse, Cree Soccer";
-
-            var items = new List<Tuple<Lesson, bool>>
-            {
-                new Tuple<Lesson, bool>(lesson1, true),
-                new Tuple<Lesson, bool>(lesson2, false),
-            };
-            #endregion
-
-            LessonsTable.Source = new LessonTableSource(this, items);
+            var barHeight = UIConstants.StatusBarHeight;
 
             #region Layout
             View.ConstrainLayout(() =>
-                LessonsTable.Frame.Top == View.Frame.Top &&
-                LessonsTable.Frame.Left == View.Frame.Left &&
-                LessonsTable.Frame.Right == View.Frame.Right &&
-                LessonsTable.Frame.Bottom == View.Frame.Bottom
+                lessonsTable.Frame.Top == View.Frame.Top &&
+                lessonsTable.Frame.Left == View.Frame.Left &&
+                lessonsTable.Frame.Right == View.Frame.Right &&
+                lessonsTable.Frame.Bottom == View.Frame.Bottom
             );
             #endregion
+
+            // Create loading indicator here!!
+
+            Lessons = await LessonUtil.GetLessonsAsync();
+
+            lessonsTable.Source = new LessonTableSource(this, Lessons);
+            lessonsTable.ReloadData();
         }
     }
 
@@ -55,11 +49,11 @@ namespace CorpTraining.iOS
     {
         public UIViewController Container { get; private set; }
 
-        public IList<Tuple<Lesson, bool>> Items { get; set; }
+        public IList<Lesson> Items { get; set; }
 
         private string cellIdentifier = "TableCell";
 
-        public LessonTableSource(UIViewController container, IList<Tuple<Lesson, bool>> items)
+        public LessonTableSource(UIViewController container, IList<Lesson> items)
         {
             Container = container;
             Items = items;
@@ -72,48 +66,11 @@ namespace CorpTraining.iOS
 
         public override void RowSelected(UITableView tableView, Foundation.NSIndexPath indexPath)
         {
-            if (!Items[indexPath.Row].Item2)
-            {
-                #region Hardcoded
-                var screens = new List<Screen>
-                {
-                        new Screen
-                        {
-                            Type = "audio_recorder", 
-                        },
-//                    new Screen
-//                    {
-//                        type = "video",
-//                        video_url = "https://www.lessonbasket.com/desktopmodules/lessonbasket/projects/24/54/604Billy%20Int%202.mp4",
-//                    },
-//                    new Screen
-//                    {
-//                        type = "audio_question",
-//                        audio_url = "https://www.lessonbasket.com/desktopmodules/lessonbasket/projects/24/55/70588221.7831J%20Horse%20Q1%20.mp3",
-//                        questions = new List<string>
-//                        {
-//                            "Thunder Horton's",
-//                            "Sweetgrass",
-//                            "Thunderchild",
-//                            "Poundmaker",
-//                            "Starbucks",
-//                        },
-//                    },
-                };
-                #endregion
+            // Create loading indicator here!!
 
-                var lessonScreen = LessonScreenSelector.Select(screens, 0);
-                if (lessonScreen != null)
-                {
-                    Container.NavigationController.PushViewController(lessonScreen, true);
-                }
-                else
-                {
-                    // Display alert if needed !!
-                }
+//            GetScreensAndNavigateScreensAsync(Items[indexPath.Row]);
 
-                tableView.DeselectRow(indexPath, true);
-            }
+            tableView.DeselectRow(indexPath, true);
         }
 
         public override UITableViewCell GetCell(UITableView tableView, Foundation.NSIndexPath indexPath)
@@ -126,14 +83,25 @@ namespace CorpTraining.iOS
             }
 
             // If lesson is finished then add check mark
-            if (Items[indexPath.Row].Item2)
-            {
-                cell.Accessory = UITableViewCellAccessory.Checkmark;
-            }
-
-            cell.TextLabel.Text = Items[indexPath.Row].Item1.Title;
+            cell.Accessory = UITableViewCellAccessory.Checkmark; // Place holder!!
+            cell.TextLabel.Text = Items[indexPath.Row].Title;
 
             return cell;
+        }
+
+        public async void GetScreensAndNavigateScreensAsync(Lesson lesson)
+        {
+            var screens = await LessonUtil.GetScreensByLessonAsync(lesson.Id);
+
+            var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
+            if (lessonScreen != null)
+            {
+                Container.NavigationController.PushViewController(lessonScreen, true);
+            }
+            else
+            {
+                // Display alert if needed !!
+            }
         }
     }
 }

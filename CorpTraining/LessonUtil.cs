@@ -24,7 +24,7 @@ namespace CorpTraining
 		/// <summary>Get the lesson list.
 		/// <para>Returns a list of lessons</para>
 		/// </summary>
-		public static async Task<IList<Lesson>> GetLessons ()
+		public static async Task<IList<Lesson>> GetLessonsAsync ()
 		{
 			IList<Lesson> lessonList;
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create (new Uri (LESSONS_URL)); 
@@ -70,7 +70,7 @@ namespace CorpTraining
 		/// <summary>
 		/// Get a Screen list by lesson
 		/// </summary>
-		public static async Task<List<Screen>> GetScreensByLesson(int lessonId){
+		public static async Task<List<Screen>> GetScreensByLessonAsync(int lessonId){
 
 			List<Screen> screenList = new List<Screen>();
 			JArray screenArray;

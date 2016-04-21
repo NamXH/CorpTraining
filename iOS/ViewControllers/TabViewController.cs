@@ -18,8 +18,8 @@ namespace CorpTraining.iOS
             var accountTab = new AccountViewController();
             Tabs.Add(accountTab);
 
-            var adminTab = new AdminViewController();
-            Tabs.Add(adminTab);
+//            var adminTab = new AdminViewController();
+//            Tabs.Add(adminTab);
 
             var settingsTab = new SettingsViewController();
             Tabs.Add(settingsTab);

@@ -27,7 +27,7 @@ namespace CorpTraining.iOS
                 // Display alert if needed!!
             }
 
-            var lessonScreen = LessonScreenSelector.Select(Screens, Index + 1);
+            var lessonScreen = LessonScreenViewControllerGenerator.Generate(Screens, Index + 1);
             if (lessonScreen != null)
             {
                 NavigationController.PushViewController(lessonScreen, true);

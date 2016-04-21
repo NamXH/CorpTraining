@@ -11,11 +11,13 @@ namespace CorpTraining.iOS
         public const float BorderWidth = 1;
         public const float CornerRadius = 10;
 
+        public static readonly float StatusBarHeight = (float)UIApplication.SharedApplication.StatusBarFrame.Height; // Note: The View.Frame.Top starts from the edge of the device's screen.
         public const float HorizontalPad = 30;
         public const float VerticalPad = 30;
 
         public const float MaximumControlsWidth = 400;
-        public const float ControlsHeight = 50; // Height is fixed for specific device, hard to be adaptive!!
+        public const float ControlsHeight = 50;
+        // Height is fixed for specific device, hard to be adaptive!!
         public const float SmallGap = 10f;
         public const float BigGap = 20f;
 

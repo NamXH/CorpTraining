@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 namespace CorpTraining.iOS
 {
-    public static class LessonScreenSelector
+    public static class LessonScreenViewControllerGenerator
     {
-        public static UIViewController Select(IList<Screen> screens, int index)
+        /// <summary>
+        /// Generate the appropriate ViewController for the screen at index.
+        /// </summary>
+        public static UIViewController Generate(IList<Screen> screens, int index)
         {
             if ((index > screens.Count - 1) || (index < 0))
             {
@@ -27,8 +30,7 @@ namespace CorpTraining.iOS
                     result = new LessonScreenRecorderViewController(screens, index);
                     break;
                 default:
-                    result = new UIViewController();
-                    result.View.BackgroundColor = UIColor.White;
+                    result = null;
                     break;
             }
 
