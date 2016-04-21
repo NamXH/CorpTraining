@@ -118,13 +118,13 @@
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\landing%403x~iphone.png" />
-    <BundleResource Include="Resources\landing%402x~iphone.png" />
-    <BundleResource Include="Resources\landing5%402x~iphone.png" />
-    <BundleResource Include="Resources\landing4%402x~iphone.png" />
     <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_4.png" />
     <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_5.png" />
     <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_6.png" />
     <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_6p.png" />
+    <BundleResource Include="Resources\landing-667h%402x~iphone.png" />
+    <BundleResource Include="Resources\landing-568h%402x~iphone.png" />
+    <BundleResource Include="Resources\landing-736h%403x~iphone.png" />
+    <BundleResource Include="Resources\landing%402x~iphone.png" />
   </ItemGroup>
 </Project>
