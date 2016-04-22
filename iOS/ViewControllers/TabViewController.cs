@@ -12,8 +12,10 @@ namespace CorpTraining.iOS
         {
             Tabs = new List<UIViewController>();
 
-            var lessonsTab = new LessonsViewController();
-            Tabs.Add(lessonsTab);
+            var lessonNavigation = new UINavigationController(new LessonsViewController());
+            lessonNavigation.TabBarItem.Image = UIImage.FromBundle("book.png");
+            lessonNavigation.TabBarItem.Title = "Lessons";
+            Tabs.Add(lessonNavigation);
 
             var accountTab = new AccountViewController();
             Tabs.Add(accountTab);

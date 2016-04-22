@@ -12,8 +12,7 @@ namespace CorpTraining.iOS
         public LessonsViewController()
             : base()
         {
-            TabBarItem.Image = UIImage.FromBundle("book.png");
-            TabBarItem.Title = "Lessons";
+            Title = "Lessons";
         }
 
         public async override void ViewDidLoad()
@@ -64,11 +63,21 @@ namespace CorpTraining.iOS
             return Items.Count;
         }
 
-        public override void RowSelected(UITableView tableView, Foundation.NSIndexPath indexPath)
+        public async override void RowSelected(UITableView tableView, Foundation.NSIndexPath indexPath)
         {
             // Create loading indicator here!!
 
-//            GetScreensAndNavigateScreensAsync(Items[indexPath.Row]);
+            var screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
+
+            var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
+            if (lessonScreen != null)
+            {
+                Container.NavigationController.PushViewController(lessonScreen, true);
+            }
+            else
+            {
+                // Display alert if needed !!
+            }
 
             tableView.DeselectRow(indexPath, true);
         }
@@ -91,17 +100,7 @@ namespace CorpTraining.iOS
 
         public async void GetScreensAndNavigateScreensAsync(Lesson lesson)
         {
-            var screens = await LessonUtil.GetScreensByLessonAsync(lesson.Id);
-
-            var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
-            if (lessonScreen != null)
-            {
-                Container.NavigationController.PushViewController(lessonScreen, true);
-            }
-            else
-            {
-                // Display alert if needed !!
-            }
+            
         }
     }
 }

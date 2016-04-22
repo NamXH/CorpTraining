@@ -19,8 +19,6 @@ namespace CorpTraining
 
 		private static string POSITION_SCREEN_URL="screens/position/";
 
-
-
 		/// <summary>Get the lesson list.
 		/// <para>Returns a list of lessons</para>
 		/// </summary>

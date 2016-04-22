@@ -126,5 +126,8 @@
     <BundleResource Include="Resources\landing-568h%402x~iphone.png" />
     <BundleResource Include="Resources\landing-736h%403x~iphone.png" />
     <BundleResource Include="Resources\landing%402x~iphone.png" />
+    <BundleResource Include="Resources\book%402x.png" />
+    <BundleResource Include="Resources\preferences%402x.png" />
+    <BundleResource Include="Resources\user%402x.png" />
   </ItemGroup>
 </Project>

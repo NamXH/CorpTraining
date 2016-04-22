@@ -56,7 +56,7 @@ namespace CorpTraining.iOS
             loginButton.Layer.CornerRadius = UIConstants.CornerRadius;
             loginButton.TouchUpInside += (sender, e) =>
             {
-                NavigationController.PushViewController(new TabViewController(), true);
+                UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
             };
 
             var signUpButton = new UIButton(UIButtonType.System)
