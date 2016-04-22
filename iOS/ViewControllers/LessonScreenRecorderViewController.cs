@@ -157,7 +157,7 @@ namespace CorpTraining.iOS
                 startRecordingButton.Frame.Height == UIConstants.ControlsHeight &&
                 startRecordingButton.Frame.Width == 100f &&
 
-                recordingStatusLabel.Frame.Top == View.Frame.Top + topPad &&
+                recordingStatusLabel.Frame.Top == image.Frame.Bottom + 30f &&
                 recordingStatusLabel.Frame.Left == startRecordingButton.Frame.Right + 30f &&
                 recordingStatusLabel.Frame.Height == UIConstants.ControlsHeight &&
                 recordingStatusLabel.Frame.Width == 100f &&
