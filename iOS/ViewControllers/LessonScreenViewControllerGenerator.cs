@@ -26,7 +26,10 @@ namespace CorpTraining.iOS
                 case "audio_question":
                     result = new LessonScreenAudioViewController(screens, index);
                     break;
-                case "audio_recorder":
+                case "audio_text":
+                    result = new LessonScreenAudioViewController(screens, index);
+                    break; 
+                case "recorder":
                     result = new LessonScreenRecorderViewController(screens, index);
                     break;
                 default:

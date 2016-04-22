@@ -89,11 +89,15 @@ namespace CorpTraining
 				}
 			}
 
-			foreach (JObject screenJson in screenArray){  
-				optionList = await GetOptionsByUrl (screenJson["optionsUrl"].ToString());
-				imageList = await GetImagesByUrl (screenJson["imagesUrl"].ToString());
-				screenJson ["options"] = JToken.FromObject (optionList);
-				screenJson ["images"] = JToken.FromObject (imageList);
+			foreach (JObject screenJson in screenArray){
+                var optionsUrl = screenJson["optionsUrl"].ToString();
+                if (!String.IsNullOrWhiteSpace(optionsUrl))
+                {
+                    optionList = await GetOptionsByUrl(screenJson["optionsUrl"].ToString());
+                }
+                screenJson ["options"] = JToken.FromObject (optionList);
+//				imageList = await GetImagesByUrl (screenJson["imagesUrl"].ToString());
+//				screenJson ["images"] = JToken.FromObject (imageList);
 				screenList.Add(JsonConvert.DeserializeObject<Screen>(screenJson.ToString()));
 			}
 			return screenList;

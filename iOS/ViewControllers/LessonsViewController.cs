@@ -2,6 +2,7 @@
 using UIKit;
 using System.Collections.Generic;
 using Foundation;
+using System.Linq;
 
 namespace CorpTraining.iOS
 {
@@ -68,6 +69,7 @@ namespace CorpTraining.iOS
             // Create loading indicator here!!
 
             var screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
+            screens = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).ToList();
 
             var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
             if (lessonScreen != null)
