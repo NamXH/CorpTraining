@@ -38,6 +38,10 @@ namespace CorpTraining.iOS
 
             View.BackgroundColor = UIColor.White;
 
+            var image = new UIImageView();
+            View.AddSubview(image);
+            image.Image = UIImage.FromBundle("microphone.png");
+
             var recordingStatusLabel = new UILabel
             {
                 Text = "",
@@ -140,10 +144,15 @@ namespace CorpTraining.iOS
             };
 
             #region Layout
-            var topPad = (float)NavigationController.NavigationBar.Frame.Size.Height + 20f;
+            var topPad = (float)NavigationController.NavigationBar.Frame.Size.Height + 40f;
 
             View.ConstrainLayout(() =>
-                startRecordingButton.Frame.Top == View.Frame.Top + topPad &&
+                image.Frame.Top == View.Frame.Top + topPad &&
+                image.Frame.GetCenterX() == View.Frame.GetCenterX() &&
+                image.Frame.Height == 100f &&
+                image.Frame.Width == 100f &&
+
+                startRecordingButton.Frame.Top == image.Frame.Bottom + 30f &&
                 startRecordingButton.Frame.Left == View.Frame.Left + 30f &&
                 startRecordingButton.Frame.Height == UIConstants.ControlsHeight &&
                 startRecordingButton.Frame.Width == 100f &&

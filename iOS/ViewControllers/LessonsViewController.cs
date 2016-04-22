@@ -37,11 +37,15 @@ namespace CorpTraining.iOS
             #endregion
 
             // Create loading indicator here!!
+            var loadingOverlay = new LoadingOverlay(View.Bounds);
+            View.AddSubview(loadingOverlay);
 
             Lessons = await LessonUtil.GetLessonsAsync();
 
             lessonsTable.Source = new LessonTableSource(this, Lessons);
             lessonsTable.ReloadData();
+
+            loadingOverlay.HideThenRemove();
         }
     }
 
@@ -68,9 +72,18 @@ namespace CorpTraining.iOS
         {
             // Create loading indicator here!!
 
+            var loadingOverlay = new LoadingOverlay(Container.View.Bounds);
+            Container.View.Add(loadingOverlay);
+
             var screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
+            loadingOverlay.HideThenRemove();
+
             // Filter for TEST !!
             screens = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).Take(8).ToList();
+            screens.Add(new Screen
+                {
+                    Type = "recorder",
+                });
 
             var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
             if (lessonScreen != null)

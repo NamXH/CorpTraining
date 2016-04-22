@@ -110,6 +110,7 @@
     <Compile Include="ViewControllers\SettingsViewController.cs" />
     <Compile Include="ViewControllers\TabViewController.cs" />
     <Compile Include="ViewControllers\LessonScreenViewControllerGenerator.cs" />
+    <Compile Include="Utilities\LoadingOverlay.cs" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -132,5 +133,6 @@
     <BundleResource Include="Resources\justin.png" />
     <BundleResource Include="Resources\radio_disable%402x.png" />
     <BundleResource Include="Resources\radio_enable%402x.png" />
+    <BundleResource Include="Resources\microphone.png" />
   </ItemGroup>
 </Project>
