@@ -40,7 +40,7 @@ namespace CorpTraining.iOS
             View.AddSubview(getStartedButton);
             getStartedButton.SetTitle("GET STARTED", UIControlState.Normal);
             getStartedButton.SetTitleColor(UIColor.White, UIControlState.Normal);
-            getStartedButton.Layer.CornerRadius = 15f;
+            getStartedButton.Layer.CornerRadius = UIConstants.CornerRadius;
             getStartedButton.TouchUpInside += (sender, e) =>
             {
                 NavigationController.PushViewController(new LoginViewController(), true);

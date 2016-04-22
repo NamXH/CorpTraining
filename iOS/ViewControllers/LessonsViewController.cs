@@ -69,7 +69,8 @@ namespace CorpTraining.iOS
             // Create loading indicator here!!
 
             var screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
-            screens = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).ToList();
+            // Filter for TEST !!
+            screens = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).Take(8).ToList();
 
             var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
             if (lessonScreen != null)

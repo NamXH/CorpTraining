@@ -129,5 +129,8 @@
     <BundleResource Include="Resources\book%402x.png" />
     <BundleResource Include="Resources\preferences%402x.png" />
     <BundleResource Include="Resources\user%402x.png" />
+    <BundleResource Include="Resources\justin.png" />
+    <BundleResource Include="Resources\radio_disable%402x.png" />
+    <BundleResource Include="Resources\radio_enable%402x.png" />
   </ItemGroup>
 </Project>
