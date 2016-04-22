@@ -8,8 +8,7 @@ namespace CorpTraining.iOS
         public AccountViewController()
             : base()
         {
-            TabBarItem.Image = UIImage.FromBundle("user.png");
-            TabBarItem.Title = "Account";
+            Title = "Account";
         }
 
         public override void ViewDidLoad()

@@ -17,14 +17,15 @@ namespace CorpTraining.iOS
             lessonNavigation.TabBarItem.Title = "Lessons";
             Tabs.Add(lessonNavigation);
 
-            var accountTab = new AccountViewController();
-            Tabs.Add(accountTab);
+            var accountNavigation = new UINavigationController(new AccountViewController());
+            accountNavigation.TabBarItem.Image = UIImage.FromBundle("user.png");
+            accountNavigation.TabBarItem.Title = "Account";
+            Tabs.Add(accountNavigation);
 
-//            var adminTab = new AdminViewController();
-//            Tabs.Add(adminTab);
-
-            var settingsTab = new SettingsViewController();
-            Tabs.Add(settingsTab);
+            var settingsNavigation = new UINavigationController(new SettingsViewController());
+            settingsNavigation.TabBarItem.Image = UIImage.FromBundle("preferences.png");
+            settingsNavigation.TabBarItem.Title = "Settings";
+            Tabs.Add(settingsNavigation);
 
             ViewControllers = Tabs.ToArray();
         }

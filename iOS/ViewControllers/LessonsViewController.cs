@@ -97,11 +97,6 @@ namespace CorpTraining.iOS
 
             return cell;
         }
-
-        public async void GetScreensAndNavigateScreensAsync(Lesson lesson)
-        {
-            
-        }
     }
 }
 

@@ -8,8 +8,7 @@ namespace CorpTraining.iOS
         public SettingsViewController()
             : base()
         {
-            TabBarItem.Image = UIImage.FromBundle("preferences.png");
-            TabBarItem.Title = "Settings";
+            Title = "Settings";
         }
 
         public override void ViewDidLoad()
