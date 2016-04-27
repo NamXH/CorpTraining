@@ -29,13 +29,13 @@ namespace CorpTraining.iOS
             View.AddSubview(playerViewController.View);
 
             #region Layout
-            var topPad = (float)NavigationController.NavigationBar.Frame.Size.Height + 20f;
+            var topPad = (float)NavigationController.NavigationBar.Frame.Size.Height + 200f;
 
             View.ConstrainLayout(() =>
                 playerViewController.View.Frame.Top == View.Frame.Top + topPad &&
                 playerViewController.View.Frame.Left == View.Frame.Left &&
-                playerViewController.View.Frame.Right == View.Frame.Right &&
-                playerViewController.View.Frame.Bottom == View.Frame.Bottom
+                playerViewController.View.Frame.Right == View.Frame.Right 
+//                playerViewController.View.Frame.Bottom == View.Frame.Bottom
             );
             #endregion
         }
