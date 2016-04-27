@@ -183,7 +183,7 @@ namespace CorpTraining
 		public static async Task<IList<Image>> GetImagesByScreenAsync (int lessonId, string screenId){
 			IList<Image> imageList;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + IMAGES_URL + screenId + "/" + OPTIONS_URL);
+			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL + screenId + "/" + IMAGES_URL);
 
 			try{
 				JArray imageArray = JArray.Parse(jsonDoc.ToString());
