@@ -26,6 +26,11 @@ namespace CorpTraining
 
 		public int Position { get; set;} 
 
+		public string title { get; set;}
+
+		[JsonProperty(PropertyName = "textList")]
+		public IList<Text> Texts { get; set;} 
+
 		public Screen ()
 		{
 		}
