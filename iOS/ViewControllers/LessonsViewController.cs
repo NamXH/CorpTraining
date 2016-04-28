@@ -40,10 +40,23 @@ namespace CorpTraining.iOS
             var loadingOverlay = new LoadingOverlay(View.Bounds);
             View.AddSubview(loadingOverlay);
 
-            Lessons = await LessonUtil.GetLessonsAsync();
+            try
+            {
+                Lessons = await LessonUtil.GetLessonsAsync();
+            }
+            catch (Exception e)
+            {
+//                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection close the app and try again.{0} Error: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection, close the app and try again"), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                PresentViewController(alert, true, null); 
+            }
 
-            lessonsTable.Source = new LessonTableSource(this, Lessons);
-            lessonsTable.ReloadData();
+            if (Lessons != null)
+            {
+                lessonsTable.Source = new LessonTableSource(this, Lessons);
+                lessonsTable.ReloadData();
+            }
 
             loadingOverlay.HideThenRemove();
         }
@@ -75,27 +88,41 @@ namespace CorpTraining.iOS
             var loadingOverlay = new LoadingOverlay(Container.View.Bounds);
             Container.View.Add(loadingOverlay);
 
-            var screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
+            List<Screen> screens = null;
+            try
+            {
+                screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
+            }
+            catch (Exception e)
+            {
+//                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection.{0} Error: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection, close the app and try again"), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                Container.PresentViewController(alert, true, null);
+            }
             loadingOverlay.HideThenRemove();
 
-            // Filter for TEST !!
-            var screens1 = screens.Where(x => x.Type == "video");
-            var screens2 = screens.Where(x => x.Type == "audio_text_image_textlist");
-            var screens3 = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).Take(8);
-            screens = screens1.Concat(screens2).Concat(screens3).ToList();
-            screens.Add(new Screen
-                {
-                    Type = "recorder",
-                });
+            if (screens != null)
+            {
+                // Filter for TEST !!
+                var screens1 = screens.Where(x => x.Type == "video");
+                var screens2 = screens.Where(x => x.Type == "audio_text_image_textlist");
+                var screens3 = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).Take(8);
+                screens = screens1.Concat(screens2).Concat(screens3).ToList();
+                screens.Add(new Screen
+                    {
+                        Type = "recorder",
+                    });
 
-            var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
-            if (lessonScreen != null)
-            {
-                Container.NavigationController.PushViewController(lessonScreen, true);
-            }
-            else
-            {
-                // Display alert if needed !!
+                var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
+                if (lessonScreen != null)
+                {
+                    Container.NavigationController.PushViewController(lessonScreen, true);
+                }
+                else
+                {
+                    // Display alert if needed !!
+                }
             }
 
             tableView.DeselectRow(indexPath, true);

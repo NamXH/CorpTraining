@@ -33,8 +33,8 @@ namespace CorpTraining.iOS
             View.ConstrainLayout(() =>
                 playerViewController.View.Frame.GetCenterY() == View.Frame.GetCenterY() &&
                 playerViewController.View.Frame.Left == View.Frame.Left &&
-                playerViewController.View.Frame.Right == View.Frame.Right &&
-                playerViewController.View.Frame.Height >= 240f
+                playerViewController.View.Frame.Right == View.Frame.Right
+//                playerViewController.View.Frame.Height >= 240f
             );
             #endregion
         }
