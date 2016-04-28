@@ -82,7 +82,7 @@ namespace CorpTraining.iOS
             var screens1 = screens.Where(x => x.Type == "video");
             var screens2 = screens.Where(x => x.Type == "audio_text_image_textlist");
             var screens3 = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).Take(8);
-            screens = screens1.Concat(screens3).ToList();
+            screens = screens1.Concat(screens2).Concat(screens3).ToList();
             screens.Add(new Screen
                 {
                     Type = "recorder",

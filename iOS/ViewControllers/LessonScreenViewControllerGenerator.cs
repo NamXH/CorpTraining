@@ -26,6 +26,9 @@ namespace CorpTraining.iOS
                 case "audio_question":
                     result = new LessonScreenAudioViewController(screens, index);
                     break;
+                case "audio_text_image_textlist":
+                    result = new LessonScreenAudioViewController(screens, index);
+                    break;
                 case "audio_text":
                     result = new LessonScreenAudioViewController(screens, index);
                     break; 

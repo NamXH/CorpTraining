@@ -50,30 +50,52 @@ namespace CorpTraining.iOS
             };
             View.AddSubview(textLabel);
 
-            #region Layout
             View.ConstrainLayout(() =>
                 textLabel.Frame.Top == playerViewController.View.Frame.Bottom + UIConstants.BigGap &&
                 textLabel.Frame.GetCenterX() == View.Frame.GetCenterX() &&
                 textLabel.Frame.Left >= View.Frame.Left + UIConstants.SmallHorizontalPad &&
                 textLabel.Frame.Right >= View.Frame.Right - UIConstants.SmallHorizontalPad
             );
-            #endregion
 
+            // Calculate textLabel's height
+            var textLabelWidth = View.Frame.Width - UIConstants.SmallHorizontalPad * 2;
+            // Correct but complicated
+            //                var labelSize = neww NSString(text).GetBoundingRect(
+            //                                    new CGSize(textLabelWidth, float.MaxValue), 
+            //                                    NSStringDrawingOptions.UsesLineFragmentOrigin, 
+            //                                    new UIStringAttributes(){ Font = textLabel.Font }, 
+            //                                    null);
+            var labelSize = textLabel.SizeThatFits(new CGSize(textLabelWidth, float.MaxValue));
+            var textLabelHeight = labelSize.Height;
+
+            if (Screens[Index].Images.Count > 0)
+            {
+                // Display first image for demo
+                var image = new UIImageView(); 
+                View.AddSubview(image);
+                using (var url = new NSUrl(Screens[Index].Images[0].Url))
+                {
+                    using (var data = NSData.FromUrl(url))
+                    {
+                        image.Image = UIImage.LoadFromData(data);
+                    }
+                }
+
+                var imageTopPad = barHeight + playerViewController.View.Frame.Height + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
+                View.ConstrainLayout(() =>
+                    image.Frame.Top == View.Frame.Top + imageTopPad &&
+                    image.Frame.Left == View.Frame.Left &&
+                    image.Frame.Right == View.Frame.Right 
+//                    image.Frame.Height == 400f
+                );
+            }
+
+            // Assumming there are 1 audio play and 1 piece of text above
             if (Screens[Index].Options != null)
             {
                 var optionsUIs = new List<Tuple<UIButton, UIButton>>();
 
-                // Calculate textLabel's height
-                var textLabelWidth = View.Frame.Width - UIConstants.SmallHorizontalPad * 2;
-                // Correct but complicated
-//                var labelSize = new NSString(text).GetBoundingRect(
-//                                    new CGSize(textLabelWidth, float.MaxValue), 
-//                                    NSStringDrawingOptions.UsesLineFragmentOrigin, 
-//                                    new UIStringAttributes(){ Font = textLabel.Font }, 
-//                                    null);
-                var labelSize = textLabel.SizeThatFits(new CGSize(textLabelWidth, float.MaxValue));
-                var textLabelHeight = labelSize.Height;
-                var optionsTopPad = barHeight + playerViewController.View.Frame.Width + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
+                var optionsTopPad = barHeight + playerViewController.View.Frame.Height + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
                    
                 var i = 1;
                 foreach (var option in Screens[Index].Options)
