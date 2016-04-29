@@ -84,16 +84,24 @@ namespace CorpTraining
 		/// <summary>
 		/// Get a Screen list by lesson
 		/// </summary>
-		public static async Task<IList<Screen>> GetScreensByLessonAsync (int lessonId){
+		public static async Task<List<Screen>> GetScreensByLessonAsync (int lessonId){
 
-			IList<Screen> screenList;
+			List<Screen> screenList = new List<Screen>();
 			JArray screenArray;
 			IList<Option> optionList = new List<Option>();
 			IList<Image> imageList = new List<Image>();
 			try
 			{
 				JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL);
-				screenList = JsonConvert.DeserializeObject<IList<Screen>>(jsonDoc.ToString());
+				screenArray = JArray.Parse(jsonDoc.ToString());
+
+				foreach (JObject screenJson in screenArray){  
+					optionList = await GetOptionsByScreenAsync (lessonId, screenJson["id"].ToString());
+					imageList = await GetImagesByScreenAsync (lessonId, screenJson["id"].ToString());
+					screenJson ["options"] = JToken.FromObject (optionList);
+					screenJson ["images"] = JToken.FromObject (imageList);
+					screenList.Add(JsonConvert.DeserializeObject<Screen>(screenJson.ToString()));
+				}
 			}
 			catch(JsonSerializationException)
 			{

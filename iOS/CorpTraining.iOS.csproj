@@ -87,8 +87,6 @@
   <ItemGroup>
     <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\Contents.json" />
     <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\icon_120x120.png" />
-    <ImageAsset Include="Resources\Images.xcassets\AppIcons.appiconset\icon_180x180.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -136,7 +134,5 @@
     <BundleResource Include="Resources\radio_disable%402x.png" />
     <BundleResource Include="Resources\radio_enable%402x.png" />
     <BundleResource Include="Resources\microphone.png" />
-    <BundleResource Include="Resources\icon_120x120.png" />
-    <BundleResource Include="Resources\icon_180x180.png" />
   </ItemGroup>
 </Project>
