@@ -46,8 +46,7 @@ namespace CorpTraining.iOS
             }
             catch (Exception e)
             {
-//                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection close the app and try again.{0} Error: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
-                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection, close the app and try again"), UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
                 PresentViewController(alert, true, null); 
             }
@@ -91,12 +90,11 @@ namespace CorpTraining.iOS
             List<Screen> screens = null;
             try
             {
-                screens = await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id);
+                screens = (await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id)).ToList();
             }
             catch (Exception e)
             {
-//                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection.{0} Error: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
-                var alert = UIAlertController.Create("Cannot Communicate With Server", String.Format("Please check your Internet connection, close the app and try again"), UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
                 Container.PresentViewController(alert, true, null);
             }

@@ -68,7 +68,7 @@ namespace CorpTraining.iOS
             var labelSize = textLabel.SizeThatFits(new CGSize(textLabelWidth, float.MaxValue));
             var textLabelHeight = labelSize.Height;
 
-            if (Screens[Index].Images.Count > 0)
+            if ((Screens[Index].Images != null) && (Screens[Index].Images.Count > 0))
             {
                 // Display first image for demo
                 var image = new UIImageView(); 
