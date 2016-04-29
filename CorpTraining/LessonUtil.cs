@@ -46,7 +46,6 @@ namespace CorpTraining
 
 		}
 
-
 		/// <summary>Get the lesson list.
 		/// <para>Returns a list of lessons</para>
 		/// </summary>
@@ -88,19 +87,15 @@ namespace CorpTraining
 
 			List<Screen> screenList = new List<Screen>();
 			JArray screenArray;
-			IList<Option> optionList = new List<Option>();
-			IList<Image> imageList = new List<Image>();
+
 			try
 			{
 				JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL);
 				screenArray = JArray.Parse(jsonDoc.ToString());
 
-				foreach (JObject screenJson in screenArray){  
-					optionList = await GetOptionsByScreenAsync (lessonId, screenJson["id"].ToString());
-					imageList = await GetImagesByScreenAsync (lessonId, screenJson["id"].ToString());
-					screenJson ["options"] = JToken.FromObject (optionList);
-					screenJson ["images"] = JToken.FromObject (imageList);
-					screenList.Add(JsonConvert.DeserializeObject<Screen>(screenJson.ToString()));
+				foreach (JObject screenJson in screenArray){  //TODO Once the server returns every screen parameter in the screen list, this should be modified
+					Screen screen = await GetScreenByIdAsync(lessonId,(int)screenJson["id"]);
+					screenList.Add(screen);
 				}
 			}
 			catch(JsonSerializationException)
@@ -191,6 +186,8 @@ namespace CorpTraining
 
 			return imageList;
 		}
+
+
 
 
 
