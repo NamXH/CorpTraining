@@ -11,17 +11,7 @@ namespace CorpTraining
 {
 	public static class LessonUtil
 	{
-		private static string LESSONS_URL="http://mgl.usask.ca:8080/ct/api/lessons/";
-
-		private static string SCREENS_URL="screens/";
-
-		private static string OPTIONS_URL="options/";
-
-		private static string IMAGES_URL="images/";
-
-		private static string NEXT_SCREEN_URL="screens/nextscreen/";
-
-		private static string POSITION_SCREEN_URL="screens/position/";
+		
 
 		private static async Task<JsonValue> MakeServerRequest(string url){
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create (new Uri (url)); 
@@ -53,7 +43,7 @@ namespace CorpTraining
 		{
 			IList<Lesson> lessonList;
 
-			JsonValue jsonDoc = await MakeServerRequest(LESSONS_URL);
+			JsonValue jsonDoc = await MakeServerRequest(Globals.LESSONS_URL);
 
 			JArray lessonArray = JArray.Parse(jsonDoc.ToString());
 			lessonList = JsonConvert.DeserializeObject<IList<Lesson>>(lessonArray.ToString());
@@ -69,7 +59,7 @@ namespace CorpTraining
 			Lesson lesson;
 			JObject lessonJson;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + id);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + id);
 			try{
 				lessonJson = JObject.Parse (jsonDoc.ToString ());
 			}catch(JsonSerializationException){
@@ -90,7 +80,7 @@ namespace CorpTraining
 
 			try
 			{
-				JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL);
+				JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL);
 				screenArray = JArray.Parse(jsonDoc.ToString());
 
 				foreach (JObject screenJson in screenArray){  //TODO Once the server returns every screen parameter in the screen list, this should be modified
@@ -111,7 +101,7 @@ namespace CorpTraining
 			Screen screen;
 			JObject screenJson;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + NEXT_SCREEN_URL + currentScreenId);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.NEXT_SCREEN_URL + currentScreenId);
 
 			try{
 				screenJson = JObject.Parse (jsonDoc.ToString ());
@@ -129,7 +119,7 @@ namespace CorpTraining
 			Screen screen;
 			JObject screenJson;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + POSITION_SCREEN_URL + position);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.POSITION_SCREEN_URL + position);
 
 			try{
 				screenJson = JObject.Parse (jsonDoc.ToString ());
@@ -148,7 +138,7 @@ namespace CorpTraining
 			Screen screen;
 			JObject screenJson;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL + screenId);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL + screenId);
 
 			try{
 				screenJson = JObject.Parse (jsonDoc.ToString ());
@@ -165,7 +155,7 @@ namespace CorpTraining
 		public static async Task<IList<Option>> GetOptionsByScreenAsync (int lessonId, string screenId){
 			IList<Option> optionList;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL + screenId + "/" + OPTIONS_URL);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL + screenId + "/" + Globals.OPTIONS_URL);
 
 			try{
 				JArray optionArray = JArray.Parse(jsonDoc.ToString());
@@ -180,7 +170,7 @@ namespace CorpTraining
 		public static async Task<IList<Image>> GetImagesByScreenAsync (int lessonId, string screenId){
 			IList<Image> imageList;
 
-			JsonValue jsonDoc = await MakeServerRequest (LESSONS_URL + lessonId + "/" + SCREENS_URL + screenId + "/" + IMAGES_URL);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL + screenId + "/" + Globals.IMAGES_URL);
 			JArray imageArray = JArray.Parse(jsonDoc.ToString());
 			imageList = JsonConvert.DeserializeObject<IList<Image>>(imageArray.ToString());
 
