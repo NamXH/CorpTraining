@@ -4,7 +4,13 @@ namespace CorpTraining
 {
 	public static class Globals
 	{
-		public static string AUTH_URL="http://mgl.usask.ca:8080/ct/api/auth/";
+		//Base
+		public static string BASE_URL="http://mgl.usask.ca:8080/ct/api/";
+
+
+		//User
+
+		public static string AUTH_URL= BASE_URL + "auth/";
 
 		public static string LOGIN_URL= AUTH_URL +"login";
 
@@ -14,9 +20,10 @@ namespace CorpTraining
 
 		public static string LOGOUT_URL= AUTH_URL +"logout/";
 
+
 		//Lesson
 
-		public static string LESSONS_URL="http://mgl.usask.ca:8080/ct/api/lessons/";
+		public static string LESSONS_URL = BASE_URL + "lessons/";
 
 		public static string SCREENS_URL="screens/";
 
@@ -28,6 +35,7 @@ namespace CorpTraining
 
 		public static string POSITION_SCREEN_URL="screens/position/";
 
+		public static string ANSWER_URL="testanswer/";
 	}
 }
 
