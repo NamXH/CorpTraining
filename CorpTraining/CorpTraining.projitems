@@ -18,5 +18,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserUtil.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Globals.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Orm\UserDao.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Orm\" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Json;
+using System.Net;
 
 namespace CorpTraining
 {
@@ -21,8 +22,16 @@ namespace CorpTraining
 			var uri = new Uri (string.Format (url));
 
 			HttpResponseMessage response = null;
-			response = await client.PostAsync (uri, content);
+			try{
+				
+				response = await client.PostAsync (uri, content);
 
+			}catch (WebException e){
+				if(e.Response==null)
+					throw new WebException ("Error connecting to the server: " + url +" Possible Internet problems");
+
+				throw new WebException ("Error connecting to the server: " + url +" Status code: " +((HttpWebResponse)e.Response).StatusCode);
+			}
 			return response;
 
 		}
@@ -34,8 +43,16 @@ namespace CorpTraining
 			var uri = new Uri (string.Format (url));
 
 			HttpResponseMessage response = null;
-			response = await client.GetAsync (uri);
+			try{
+				
+				response = await client.GetAsync (uri);
 
+			}catch (WebException e){
+				if(e.Response==null)
+					throw new WebException ("Error connecting to the server: " + url +" Possible Internet problems");
+
+				throw new WebException ("Error connecting to the server: " + url +" Status code: " +((HttpWebResponse)e.Response).StatusCode);
+			}
 			return response;
 
 		}
@@ -57,8 +74,13 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest (Globals.LOGIN_URL, content);
 
-			if (response.IsSuccessStatusCode)
-				return JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["token"];
+			if (response.IsSuccessStatusCode){
+				string token = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["token"];
+				UserDB userDB = new UserDB();
+
+				userDB.InsertToken (token);
+				return token;
+			}
 			
 			return null;
 		}
@@ -109,7 +131,22 @@ namespace CorpTraining
 
 			response = await MakeServerGetRequest (url);
 
+			UserDB userDB = new UserDB();
+
+			userDB.DeleteToken ();
+
 			return JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+
+		}
+
+		/// <summary>Get the current application token.
+		/// <para>If a token is retrieved, it means a user is logged, if not, the user need to log in</para>
+		/// </summary>
+		public static  String GetCurrentToken ()
+		{
+
+			UserDB userDB = new UserDB();
+			return userDB.GetToken ();
 
 		}
 
