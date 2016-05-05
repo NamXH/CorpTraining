@@ -1,6 +1,5 @@
 ﻿using System;
 using SQLite;
-using Java.Lang;
 
 namespace CorpTraining
 {

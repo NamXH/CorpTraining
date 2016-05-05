@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace CorpTraining
 {
@@ -33,6 +35,27 @@ namespace CorpTraining
 				throw new WebException ("Error connecting to the server: " + url +" Status code: " +((HttpWebResponse)e.Response).StatusCode);
 			}
 			return jsonDoc;
+
+		}
+
+		private static async Task<HttpResponseMessage> MakeServerPostRequest(string url, StringContent content){
+			HttpClient client = new HttpClient ();
+			client.MaxResponseContentBufferSize = 256000;
+
+			var uri = new Uri (string.Format (url));
+
+			HttpResponseMessage response = null;
+			try{
+
+				response = await client.PostAsync (uri, content);
+
+			}catch (WebException e){
+				if(e.Response==null)
+					throw new WebException ("Error connecting to the server: " + url +" Possible Internet problems");
+
+				throw new WebException ("Error connecting to the server: " + url +" Status code: " +((HttpWebResponse)e.Response).StatusCode);
+			}
+			return response;
 
 		}
 
@@ -246,6 +269,24 @@ namespace CorpTraining
 			return lesson;
 		}
 
+		/// <summary>Sends the answers for a specific lesson.
+		/// <para>It will return success if it was succesfull, and null if it wasn't</para>
+		/// </summary>
+		public static async Task<String> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
+		{//TODO handle the answer response from the server when its done
+
+			var jsonAnswers = JsonConvert.SerializeObject (screenAnswers);
+			var content = new StringContent (jsonAnswers, Encoding.UTF8, "application/json");
+
+			HttpResponseMessage response = null;
+
+			response = await MakeServerPostRequest(Globals.LESSONS_URL+lessonId+"/"+Globals.ANSWER_URL, content);
+
+			if (response.IsSuccessStatusCode)
+				return JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+
+			return null;
+		}
 
 
 
