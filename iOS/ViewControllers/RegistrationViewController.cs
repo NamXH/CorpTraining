@@ -1,5 +1,6 @@
 ﻿using System;
 using UIKit;
+using System.Text.RegularExpressions;
 
 namespace CorpTraining.iOS
 {
@@ -59,6 +60,8 @@ namespace CorpTraining.iOS
             {
                 Placeholder = "Email",
                 BorderStyle = UITextBorderStyle.RoundedRect,
+                AutocapitalizationType = UITextAutocapitalizationType.None,
+                KeyboardType = UIKeyboardType.EmailAddress,
             };
             stackView.AddArrangedSubview(emailTextField);
             emailTextField.Layer.BorderColor = UIColor.Gray.CGColor;
@@ -68,10 +71,25 @@ namespace CorpTraining.iOS
                 emailTextField.Frame.Height == UIConstants.ControlsHeight
             );
 
+            var phoneTextField = new UITextField
+            {
+                Placeholder = "Phone Number",
+                BorderStyle = UITextBorderStyle.RoundedRect,
+                KeyboardType = UIKeyboardType.NumberPad,
+            };
+            stackView.AddArrangedSubview(phoneTextField);
+            phoneTextField.Layer.BorderColor = UIColor.Gray.CGColor;
+            phoneTextField.Layer.BorderWidth = UIConstants.BorderWidth;
+            phoneTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            View.ConstrainLayout(() =>
+                phoneTextField.Frame.Height == UIConstants.ControlsHeight
+            );
+
             var passwordTextField = new UITextField
             {
                 Placeholder = "Password",
                 SecureTextEntry = true,
+                AutocapitalizationType = UITextAutocapitalizationType.None,
                 BorderStyle = UITextBorderStyle.RoundedRect,
             };
             stackView.AddArrangedSubview(passwordTextField);
@@ -108,13 +126,46 @@ namespace CorpTraining.iOS
             View.ConstrainLayout(() =>
                 submitButton.Frame.Height == UIConstants.ControlsHeight
             );
-            submitButton.TouchUpInside += (sender, e) =>
+            submitButton.TouchUpInside += async (sender, e) =>
             {
-                var valid = ValidateInfoAndDisplayAlert(firstNameTextField.Text, lastNameTextField.Text, emailTextField.Text, passwordTextField.Text, confirmPasswordTextField.Text);
+                var valid = ValidateInfoAndDisplayAlert(firstNameTextField.Text, lastNameTextField.Text, emailTextField.Text, phoneTextField.Text, passwordTextField.Text, confirmPasswordTextField.Text);
+                if (valid)
+                {
+                    var user = new User
+                    {
+                        FirstName = firstNameTextField.Text,
+                        LastName = lastNameTextField.Text,
+                        Email = emailTextField.Text,
+                        Password = passwordTextField.Text,
+                        Phone = phoneTextField.Text, // Not a required field
+                    };
+
+                    string registrationResult = null;
+                    try
+                    {
+                        registrationResult = await UserUtil.RegisterUserAsync(user);
+                        if (registrationResult == "success")
+                        {
+                            UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
+                        }
+                        else
+                        {
+                            var alert = UIAlertController.Create("Something goes wrong", "", UIAlertControllerStyle.Alert);
+                            alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                            PresentViewController(alert, true, null); 
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var alert = UIAlertController.Create("Something goes wrong", String.Format("Please try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                        PresentViewController(alert, true, null);
+                    }
+                }
             };
         }
 
-        private bool ValidateInfoAndDisplayAlert(string firstName, string lastName, string email, string password, string confirmPassword)
+        private bool ValidateInfoAndDisplayAlert(string firstName, string lastName, string email, string phone, string password, string confirmPassword)
         {
             var result = true;
 
@@ -184,15 +235,19 @@ namespace CorpTraining.iOS
                 alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
                 PresentViewController(alert, true, null);
             }
-            else
+            else if (!Regex.IsMatch(phone, @"^\d+$"))
             {
-                if (password != confirmPassword)
-                {
-                    result = false;
-                    var alert = UIAlertController.Create("Error", "Password confirmation doesn't match.", UIAlertControllerStyle.Alert);
-                    alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
-                    PresentViewController(alert, true, null);
-                }
+                result = false;
+                var alert = UIAlertController.Create("Error", "Phone number must be numeric.", UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
+                PresentViewController(alert, true, null);
+            }
+            else if (password != confirmPassword)
+            {
+                result = false;
+                var alert = UIAlertController.Create("Error", "Password confirmation doesn't match.", UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
+                PresentViewController(alert, true, null);
             }
 
             return result;

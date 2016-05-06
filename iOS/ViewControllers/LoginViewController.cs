@@ -64,7 +64,7 @@ namespace CorpTraining.iOS
                 catch (Exception ex)
                 {
                     var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
-                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null);
                 }
 
