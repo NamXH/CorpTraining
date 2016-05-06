@@ -129,6 +129,7 @@ namespace CorpTraining.iOS
             );
             submitButton.TouchUpInside += async (sender, e) =>
             {
+                submitButton.Enabled = false;
                 var valid = ValidateInfo(firstNameTextField.Text, lastNameTextField.Text, emailTextField.Text, phoneTextField.Text, passwordTextField.Text, confirmPasswordTextField.Text);
                 if (valid.Item1)
                 {
@@ -161,6 +162,7 @@ namespace CorpTraining.iOS
                         var alert = UIAlertController.Create("Something goes wrong", String.Format("Please try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
                         alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                         PresentViewController(alert, true, null);
+                        submitButton.Enabled = true;
                     }
                 }
                 else
@@ -169,6 +171,7 @@ namespace CorpTraining.iOS
                     alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null); 
                 }
+                submitButton.Enabled = true;
             };
         }
 

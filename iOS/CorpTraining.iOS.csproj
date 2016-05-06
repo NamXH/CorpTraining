@@ -100,7 +100,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="ViewControllers\LandingViewController.cs" />
     <Compile Include="Utilities\EasyLayout.cs" />
     <Compile Include="Utilities\UIConstants.cs" />
     <Compile Include="ViewControllers\AccountViewController.cs" />

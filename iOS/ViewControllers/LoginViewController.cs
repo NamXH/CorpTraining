@@ -61,6 +61,7 @@ namespace CorpTraining.iOS
                 string token = null;
                 try
                 {
+                    loginButton.Enabled = false;
                     token = await UserUtil.AuthenticateUserAsync(usernameTextField.Text, passwordTextField.Text);
                 }
                 catch (Exception ex)
@@ -68,6 +69,7 @@ namespace CorpTraining.iOS
                     var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
                     alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null);
+                    loginButton.Enabled = true;
                 }
 
                 if (!String.IsNullOrEmpty(token))
@@ -80,6 +82,7 @@ namespace CorpTraining.iOS
                     alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null);
                 }
+                loginButton.Enabled = true;
             };
 
             var signUpButton = new UIButton(UIButtonType.System)
@@ -93,7 +96,9 @@ namespace CorpTraining.iOS
             signUpButton.Layer.CornerRadius = UIConstants.CornerRadius;
             signUpButton.TouchUpInside += (sender, e) =>
             {
+                signUpButton.Enabled = false;
                 NavigationController.PushViewController(new RegistrationViewController(), true);
+                signUpButton.Enabled = true;
             };
 
             #region UI Layout
