@@ -108,6 +108,94 @@ namespace CorpTraining.iOS
             View.ConstrainLayout(() =>
                 submitButton.Frame.Height == UIConstants.ControlsHeight
             );
+            submitButton.TouchUpInside += (sender, e) =>
+            {
+                var valid = ValidateInfoAndDisplayAlert(firstNameTextField.Text, lastNameTextField.Text, emailTextField.Text, passwordTextField.Text, confirmPasswordTextField.Text);
+            };
+        }
+
+        private bool ValidateInfoAndDisplayAlert(string firstName, string lastName, string email, string password, string confirmPassword)
+        {
+            var result = true;
+
+            var alertMessage = "Please provide your:";
+
+            if (String.IsNullOrWhiteSpace(firstName))
+            {
+                result = false;
+                alertMessage += " first name";
+            }
+
+            if (String.IsNullOrWhiteSpace(lastName))
+            {
+                if (result)
+                {
+                    result = false;
+                }
+                else
+                {
+                    alertMessage += ","; 
+                }
+                alertMessage += " last name";
+            }
+
+            if (String.IsNullOrWhiteSpace(email))
+            {
+                if (result)
+                {
+                    result = false;
+                }
+                else
+                {
+                    alertMessage += ","; 
+                }
+                alertMessage += " email";
+            }
+
+            if (String.IsNullOrWhiteSpace(password))
+            {
+                if (result)
+                {
+                    result = false;
+                }
+                else
+                {
+                    alertMessage += ","; 
+                }
+                alertMessage += " password";
+            }
+
+            if (String.IsNullOrWhiteSpace(confirmPassword))
+            {
+                if (result)
+                {
+                    result = false;
+                }
+                else
+                {
+                    alertMessage += ","; 
+                }
+                alertMessage += " confirm password";
+            }
+
+            if (!result)
+            {
+                var alert = UIAlertController.Create("Error", alertMessage, UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
+                PresentViewController(alert, true, null);
+            }
+            else
+            {
+                if (password != confirmPassword)
+                {
+                    result = false;
+                    var alert = UIAlertController.Create("Error", "Password confirmation doesn't match.", UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
+                    PresentViewController(alert, true, null);
+                }
+            }
+
+            return result;
         }
     }
 }

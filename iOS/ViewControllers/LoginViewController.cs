@@ -75,7 +75,7 @@ namespace CorpTraining.iOS
                 else
                 {
                     var alert = UIAlertController.Create("Error", "Your email and password combination is incorrect.", UIAlertControllerStyle.Alert);
-                    alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                    alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null);
                 }
             };
