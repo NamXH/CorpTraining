@@ -14,17 +14,6 @@ namespace CorpTraining.iOS
             base.ViewDidLoad();
             View.BackgroundColor = UIConstants.MainColor;
 
-            var scrollView = new UIScrollView
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-            };
-            View.AddSubview(scrollView);
-            View.ConstrainLayout(() =>
-                scrollView.Frame.GetCenterY() == View.Frame.GetCenterY() &&
-                scrollView.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
-                scrollView.Frame.Right == View.Frame.Right - UIConstants.VerticalPad
-            );
-
             var stackView = new UIStackView
             {
                 Axis = UILayoutConstraintAxis.Vertical,
@@ -33,14 +22,11 @@ namespace CorpTraining.iOS
                 Spacing = UIConstants.SmallGap,
                 TranslatesAutoresizingMaskIntoConstraints = false,
             };
-            scrollView.AddSubview(stackView);
+            View.AddSubview(stackView);
             View.ConstrainLayout(() =>
-                stackView.Frame.Top == scrollView.Frame.Top &&
-                stackView.Frame.Bottom == scrollView.Frame.Bottom &&
-                stackView.Frame.Left == scrollView.Frame.Left &&
-                stackView.Frame.Right == scrollView.Frame.Right &&
-                stackView.Frame.Width == scrollView.Frame.Width && // required!
-                stackView.Frame.Height == scrollView.Frame.Height // required!
+                stackView.Frame.GetCenterY() == View.Frame.GetCenterY() &&
+                stackView.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
+                stackView.Frame.Right == View.Frame.Right - UIConstants.VerticalPad
             );
 
             var firstNameTextField = new UITextField
@@ -108,6 +94,19 @@ namespace CorpTraining.iOS
             confirmPasswordTextField.Layer.CornerRadius = UIConstants.CornerRadius;
             View.ConstrainLayout(() =>
                 confirmPasswordTextField.Frame.Height == UIConstants.ControlsHeight
+            );
+
+            var submitButton = new UIButton(UIButtonType.System)
+            {
+                BackgroundColor = UIColor.FromHSB(UIConstants.MainColorHue + 0.08f, UIConstants.MainColorSaturation + 0.1f, UIConstants.MainColorBrightness),
+                Font = UIFont.BoldSystemFontOfSize(UIConstants.NormalFontSize),
+            };
+            stackView.AddArrangedSubview(submitButton);
+            submitButton.SetTitle("Submit", UIControlState.Normal);
+            submitButton.SetTitleColor(UIColor.White, UIControlState.Normal);
+            submitButton.Layer.CornerRadius = UIConstants.CornerRadius;
+            View.ConstrainLayout(() =>
+                submitButton.Frame.Height == UIConstants.ControlsHeight
             );
         }
     }
