@@ -1,6 +1,7 @@
 ﻿using System;
 using UIKit;
 using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace CorpTraining.iOS
 {
@@ -128,8 +129,8 @@ namespace CorpTraining.iOS
             );
             submitButton.TouchUpInside += async (sender, e) =>
             {
-                var valid = ValidateInfoAndDisplayAlert(firstNameTextField.Text, lastNameTextField.Text, emailTextField.Text, phoneTextField.Text, passwordTextField.Text, confirmPasswordTextField.Text);
-                if (valid)
+                var valid = ValidateInfo(firstNameTextField.Text, lastNameTextField.Text, emailTextField.Text, phoneTextField.Text, passwordTextField.Text, confirmPasswordTextField.Text);
+                if (valid.Item1)
                 {
                     var user = new User
                     {
@@ -150,7 +151,7 @@ namespace CorpTraining.iOS
                         }
                         else
                         {
-                            var alert = UIAlertController.Create("Something goes wrong", "", UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("Something goes wrong", registrationResult, UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                             PresentViewController(alert, true, null); 
                         }
@@ -162,26 +163,32 @@ namespace CorpTraining.iOS
                         PresentViewController(alert, true, null);
                     }
                 }
+                else
+                {
+                    var alert = UIAlertController.Create("Error", valid.Item2, UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
+                    PresentViewController(alert, true, null); 
+                }
             };
         }
 
-        private bool ValidateInfoAndDisplayAlert(string firstName, string lastName, string email, string phone, string password, string confirmPassword)
+        private Tuple<bool, string> ValidateInfo(string firstName, string lastName, string email, string phone, string password, string confirmPassword)
         {
-            var result = true;
+            var requiredInfoIsCompleted = true;
 
             var alertMessage = "Please provide your:";
 
             if (String.IsNullOrWhiteSpace(firstName))
             {
-                result = false;
+                requiredInfoIsCompleted = false;
                 alertMessage += " first name";
             }
 
             if (String.IsNullOrWhiteSpace(lastName))
             {
-                if (result)
+                if (requiredInfoIsCompleted)
                 {
-                    result = false;
+                    requiredInfoIsCompleted = false;
                 }
                 else
                 {
@@ -192,9 +199,9 @@ namespace CorpTraining.iOS
 
             if (String.IsNullOrWhiteSpace(email))
             {
-                if (result)
+                if (requiredInfoIsCompleted)
                 {
-                    result = false;
+                    requiredInfoIsCompleted = false;
                 }
                 else
                 {
@@ -205,9 +212,9 @@ namespace CorpTraining.iOS
 
             if (String.IsNullOrWhiteSpace(password))
             {
-                if (result)
+                if (requiredInfoIsCompleted)
                 {
-                    result = false;
+                    requiredInfoIsCompleted = false;
                 }
                 else
                 {
@@ -218,9 +225,9 @@ namespace CorpTraining.iOS
 
             if (String.IsNullOrWhiteSpace(confirmPassword))
             {
-                if (result)
+                if (requiredInfoIsCompleted)
                 {
-                    result = false;
+                    requiredInfoIsCompleted = false;
                 }
                 else
                 {
@@ -229,28 +236,41 @@ namespace CorpTraining.iOS
                 alertMessage += " confirm password";
             }
 
-            if (!result)
+            if (!requiredInfoIsCompleted)
             {
-                var alert = UIAlertController.Create("Error", alertMessage, UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
-                PresentViewController(alert, true, null);
+                return new Tuple<bool, string>(false, alertMessage);
             }
             else if (!Regex.IsMatch(phone, @"^\d+$"))
             {
-                result = false;
-                var alert = UIAlertController.Create("Error", "Phone number must be numeric.", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
-                PresentViewController(alert, true, null);
+                return new Tuple<bool, string>(false, "Phone number must be numeric."); 
             }
             else if (password != confirmPassword)
             {
-                result = false;
-                var alert = UIAlertController.Create("Error", "Password confirmation doesn't match.", UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
-                PresentViewController(alert, true, null);
+                return new Tuple<bool, string>(false, "Password confirmation doesn't match.");
             }
+            else if (!IsValidEmail(email))
+            {
+                return new Tuple<bool, string>(false, "Email is invalid."); 
+            }
+            else
+            {
+                return new Tuple<bool, string>(true, null);
+            }
+        }
 
-            return result;
+        private bool IsValidEmail(string emailaddress)
+        {
+            // http://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address/16403290#16403290
+            // http://stackoverflow.com/questions/5342375/c-sharp-regex-email-validation
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return m.Address == emailaddress;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }
