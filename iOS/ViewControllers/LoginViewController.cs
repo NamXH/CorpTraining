@@ -28,6 +28,8 @@ namespace CorpTraining.iOS
             {
                 Placeholder = "Email",
                 BorderStyle = UITextBorderStyle.RoundedRect,
+                AutocapitalizationType = UITextAutocapitalizationType.None,
+                KeyboardType = UIKeyboardType.EmailAddress,
             };
             View.AddSubview(usernameTextField);
             usernameTextField.Layer.BorderColor = UIColor.Gray.CGColor;
