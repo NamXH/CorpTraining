@@ -15,7 +15,7 @@ namespace CorpTraining.iOS
             base.ViewDidLoad();
 
             Title = "Login";
-            View.BackgroundColor = UIColor.FromHSB(UIConstants.MainColorHue, UIConstants.MainColorSaturation, UIConstants.MainColorBrightness);
+            View.BackgroundColor = UIConstants.MainColor;
 
 //            var logoImageView = new UIImageView();
 //            View.AddSubview(logoImageView);
@@ -54,9 +54,13 @@ namespace CorpTraining.iOS
             loginButton.SetTitle("Login", UIControlState.Normal);
             loginButton.SetTitleColor(UIColor.White, UIControlState.Normal);
             loginButton.Layer.CornerRadius = UIConstants.CornerRadius;
-            loginButton.TouchUpInside += (sender, e) =>
+            loginButton.TouchUpInside += async (sender, e) =>
             {
-                UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
+                var token = await UserUtil.AuthenticateUserAsync(usernameTextField.Text, passwordTextField.Text);
+                if (!String.IsNullOrEmpty(token))
+                {
+                    UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
+                }
             };
 
             var signUpButton = new UIButton(UIButtonType.System)
@@ -68,6 +72,10 @@ namespace CorpTraining.iOS
             signUpButton.SetTitle("Sign Up", UIControlState.Normal);
             signUpButton.SetTitleColor(UIColor.FromHSB(UIConstants.MainColorHue, UIConstants.MainColorSaturation, UIConstants.MainColorBrightness), UIControlState.Normal);
             signUpButton.Layer.CornerRadius = UIConstants.CornerRadius;
+            signUpButton.TouchUpInside += (sender, e) =>
+            {
+                NavigationController.PushViewController(new RegistrationViewController(), true);
+            };
 
             #region UI Layout
             var topPad = View.Frame.GetCenterY() - (UIConstants.ControlsHeight * 4 / 2) - UIConstants.ControlsHeight; // Half the total heights of all controls: the controls will be centered then go up a bit
