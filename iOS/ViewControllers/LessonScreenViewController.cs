@@ -63,7 +63,7 @@ namespace CorpTraining.iOS
             var stackView = new UIStackView
             {
                 Axis = UILayoutConstraintAxis.Vertical,
-                Alignment = UIStackViewAlignment.Fill,
+                Alignment = UIStackViewAlignment.Leading,
                 Distribution = UIStackViewDistribution.EqualSpacing,
                 Spacing = UIConstants.BigGap,
             };
@@ -88,9 +88,12 @@ namespace CorpTraining.iOS
                 };
                 AddChildViewController(playerViewController);
                 stackView.AddArrangedSubview(playerViewController.View);
+                View.ConstrainLayout(() =>
+                    playerViewController.View.Frame.Width == stackView.Frame.Width
+                );
             }
 
-            if ((Screens[Index].Images != null))
+            if (Screens[Index].Images != null)
             {
                 foreach (var image in Screens[Index].Images)
                 {
@@ -103,16 +106,107 @@ namespace CorpTraining.iOS
                         }
                     } 
                     stackView.AddArrangedSubview(imageView);
+                    View.ConstrainLayout(() =>
+                        imageView.Frame.Width == stackView.Frame.Width
+                    );
+                }
+            }
+
+            if (Screens[Index].Texts != null)
+            {
+                foreach (var text in Screens[Index].Texts)
+                {
+                    var textLabel = new UILabel
+                    { 
+                        Text = text.TextValue,
+                        Lines = 0,
+                        LineBreakMode = UILineBreakMode.WordWrap,
+                    };
+                    stackView.AddArrangedSubview(textLabel);
+                    View.ConstrainLayout(() =>
+                        textLabel.Frame.Width == stackView.Frame.Width
+                    );
+                }
+            }
+
+            if (Screens[Index].Options != null)
+            {
+                // Question
+                var questionLabel = new UILabel
+                { 
+                    Text = Screens[Index].Question,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                };
+                stackView.AddArrangedSubview(questionLabel);
+                View.ConstrainLayout(() =>
+                    questionLabel.Frame.Width == stackView.Frame.Width
+                );
+
+                // Options
+                var optionsUIs = new List<Tuple<UIButton, UIButton>>();
+
+                var i = 1;
+                foreach (var option in Screens[Index].Options)
+                {
+                    var optionStackView = new UIStackView
+                    {
+                        Axis = UILayoutConstraintAxis.Horizontal,
+                        Alignment = UIStackViewAlignment.Center,
+                        Distribution = UIStackViewDistribution.EqualSpacing,
+                        Spacing = UIConstants.SmallGap,
+                    };
+                    stackView.AddArrangedSubview(optionStackView);
+
+                    var optionRadioButton = new UIButton(UIButtonType.RoundedRect);
+                    optionStackView.AddArrangedSubview(optionRadioButton);
+                    optionRadioButton.SetImage(UIImage.FromBundle("radio_enable.png"), UIControlState.Normal);
+                    optionRadioButton.SetImage(UIImage.FromBundle("radio_disable.png"), UIControlState.Disabled);
+                    View.ConstrainLayout(() =>
+                        optionRadioButton.Frame.Height == 20f &&
+                        optionRadioButton.Frame.Width == 20f 
+                    );
+                    if (i != 1)
+                    {
+                        optionRadioButton.Enabled = false;
+                    }
+
+                    var optionTextButton = new UIButton(UIButtonType.System)
+                    {
+                        LineBreakMode = UILineBreakMode.WordWrap,
+                        HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
+                        VerticalAlignment = UIControlContentVerticalAlignment.Center,
+                        BackgroundColor = UIColor.Orange,
+                    };
+                    optionTextButton.SetTitle(option.Title, UIControlState.Normal);
+                    optionStackView.AddArrangedSubview(optionTextButton);
+
+                    var maxWidth = View.Frame.Width - UIConstants.HorizontalPad * 2 - optionRadioButton.Frame.Width;
+                    var textSize = UIHelper.GetTextSize(option.Title, optionTextButton.Font, maxWidth, float.MaxValue);
+                    var textHeight = textSize.Height;
+                    View.ConstrainLayout(() =>
+                        optionTextButton.Frame.Height == textHeight
+                    );
+
+                    optionsUIs.Add(new Tuple<UIButton, UIButton>(optionRadioButton, optionTextButton));
+                    i++;
                 }
 
+                foreach (var tuple in optionsUIs)
+                {
+                    tuple.Item2.TouchUpInside += (sender, e) =>
+                    {
+                        tuple.Item1.Enabled = true;
 
-//                var imageTopPad = barHeight + playerViewController.View.Frame.Height + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
-//                View.ConstrainLayout(() =>
-//                    image.Frame.Top == View.Frame.Top + imageTopPad &&
-//                    image.Frame.Left == View.Frame.Left &&
-//                    image.Frame.Right == View.Frame.Right 
-//                    //                    image.Frame.Height == 400f
-//                );
+                        foreach (var otherTuple in optionsUIs)
+                        {
+                            if (!Object.ReferenceEquals(sender, otherTuple.Item2))
+                            {
+                                otherTuple.Item1.Enabled = false;
+                            }
+                        }
+                    };
+                }
             }
 
             #region For test
@@ -126,7 +220,8 @@ namespace CorpTraining.iOS
             firstNameTextField.Layer.BorderWidth = UIConstants.BorderWidth;
             firstNameTextField.Layer.CornerRadius = UIConstants.CornerRadius;
             View.ConstrainLayout(() =>
-                firstNameTextField.Frame.Height == UIConstants.ControlsHeight
+                firstNameTextField.Frame.Height == UIConstants.ControlsHeight &&
+                firstNameTextField.Frame.Width == stackView.Frame.Width
             );
 
             var firstNameTextField2 = new UITextField

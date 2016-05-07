@@ -116,6 +116,7 @@
     <Compile Include="Obsolete\LessonScreenRecorderViewController.cs" />
     <Compile Include="Obsolete\LessonScreenVideoViewController.cs" />
     <Compile Include="Obsolete\LessonScreenViewControllerGenerator.cs" />
+    <Compile Include="Utilities\UIHelper.cs" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
