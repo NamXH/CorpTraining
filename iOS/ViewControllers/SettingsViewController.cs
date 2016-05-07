@@ -33,6 +33,10 @@ namespace CorpTraining.iOS
                     signOutButton.Enabled = false;
                     await UserUtil.LogOutUserByTokenAsync(UserUtil.GetCurrentToken());
                 }
+                catch (Exception ex)
+                {
+                    // Ignore this for now !!
+                }
                 finally
                 {
                     UIApplication.SharedApplication.Windows[0].RootViewController = new LoginViewController();

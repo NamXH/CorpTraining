@@ -25,18 +25,14 @@ namespace CorpTraining.iOS
             var lessonsTable = new UITableView();
             View.AddSubview(lessonsTable);
 
-//            var barHeight = UIConstants.StatusBarHeight;
-
-            #region Layout
             View.ConstrainLayout(() =>
                 lessonsTable.Frame.Top == View.Frame.Top &&
                 lessonsTable.Frame.Left == View.Frame.Left &&
                 lessonsTable.Frame.Right == View.Frame.Right &&
                 lessonsTable.Frame.Bottom == View.Frame.Bottom
             );
-            #endregion
 
-            // Create loading indicator here!!
+            // Loading indicator
             var loadingOverlay = new LoadingOverlay(View.Bounds);
             View.AddSubview(loadingOverlay);
 
@@ -82,8 +78,7 @@ namespace CorpTraining.iOS
 
         public async override void RowSelected(UITableView tableView, Foundation.NSIndexPath indexPath)
         {
-            // Create loading indicator here!!
-
+            // Loading indicator
             var loadingOverlay = new LoadingOverlay(Container.View.Bounds);
             Container.View.Add(loadingOverlay);
 
@@ -135,9 +130,13 @@ namespace CorpTraining.iOS
                 cell = new UITableViewCell(UITableViewCellStyle.Default, cellIdentifier);
             }
 
-            // If lesson is finished then add check mark
-            cell.Accessory = UITableViewCellAccessory.Checkmark; // Place holder!!
             cell.TextLabel.Text = Items[indexPath.Row].Title;
+
+            // If lesson is finished then add check mark
+            if (true) // Place holder!!
+            {
+                cell.Accessory = UITableViewCellAccessory.Checkmark; 
+            }
 
             return cell;
         }

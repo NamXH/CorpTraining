@@ -104,17 +104,18 @@
     <Compile Include="Utilities\UIConstants.cs" />
     <Compile Include="ViewControllers\AccountViewController.cs" />
     <Compile Include="ViewControllers\AdminViewController.cs" />
-    <Compile Include="ViewControllers\LessonScreenAudioViewController.cs" />
-    <Compile Include="ViewControllers\LessonScreenBaseViewController.cs" />
-    <Compile Include="ViewControllers\LessonScreenRecorderViewController.cs" />
-    <Compile Include="ViewControllers\LessonScreenVideoViewController.cs" />
     <Compile Include="ViewControllers\LessonsViewController.cs" />
     <Compile Include="ViewControllers\LoginViewController.cs" />
     <Compile Include="ViewControllers\SettingsViewController.cs" />
     <Compile Include="ViewControllers\TabViewController.cs" />
-    <Compile Include="ViewControllers\LessonScreenViewControllerGenerator.cs" />
     <Compile Include="Utilities\LoadingOverlay.cs" />
     <Compile Include="ViewControllers\RegistrationViewController.cs" />
+    <Compile Include="ViewControllers\LessonScreenViewController.cs" />
+    <Compile Include="Obsolete\LessonScreenAudioViewController.cs" />
+    <Compile Include="Obsolete\LessonScreenBaseViewController.cs" />
+    <Compile Include="Obsolete\LessonScreenRecorderViewController.cs" />
+    <Compile Include="Obsolete\LessonScreenVideoViewController.cs" />
+    <Compile Include="Obsolete\LessonScreenViewControllerGenerator.cs" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -122,6 +123,7 @@
   <ItemGroup>
     <Folder Include="ViewControllers\" />
     <Folder Include="Utilities\" />
+    <Folder Include="Obsolete\" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Images.xcassets\LaunchImage.launchimage\iphone_portrait_4.png" />
