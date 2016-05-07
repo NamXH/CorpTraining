@@ -43,7 +43,7 @@ namespace CorpTraining.iOS
             catch (Exception e)
             {
                 var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                 PresentViewController(alert, true, null); 
             }
 
@@ -90,32 +90,20 @@ namespace CorpTraining.iOS
             catch (Exception e)
             {
                 var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Default, null));
+                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                 Container.PresentViewController(alert, true, null);
             }
             loadingOverlay.HideThenRemove();
 
-            if (screens != null)
+            if ((screens != null) && (screens.Count > 0))
             {
-                // Filter for TEST !!
-                var screens1 = screens.Where(x => x.Type == "video");
-                var screens2 = screens.Where(x => x.Type == "audio_text_image_textlist");
-                var screens3 = screens.Where(x => (x.Type == "audio_text") || (x.Type == "audio_question")).Take(8);
-                screens = screens1.Concat(screens2).Concat(screens3).ToList();
-                screens.Add(new Screen
-                    {
-                        Type = "recorder",
-                    });
-
-                var lessonScreen = LessonScreenViewControllerGenerator.Generate(screens, 0);
-                if (lessonScreen != null)
-                {
-                    Container.NavigationController.PushViewController(lessonScreen, true);
-                }
-                else
-                {
-                    // Display alert if needed !!
-                }
+                Container.NavigationController.PushViewController(new LessonScreenViewController(screens, 0), true);
+            }
+            else
+            {
+                var alert = UIAlertController.Create("Oops!", "There is nothing in this lesson.", UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                Container.PresentViewController(alert, true, null); 
             }
 
             tableView.DeselectRow(indexPath, true);
