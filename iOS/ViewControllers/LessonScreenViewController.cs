@@ -2,6 +2,9 @@
 using UIKit;
 using System.Collections.Generic;
 using CoreGraphics;
+using AVFoundation;
+using Foundation;
+using AVKit;
 
 namespace CorpTraining.iOS
 {
@@ -48,12 +51,10 @@ namespace CorpTraining.iOS
 
             View.BackgroundColor = UIColor.White;
 
-            var scrollView = new UIScrollView
-            {
-            };
+            var scrollView = new UIScrollView();
             View.AddSubview(scrollView);
             View.ConstrainLayout(() =>
-                scrollView.Frame.Top == View.Frame.Top  &&
+                scrollView.Frame.Top == View.Frame.Top &&
                 scrollView.Frame.Left == View.Frame.Left &&
                 scrollView.Frame.Right == View.Frame.Right &&
                 scrollView.Frame.Bottom == View.Frame.Bottom
@@ -76,6 +77,43 @@ namespace CorpTraining.iOS
                 stackView.Frame.Width == scrollView.Frame.Width - twiceHorizontalPad // required!
             );
             scrollView.ContentSize = stackView.Frame.Size;
+
+            var mediaPlayerUrl = !String.IsNullOrWhiteSpace(Screens[Index].VideoUrl) ? Screens[Index].VideoUrl : Screens[Index].AudioUrl;
+            if (!String.IsNullOrWhiteSpace(mediaPlayerUrl))
+            {
+                var player = new AVPlayer(NSUrl.FromString(mediaPlayerUrl));
+                var playerViewController = new AVPlayerViewController
+                {
+                    Player = player,      
+                };
+                AddChildViewController(playerViewController);
+                stackView.AddArrangedSubview(playerViewController.View);
+            }
+
+            if ((Screens[Index].Images != null))
+            {
+                foreach (var image in Screens[Index].Images)
+                {
+                    var imageView = new UIImageView(); 
+                    using (var url = new NSUrl(image.Url))
+                    {
+                        using (var data = NSData.FromUrl(url))
+                        {
+                            imageView.Image = UIImage.LoadFromData(data);
+                        }
+                    } 
+                    stackView.AddArrangedSubview(imageView);
+                }
+
+
+//                var imageTopPad = barHeight + playerViewController.View.Frame.Height + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
+//                View.ConstrainLayout(() =>
+//                    image.Frame.Top == View.Frame.Top + imageTopPad &&
+//                    image.Frame.Left == View.Frame.Left &&
+//                    image.Frame.Right == View.Frame.Right 
+//                    //                    image.Frame.Height == 400f
+//                );
+            }
 
             #region For test
             var firstNameTextField = new UITextField

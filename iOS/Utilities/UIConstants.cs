@@ -13,8 +13,8 @@ namespace CorpTraining.iOS
 
         public static readonly float StatusBarHeight = (float)UIApplication.SharedApplication.StatusBarFrame.Height; // Note: The View.Frame.Top starts from the edge of the device's screen.
         public const float SmallHorizontalPad = 15;
-        public const float HorizontalPad = 30;
-        public const float VerticalPad = 30;
+        public const float HorizontalPad = 20;
+        public const float VerticalPad = 20;
 
         public const float MaximumControlsWidth = 400;
         public const float ControlsHeight = 50;
