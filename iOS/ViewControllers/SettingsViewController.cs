@@ -39,7 +39,8 @@ namespace CorpTraining.iOS
                 }
                 finally
                 {
-                    UIApplication.SharedApplication.Windows[0].RootViewController = new LoginViewController();
+                    var loginViewController = new LoginViewController();
+                    UIApplication.SharedApplication.Windows[0].RootViewController = new UINavigationController(loginViewController);
                     signOutButton.Enabled = true;
                 }
             };

@@ -25,8 +25,10 @@ namespace CorpTraining.iOS
                 TranslatesAutoresizingMaskIntoConstraints = false,
             };
             View.AddSubview(stackView);
+            var barHeight = UIConstants.StatusBarHeight + (float)NavigationController.NavigationBar.Frame.Size.Height;
+            var topPad = barHeight + UIConstants.VerticalPad;
             View.ConstrainLayout(() =>
-                stackView.Frame.GetCenterY() == View.Frame.GetCenterY() &&
+                stackView.Frame.Top == View.Frame.Top + topPad &&
                 stackView.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
                 stackView.Frame.Right == View.Frame.Right - UIConstants.VerticalPad
             );
