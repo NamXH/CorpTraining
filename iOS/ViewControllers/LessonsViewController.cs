@@ -97,7 +97,7 @@ namespace CorpTraining.iOS
 
             if ((screens != null) && (screens.Count > 0))
             {
-                Container.NavigationController.PushViewController(new LessonScreenViewController(screens, 0), true);
+                Container.NavigationController.PushViewController(new LessonScreenViewController(Items[indexPath.Row].Id, screens, 0, new List<ScreenAnswer>()), true);
             }
             else
             {

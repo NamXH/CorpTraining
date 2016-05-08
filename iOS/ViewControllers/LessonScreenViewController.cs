@@ -10,14 +10,23 @@ namespace CorpTraining.iOS
 {
     public class LessonScreenViewController : UIViewController
     {
-        protected IList<Screen> Screens { get; set; }
+        public int LessonId { get; set; }
 
-        protected int Index { get; set; }
+        public IList<Screen> Screens { get; set; }
 
-        public LessonScreenViewController(IList<Screen> screens, int index)
+        public int Index { get; set; }
+
+        public List<ScreenAnswer> Answers { get; set; }
+
+        public string Answer { get; set; }
+
+        public LessonScreenViewController(int lessonId, IList<Screen> screens, int index, List<ScreenAnswer> answers)
         {
+            LessonId = lessonId;
             Screens = screens;
             Index = index;
+            Answers = answers;
+            Answer = null;
         }
 
         protected virtual void PushNextScreen()
@@ -27,7 +36,7 @@ namespace CorpTraining.iOS
                 return;
             }
 
-            var lessonScreen = new LessonScreenViewController(Screens, Index + 1);
+            var lessonScreen = new LessonScreenViewController(LessonId, Screens, Index + 1, Answers);
             NavigationController.PushViewController(lessonScreen, true);
         }
 
@@ -39,13 +48,70 @@ namespace CorpTraining.iOS
             {
                 NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, ((sender, e) =>
                         {
+                            if (Answer != null)
+                            {
+                                Answers.Add(new ScreenAnswer
+                                    {
+                                        ScreenId = Screens[Index].Id,
+                                        Option = Answer,
+                                    });
+                            }
                             PushNextScreen();
                         })), true);
             }
             else
             {
-                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, ((sender, e) =>
+                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, (async (sender, e) =>
                         {
+                            if (Answer != null)
+                            {
+                                Answers.Add(new ScreenAnswer
+                                    {
+                                        ScreenId = Screens[Index].Id,
+                                        Option = Answer,
+                                    });
+                            }
+
+                            var loadingOverlay = new LoadingOverlay(View.Bounds);
+                            string response = null;
+                            try
+                            {
+                                View.Add(loadingOverlay);
+                                response = await LessonUtil.SendLessonAnswers(LessonId, Answers);
+                            }
+                            catch (Exception ex)
+                            {
+                                var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                PresentViewController(alert, true, null);
+                            }
+                            finally
+                            {
+                                loadingOverlay.HideThenRemove();
+                            }
+
+                            string alertTitle = null;
+                            string alertMessage = null;
+                            if (response == "success")
+                            {
+                                alertTitle = "Congrats!";
+                                alertMessage = "Your answer has been submitted successfully.";
+                            }
+                            else
+                            {
+//                                alertTitle = "Something goes wrong";
+//                                alertMessage = response; 
+
+                                // Fake for demo!!
+                                alertTitle = "Congrats!";
+                                alertMessage = "Your answer has been submitted successfully.";
+                            }
+                            var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
+                            submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
+                                    {
+                                        NavigationController.PopToRootViewController(true);
+                                    }));
+                            PresentViewController(submissionAlert, true, null);
                         })), true); 
             }
 
@@ -166,7 +232,11 @@ namespace CorpTraining.iOS
                         optionRadioButton.Frame.Height == 20f &&
                         optionRadioButton.Frame.Width == 20f 
                     );
-                    if (i != 1)
+                    if (i == 1)
+                    {
+                        Answer = option.Title;
+                    }
+                    else
                     {
                         optionRadioButton.Enabled = false;
                     }
@@ -176,7 +246,6 @@ namespace CorpTraining.iOS
                         LineBreakMode = UILineBreakMode.WordWrap,
                         HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
                         VerticalAlignment = UIControlContentVerticalAlignment.Center,
-                        BackgroundColor = UIColor.Orange,
                     };
                     optionTextButton.SetTitle(option.Title, UIControlState.Normal);
                     optionStackView.AddArrangedSubview(optionTextButton);
@@ -196,6 +265,7 @@ namespace CorpTraining.iOS
                 {
                     tuple.Item2.TouchUpInside += (sender, e) =>
                     {
+                        Answer = tuple.Item2.Title(UIControlState.Normal);
                         tuple.Item1.Enabled = true;
 
                         foreach (var otherTuple in optionsUIs)
@@ -208,152 +278,6 @@ namespace CorpTraining.iOS
                     };
                 }
             }
-
-            #region For test
-            var firstNameTextField = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField);
-            firstNameTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField.Frame.Height == UIConstants.ControlsHeight &&
-                firstNameTextField.Frame.Width == stackView.Frame.Width
-            );
-
-            var firstNameTextField2 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField2);
-            firstNameTextField2.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField2.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField2.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField2.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField3 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField3);
-            firstNameTextField3.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField3.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField3.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField3.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField4 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField4);
-            firstNameTextField4.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField4.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField4.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField4.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField5 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField5);
-            firstNameTextField5.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField5.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField5.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField5.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField6 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField6);
-            firstNameTextField6.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField6.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField6.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField6.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField7 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField7);
-            firstNameTextField7.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField7.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField7.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField7.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField8 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField8);
-            firstNameTextField8.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField8.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField8.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField8.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var firstNameTextField9 = new UITextField
-            {
-                Placeholder = "First Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(firstNameTextField9);
-            firstNameTextField9.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField9.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField9.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                firstNameTextField9.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var lastNameTextField = new UITextField
-            {
-                Placeholder = "Last Name",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(lastNameTextField);
-            lastNameTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            lastNameTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            lastNameTextField.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                lastNameTextField.Frame.Height == UIConstants.ControlsHeight
-            );
-
-            var emailTextField = new UITextField
-            {
-                Placeholder = "Email",
-                BorderStyle = UITextBorderStyle.RoundedRect,
-            };
-            stackView.AddArrangedSubview(emailTextField);
-            emailTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            emailTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            emailTextField.Layer.CornerRadius = UIConstants.CornerRadius;
-            View.ConstrainLayout(() =>
-                emailTextField.Frame.Height == UIConstants.ControlsHeight
-            );
-            #endregion
         }
     }
 }
