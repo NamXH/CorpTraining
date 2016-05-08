@@ -20,6 +20,8 @@ namespace CorpTraining.iOS
 
         public string Answer { get; set; }
 
+        private AVPlayer MediaPlayer { get; set; }
+
         public LessonScreenViewController(int lessonId, IList<Screen> screens, int index, List<ScreenAnswer> answers)
         {
             LessonId = lessonId;
@@ -40,10 +42,21 @@ namespace CorpTraining.iOS
             NavigationController.PushViewController(lessonScreen, true);
         }
 
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+
+            if (MediaPlayer != null)
+            {
+                MediaPlayer.Pause();
+            }
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
+            #region Navigation Bar Buttons
             if (Index < Screens.Count - 1)
             {
                 NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, ((sender, e) =>
@@ -56,6 +69,7 @@ namespace CorpTraining.iOS
                                         Option = Answer,
                                     });
                             }
+
                             PushNextScreen();
                         })), true);
             }
@@ -114,6 +128,7 @@ namespace CorpTraining.iOS
                             PresentViewController(submissionAlert, true, null);
                         })), true); 
             }
+            #endregion
 
             View.BackgroundColor = UIColor.White;
 
@@ -147,10 +162,10 @@ namespace CorpTraining.iOS
             var mediaPlayerUrl = !String.IsNullOrWhiteSpace(Screens[Index].VideoUrl) ? Screens[Index].VideoUrl : Screens[Index].AudioUrl;
             if (!String.IsNullOrWhiteSpace(mediaPlayerUrl))
             {
-                var player = new AVPlayer(NSUrl.FromString(mediaPlayerUrl));
+                MediaPlayer = new AVPlayer(NSUrl.FromString(mediaPlayerUrl));
                 var playerViewController = new AVPlayerViewController
                 {
-                    Player = player,      
+                    Player = MediaPlayer,      
                 };
                 AddChildViewController(playerViewController);
                 stackView.AddArrangedSubview(playerViewController.View);
