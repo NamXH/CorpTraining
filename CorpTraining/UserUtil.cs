@@ -8,12 +8,8 @@ using System.Net;
 
 namespace CorpTraining
 {
-	public class UserUtil
+	public static class UserUtil
 	{
-
-		public UserUtil ()
-		{
-		}
 
 		private static async Task<HttpResponseMessage> MakeServerPostRequest(string url, StringContent content){
 			HttpClient client = new HttpClient ();
