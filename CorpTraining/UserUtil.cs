@@ -23,7 +23,7 @@ namespace CorpTraining
 
 			HttpResponseMessage response = null;
 			try{
-				
+
 				response = await client.PostAsync (uri, content);
 
 			}catch (WebException e){
@@ -44,7 +44,7 @@ namespace CorpTraining
 
 			HttpResponseMessage response = null;
 			try{
-				
+
 				response = await client.GetAsync (uri);
 
 			}catch (WebException e){
@@ -60,9 +60,9 @@ namespace CorpTraining
 
 
 		/// <summary>Authenticate a user.
-		/// <para>Returns the token when the authentication is succesfull and null when it fails</para>
+		///<para>Returns Tuple<true, token> when succesfull and Tuple<false, null> when not </para>
 		/// </summary>
-		public static async Task<String> AuthenticateUserAsync (string email, string password)
+		public static async Task<Tuple<bool, string>> AuthenticateUserAsync (string email, string password)
 		{
 
 			User user = new User{ Email = email, Password = password };
@@ -79,16 +79,16 @@ namespace CorpTraining
 				UserDB userDB = new UserDB();
 
 				userDB.InsertToken (token);
-				return token;
+				return new Tuple<bool, string> (true, token);
 			}
-			
-			return null;
+
+			return new Tuple<bool, string> (false, null);
 		}
 
 		/// <summary>Get a user Profile by token.
-		/// <para></para>
+		/// <para>Returns Tuple<true, User> when succesfull and Tuple<false, null> when not </para>
 		/// </summary>
-		public static async Task<User> GetUserProfileByTokenAsync (string token)
+		public static async Task<Tuple<bool, User>> GetUserProfileByTokenAsync (string token)
 		{
 			HttpResponseMessage response = null;
 			string url = Globals.PROFILE_URL + token;
@@ -97,16 +97,17 @@ namespace CorpTraining
 
 			var content = await response.Content.ReadAsStringAsync ();
 
-			if (response.IsSuccessStatusCode)	
-				return JsonConvert.DeserializeObject<User> (content);
-			
-			return null;
+			User user = JsonConvert.DeserializeObject<User> (content);
+			if(user.Email != null && user.FirstName != null && user.Id != null && user.LastName != null && user.Phone != null)
+				return new Tuple<bool, User> (true, user);
+
+			return new Tuple<bool, User> (false, null);
 		}
 
 		/// <summary>Register a new user
-		/// <para>It returns the result that comes from the server: Success, fail or duplicate (duplicated email)</para>
+		/// <para>It returns the result that comes from the server in a tuple with a bool saying if it was succesfull or not</para>
 		/// </summary>
-		public static async Task<String> RegisterUserAsync (User user)
+		public static async Task<Tuple<bool, string>> RegisterUserAsync (User user)
 		{
 
 			var jsonUser = JsonConvert.SerializeObject (user);
@@ -116,26 +117,26 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest (Globals.REGISTER_URL, content);
 
-			return JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+			string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+			if(response.IsSuccessStatusCode)
+			{
+				return new Tuple<bool, string> (true, result);
 
+			}else{
+				return new Tuple<bool, string> (false, result);
+			}
 		}
+
+
 
 		/// <summary>Logout a user
 		/// <para></para>
 		/// </summary>
-		public static async Task<String> LogOutUserByTokenAsync (string token)
+		public static void LogOutUserByTokenAsync (string token)
 		{
 
-			HttpResponseMessage response = null;
-			string url = Globals.LOGOUT_URL + token;
-
-			response = await MakeServerGetRequest (url);
-
 			UserDB userDB = new UserDB();
-
 			userDB.DeleteToken ();
-
-			return JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
 
 		}
 
