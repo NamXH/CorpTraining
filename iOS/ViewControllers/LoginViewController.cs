@@ -58,7 +58,7 @@ namespace CorpTraining.iOS
             loginButton.Layer.CornerRadius = UIConstants.CornerRadius;
             loginButton.TouchUpInside += async (sender, e) =>
             {
-                Tuple<string, string> response; 
+                Tuple<string, string> response = null; 
                 try
                 {
                     loginButton.Enabled = false;
