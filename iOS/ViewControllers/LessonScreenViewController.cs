@@ -178,14 +178,22 @@ namespace CorpTraining.iOS
             {
                 foreach (var image in Screens[Index].Images)
                 {
-                    var imageView = new UIImageView(); 
-                    using (var url = new NSUrl(image.Url))
+                    var imageView = new UIImageView();
+                    try
                     {
-                        using (var data = NSData.FromUrl(url))
+                        using (var url = new NSUrl(image.Url))
                         {
-                            imageView.Image = UIImage.LoadFromData(data);
+                            using (var data = NSData.FromUrl(url))
+                            {
+                                imageView.Image = UIImage.LoadFromData(data);
+                            }
                         }
-                    } 
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
                     stackView.AddArrangedSubview(imageView);
                     View.ConstrainLayout(() =>
                         imageView.Frame.Width == stackView.Frame.Width
