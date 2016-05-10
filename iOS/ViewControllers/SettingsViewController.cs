@@ -28,21 +28,12 @@ namespace CorpTraining.iOS
             signOutButton.Layer.CornerRadius = UIConstants.CornerRadius;
             signOutButton.TouchUpInside += async (sender, e) =>
             {
-                try
-                {
-                    signOutButton.Enabled = false;
-                    await UserUtil.LogOutUserByTokenAsync(UserUtil.GetCurrentToken());
-                }
-                catch (Exception ex)
-                {
-                    // Ignore this for now !!
-                }
-                finally
-                {
-                    var loginViewController = new LoginViewController();
-                    UIApplication.SharedApplication.Windows[0].RootViewController = new UINavigationController(loginViewController);
-                    signOutButton.Enabled = true;
-                }
+                signOutButton.Enabled = false;
+                UserUtil.LogOutUserByTokenAsync(UserUtil.GetCurrentToken());
+
+                var loginViewController = new LoginViewController();
+                UIApplication.SharedApplication.Windows[0].RootViewController = new UINavigationController(loginViewController);
+                signOutButton.Enabled = true;
             };
 
             View.ConstrainLayout(() =>

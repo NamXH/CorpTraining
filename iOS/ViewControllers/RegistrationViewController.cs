@@ -144,17 +144,17 @@ namespace CorpTraining.iOS
                         Phone = phoneTextField.Text, // Not a required field
                     };
 
-                    string registrationResult = null;
+                    Tuple<bool, string> registrationResult = null;
                     try
                     {
                         registrationResult = await UserUtil.RegisterUserAsync(user);
-                        if (registrationResult == "success")
+                        if (registrationResult.Item1)
                         {
                             UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
                         }
                         else
                         {
-                            var alert = UIAlertController.Create("Something goes wrong", registrationResult, UIAlertControllerStyle.Alert);
+                            var alert = UIAlertController.Create("Something goes wrong", registrationResult.Item2, UIAlertControllerStyle.Alert);
                             alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                             PresentViewController(alert, true, null); 
                         }
