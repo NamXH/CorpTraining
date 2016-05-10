@@ -26,7 +26,7 @@ namespace CorpTraining.iOS
             };
             View.AddSubview(stackView);
             var barHeight = UIConstants.StatusBarHeight + (float)NavigationController.NavigationBar.Frame.Size.Height;
-            var topPad = barHeight + UIConstants.VerticalPad;
+            var topPad = barHeight + UIConstants.VerticalPad * 2;
             View.ConstrainLayout(() =>
                 stackView.Frame.Top == View.Frame.Top + topPad &&
                 stackView.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
@@ -175,6 +175,11 @@ namespace CorpTraining.iOS
                 }
                 submitButton.Enabled = true;
             };
+
+            View.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        View.EndEditing(true);
+                    }));
         }
 
         private Tuple<bool, string> ValidateInfo(string firstName, string lastName, string email, string phone, string password, string confirmPassword)

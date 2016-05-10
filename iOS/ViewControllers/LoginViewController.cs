@@ -140,6 +140,11 @@ namespace CorpTraining.iOS
                 signUpButton.Frame.Height == UIConstants.ControlsHeight
             );
             #endregion
+
+            View.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        View.EndEditing(true);
+                    }));
         }
     }
 }
