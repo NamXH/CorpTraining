@@ -58,11 +58,11 @@ namespace CorpTraining.iOS
             loginButton.Layer.CornerRadius = UIConstants.CornerRadius;
             loginButton.TouchUpInside += async (sender, e) =>
             {
-                string token = null;
+                Tuple<string, string> response; 
                 try
                 {
                     loginButton.Enabled = false;
-                    token = await UserUtil.AuthenticateUserAsync(usernameTextField.Text, passwordTextField.Text);
+                    response = await UserUtil.AuthenticateUserAsync(usernameTextField.Text, passwordTextField.Text);
                 }
                 catch (Exception ex)
                 {
@@ -72,13 +72,13 @@ namespace CorpTraining.iOS
                     loginButton.Enabled = true;
                 }
 
-                if (!String.IsNullOrEmpty(token))
+                if (!String.IsNullOrEmpty(response.Item2))
                 {
                     UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
                 }
                 else
                 {
-                    var alert = UIAlertController.Create("Error", "Your email and password combination is incorrect.", UIAlertControllerStyle.Alert);
+                    var alert = UIAlertController.Create("Error", response.Item1, UIAlertControllerStyle.Alert);
                     alert.AddAction(UIAlertAction.Create("Retry", UIAlertActionStyle.Default, null));
                     PresentViewController(alert, true, null);
                 }
