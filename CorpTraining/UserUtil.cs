@@ -56,9 +56,9 @@ namespace CorpTraining
 
 
 		/// <summary>Authenticate a user.
-		///<para>Returns Tuple<true, token> when succesfull and Tuple<false, null> when not </para>
+		///<para>Returns Tuple<result, token></para>
 		/// </summary>
-		public static async Task<Tuple<bool, string>> AuthenticateUserAsync (string email, string password)
+		public static async Task<Tuple<string, string>> AuthenticateUserAsync (string email, string password)
 		{
 
 			User user = new User{ Email = email, Password = password };
@@ -70,15 +70,17 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest (Globals.LOGIN_URL, content);
 
+			string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+
 			if (response.IsSuccessStatusCode){
 				string token = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["token"];
 				UserDB userDB = new UserDB();
 
 				userDB.InsertToken (token);
-				return new Tuple<bool, string> (true, token);
+				return new Tuple<string, string> (result, token);
 			}
 
-			return new Tuple<bool, string> (false, null);
+			return new Tuple<string, string> (result, null);
 		}
 
 		/// <summary>Get a user Profile by token.
