@@ -65,7 +65,7 @@ namespace CorpTraining.iOS
                             {
                                 Answers.Add(new ScreenAnswer
                                     {
-                                        ScreenId = Screens[Index].Id,
+                                        QuestionId = Screens[Index].Id,
                                         Option = Answer,
                                     });
                             }
@@ -81,7 +81,7 @@ namespace CorpTraining.iOS
                             {
                                 Answers.Add(new ScreenAnswer
                                     {
-                                        ScreenId = Screens[Index].Id,
+										QuestionId = Screens[Index].Id,
                                         Option = Answer,
                                     });
                             }
