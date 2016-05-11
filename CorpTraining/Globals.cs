@@ -5,7 +5,7 @@ namespace CorpTraining
 	public static class Globals
 	{
 		//Base
-		public static string BASE_URL="http://mgl.usask.ca:8080/ct/api/";
+		public static string BASE_URL="http://mgl.usask.ca:8080/training/api/";
 
 
 		//User

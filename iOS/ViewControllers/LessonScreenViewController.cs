@@ -162,7 +162,15 @@ namespace CorpTraining.iOS
             var mediaPlayerUrl = !String.IsNullOrWhiteSpace(Screens[Index].VideoUrl) ? Screens[Index].VideoUrl : Screens[Index].AudioUrl;
             if (!String.IsNullOrWhiteSpace(mediaPlayerUrl))
             {
-                MediaPlayer = new AVPlayer(NSUrl.FromString(mediaPlayerUrl));
+                try
+                {
+                    MediaPlayer = new AVPlayer(NSUrl.FromString(mediaPlayerUrl));
+                }
+                catch (Exception ex)
+                {
+                    // Display error or skip this part !!
+                    throw ex;
+                }
                 var playerViewController = new AVPlayerViewController
                 {
                     Player = MediaPlayer,      
@@ -191,7 +199,8 @@ namespace CorpTraining.iOS
                     }
                     catch (Exception ex)
                     {
-                        continue;
+                        // Display error!!
+                        throw ex;
                     }
 
                     stackView.AddArrangedSubview(imageView);
