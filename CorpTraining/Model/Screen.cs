@@ -31,6 +31,8 @@ namespace CorpTraining
 		[JsonProperty(PropertyName = "textList")]
 		public IList<Text> Texts { get; set;} 
 
+		public string Media { get; set;}
+
 		public Screen ()
 		{
 		}

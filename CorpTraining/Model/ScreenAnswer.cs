@@ -5,8 +5,8 @@ namespace CorpTraining
 {
 	public class ScreenAnswer
 	{
-		[JsonProperty(PropertyName = "screenId")]
-		public int ScreenId { get; set;}
+		[JsonProperty(PropertyName = "questionId")]
+		public int QuestionId { get; set;}
 
 		[JsonProperty(PropertyName = "option")]
 		public string Option { get; set;}

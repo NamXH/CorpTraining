@@ -72,14 +72,15 @@ namespace CorpTraining
 
 			string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
 
+			UserDB userDB = new UserDB();
+
 			if (response.IsSuccessStatusCode){
 				string token = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["token"];
-				UserDB userDB = new UserDB();
-
 				userDB.InsertToken (token);
 				return new Tuple<string, string> (result, token);
 			}
 
+			userDB.DeleteToken ();
 			return new Tuple<string, string> (result, null);
 		}
 
@@ -88,6 +89,9 @@ namespace CorpTraining
 		/// </summary>
 		public static async Task<Tuple<bool, User>> GetUserProfileByTokenAsync (string token)
 		{
+			if( token == null)
+				return new Tuple<bool, User> (false, null);
+			
 			HttpResponseMessage response = null;
 			string url = Globals.PROFILE_URL + token;
 
