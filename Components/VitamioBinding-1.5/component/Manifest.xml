@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="VitamioBinding">
+  <name>Vitamio Binding Library</name>
+  <publisher>Pranart Dechpokket</publisher>
+  <publisher-url>https://www.vitamio.org/en/docs/Basic/2013/0509/4.html</publisher-url>
+  <version>1.5</version>
+  <summary>VDO Player for Streaming or Live Streaming</summary>
+  <screenshots>
+    <img src="screenshots/familiar.png" title="familiar" />
+    <img src="screenshots/powerful.png" title="powerful" />
+    <img src="screenshots/ubiquitous.png" title="ubiquitous" />
+  </screenshots>
+  <samples>
+    <sample id="Vitamio.Droid.Sample">
+      <name>Android Sample</name>
+      <summary>Android Sample</summary>
+    </sample>
+    <sample id="Vitamio.iOS.Sample">
+      <name>iOS Sample</name>
+      <summary>iOS Sample</summary>
+    </sample>
+  </samples>
+</component>

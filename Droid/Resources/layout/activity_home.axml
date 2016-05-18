@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dl_menu">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fl_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/title_red_bg">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lessons"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/tv_title"
+                    android:padding="5dp" />
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/img_menu"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/ib_menu" />
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/icon_exit"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/ib_exit" />
+            </RelativeLayout>
+            <CorpTraining.Droid.NoScrollViewPager
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/vp_content" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rg_functions"
+                android:orientation="horizontal"
+                android:background="@mipmap/bottom_tab_bg">
+                <RadioButton
+                    style="@style/RBstyle"
+                    android:text="Lessons"
+                    android:drawableTop="@mipmap/lessons"
+                    android:id="@+id/rb_lessons"
+                    android:checked="true"
+                    android:layout_gravity="center_vertical" />
+                <RadioButton
+                    style="@style/RBstyle"
+                    android:text="Account"
+                    android:drawableTop="@mipmap/personalaccount"
+                    android:id="@+id/rb_account"
+                    android:layout_gravity="center_vertical" />
+                <RadioButton
+                    style="@style/RBstyle"
+                    android:text="Settings"
+                    android:drawableTop="@mipmap/settings"
+                    android:id="@+id/rb_settings"
+                    android:layout_gravity="center_vertical" />
+            </RadioGroup>
+        </LinearLayout>
+    </FrameLayout>
+<!--left navigation drawer-->
+    <ListView
+        android:id="@+id/left_menu"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="2dp"
+        android:background="@android:color/background_dark" />
+</android.support.v4.widget.DrawerLayout>

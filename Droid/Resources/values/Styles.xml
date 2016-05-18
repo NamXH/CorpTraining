@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<!--title style-->
+	<style name="RBstyle">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:button">@null</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:layout_gravity">center</item>
+		<item name="android:padding">5dp</item>
+		<item name="android:drawablePadding">5dp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@drawable/btn_bottomtext_selector</item>
+	</style>
+	<style name="placeholder">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">1dp</item>
+		<item name="android:layout_weight">1</item>
+	</style>
+	<style name="subtitle">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">20dp</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textColor">@android:color/holo_blue_bright</item>
+		<item name="android:shadowColor">@color/trans_white2</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">6</item>
+		<item name="android:shadowRadius">1</item>
+		<item name="android:gravity">center_horizontal</item>
+	</style>
+</resources>

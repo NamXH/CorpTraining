@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<color name="colorPrimary">#3F51B5</color>
+	<color name="colorPrimaryDark">#303F9F</color>
+	<color name="colorAccent">#FF4081</color>
+	<color name="green">#5CB292</color>
+	<color name="transgreen">#885CB292</color>
+	<color name="transwhite">#88FFFFFF</color>
+	<color name="trans_white">#88FFFFFF</color>
+	<color name="trans_white2">#33FFFFFF</color>
+	<color name="blue">#2E9BF6</color>
+	<color name="sc_transparent_background">#00111111</color>
+	<color name="audio_bg">#1C2635</color>
+</resources>

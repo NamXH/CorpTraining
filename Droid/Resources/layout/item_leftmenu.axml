@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_icon"
+        android:background="@mipmap/mailback" />
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Contact Us"
+        android:textColor="@drawable/btn_textmenu_selector"
+        android:textSize="14sp"
+        android:drawableLeft="@drawable/btn_drawableleft_selector"
+        android:drawablePadding="20dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/tv_title"
+        android:enabled="false"
+        android:paddingLeft="15dp" />
+</LinearLayout>
