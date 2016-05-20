@@ -272,7 +272,7 @@ namespace CorpTraining
 		/// <summary>Sends the answers for a specific lesson.
 		/// <para>It will return success if it was succesfull, and null if it wasn't</para>
 		/// </summary>
-		public static async Task<String> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
+		public static async Task<bool> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
 		{//TODO handle the answer response from the server when its done
 
 			var jsonAnswers = JsonConvert.SerializeObject (screenAnswers);
@@ -282,10 +282,10 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest(Globals.LESSONS_URL+lessonId+"/"+Globals.ANSWER_URL, content);
 
-			if (response.IsSuccessStatusCode)
-				return JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
-
-			return null;
+			if (response.IsSuccessStatusCode /* && JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"].Equals ("sucess")*/)
+				return true;
+			else
+				return false;
 		}
 
 
