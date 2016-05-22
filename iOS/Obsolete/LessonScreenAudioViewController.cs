@@ -30,7 +30,7 @@ namespace CorpTraining.iOS
             View.AddSubview(playerViewController.View);
 
             #region Layout
-            var barHeight = UIConstants.StatusBarHeight + (float)NavigationController.NavigationBar.Frame.Size.Height;
+            var barHeight = Constants.StatusBarHeight + (float)NavigationController.NavigationBar.Frame.Size.Height;
 
             View.ConstrainLayout(() =>
                 playerViewController.View.Frame.Top == View.Frame.Top + barHeight &&
@@ -51,14 +51,14 @@ namespace CorpTraining.iOS
             View.AddSubview(textLabel);
 
             View.ConstrainLayout(() =>
-                textLabel.Frame.Top == playerViewController.View.Frame.Bottom + UIConstants.BigGap &&
+                textLabel.Frame.Top == playerViewController.View.Frame.Bottom + Constants.BigGap &&
                 textLabel.Frame.GetCenterX() == View.Frame.GetCenterX() &&
-                textLabel.Frame.Left >= View.Frame.Left + UIConstants.SmallHorizontalPad &&
-                textLabel.Frame.Right >= View.Frame.Right - UIConstants.SmallHorizontalPad
+                textLabel.Frame.Left >= View.Frame.Left + Constants.SmallHorizontalPad &&
+                textLabel.Frame.Right >= View.Frame.Right - Constants.SmallHorizontalPad
             );
 
             // Calculate textLabel's height
-            var textLabelWidth = View.Frame.Width - UIConstants.SmallHorizontalPad * 2;
+            var textLabelWidth = View.Frame.Width - Constants.SmallHorizontalPad * 2;
             // Correct but complicated
             //                var labelSize = neww NSString(text).GetBoundingRect(
             //                                    new CGSize(textLabelWidth, float.MaxValue), 
@@ -81,7 +81,7 @@ namespace CorpTraining.iOS
                     }
                 }
 
-                var imageTopPad = barHeight + playerViewController.View.Frame.Height + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
+                var imageTopPad = barHeight + playerViewController.View.Frame.Height + Constants.BigGap + textLabelHeight + Constants.BigGap;
                 View.ConstrainLayout(() =>
                     image.Frame.Top == View.Frame.Top + imageTopPad &&
                     image.Frame.Left == View.Frame.Left &&
@@ -95,7 +95,7 @@ namespace CorpTraining.iOS
             {
                 var optionsUIs = new List<Tuple<UIButton, UIButton>>();
 
-                var optionsTopPad = barHeight + playerViewController.View.Frame.Height + UIConstants.BigGap + textLabelHeight + UIConstants.BigGap;
+                var optionsTopPad = barHeight + playerViewController.View.Frame.Height + Constants.BigGap + textLabelHeight + Constants.BigGap;
                    
                 var i = 1;
                 foreach (var option in Screens[Index].Options)
@@ -115,16 +115,16 @@ namespace CorpTraining.iOS
 
                     optionsUIs.Add(new Tuple<UIButton, UIButton>(optionRadioButton, optionTextButton));
 
-                    var topPad = optionsTopPad + (UIConstants.ControlsHeight + UIConstants.SmallGap) * (i - 1);
+                    var topPad = optionsTopPad + (Constants.ControlsHeight + Constants.SmallGap) * (i - 1);
                     View.ConstrainLayout(() =>
                         optionRadioButton.Frame.Top == View.Frame.Top + topPad &&
-                        optionRadioButton.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
+                        optionRadioButton.Frame.Left == View.Frame.Left + Constants.HorizontalPad &&
                         optionRadioButton.Frame.Height == 20f &&
                         optionRadioButton.Frame.Width == 20f &&
 
                         optionTextButton.Frame.GetCenterY() == optionRadioButton.Frame.GetCenterY() &&
                         optionTextButton.Frame.Left == optionRadioButton.Frame.Left + 30f &&
-                        optionTextButton.Frame.Height == UIConstants.ControlsHeight
+                        optionTextButton.Frame.Height == Constants.ControlsHeight
                     );
 
                     i++;

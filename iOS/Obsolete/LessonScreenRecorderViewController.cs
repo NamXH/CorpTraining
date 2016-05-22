@@ -45,14 +45,14 @@ namespace CorpTraining.iOS
             var recordingStatusLabel = new UILabel
             {
                 Text = "",
-                TextColor = UIConstants.MainColor,
+                TextColor = Constants.MainColor,
             };
             View.AddSubview(recordingStatusLabel);
 
             var lengthOfRecordingLabel = new UILabel
             {
                 Text = "",
-                TextColor = UIConstants.MainColor,
+                TextColor = Constants.MainColor,
             };
             View.AddSubview(lengthOfRecordingLabel);
 
@@ -61,21 +61,21 @@ namespace CorpTraining.iOS
             };
             View.AddSubview(startRecordingButton);
             startRecordingButton.SetTitle("Start", UIControlState.Normal);
-            startRecordingButton.SetTitleColor(UIConstants.MainColor, UIControlState.Normal);
+            startRecordingButton.SetTitleColor(Constants.MainColor, UIControlState.Normal);
 
             var stopRecordingButton = new UIButton
             {
             };
             View.AddSubview(stopRecordingButton);
             stopRecordingButton.SetTitle("Stop", UIControlState.Normal);
-            stopRecordingButton.SetTitleColor(UIConstants.MainColor, UIControlState.Normal);
+            stopRecordingButton.SetTitleColor(Constants.MainColor, UIControlState.Normal);
 
             var playRecordedSoundButton = new UIButton
             {
             };
             View.AddSubview(playRecordedSoundButton);
             playRecordedSoundButton.SetTitle("Play", UIControlState.Normal);
-            playRecordedSoundButton.SetTitleColor(UIConstants.MainColor, UIControlState.Normal);
+            playRecordedSoundButton.SetTitleColor(Constants.MainColor, UIControlState.Normal);
 
             // start recording wireup
             startRecordingButton.TouchUpInside += (sender, e) =>
@@ -154,27 +154,27 @@ namespace CorpTraining.iOS
 
                 startRecordingButton.Frame.Top == image.Frame.Bottom + 30f &&
                 startRecordingButton.Frame.Left == View.Frame.Left + 30f &&
-                startRecordingButton.Frame.Height == UIConstants.ControlsHeight &&
+                startRecordingButton.Frame.Height == Constants.ControlsHeight &&
                 startRecordingButton.Frame.Width == 100f &&
 
                 recordingStatusLabel.Frame.Top == image.Frame.Bottom + 30f &&
                 recordingStatusLabel.Frame.Left == startRecordingButton.Frame.Right + 30f &&
-                recordingStatusLabel.Frame.Height == UIConstants.ControlsHeight &&
+                recordingStatusLabel.Frame.Height == Constants.ControlsHeight &&
                 recordingStatusLabel.Frame.Width == 100f &&
 
                 stopRecordingButton.Frame.Top == startRecordingButton.Frame.Bottom + 30f &&
                 stopRecordingButton.Frame.Left == View.Frame.Left + 30f &&
-                stopRecordingButton.Frame.Height == UIConstants.ControlsHeight &&
+                stopRecordingButton.Frame.Height == Constants.ControlsHeight &&
                 stopRecordingButton.Frame.Width == 100f &&
 
                 lengthOfRecordingLabel.Frame.Top == startRecordingButton.Frame.Bottom + 30f &&
                 lengthOfRecordingLabel.Frame.Left == stopRecordingButton.Frame.Right + 30f &&
-                lengthOfRecordingLabel.Frame.Height == UIConstants.ControlsHeight &&
+                lengthOfRecordingLabel.Frame.Height == Constants.ControlsHeight &&
                 lengthOfRecordingLabel.Frame.Width == 100f &&
 
                 playRecordedSoundButton.Frame.Top == stopRecordingButton.Frame.Bottom + 30f &&
                 playRecordedSoundButton.Frame.Left == View.Frame.Left + 30f &&
-                playRecordedSoundButton.Frame.Height == UIConstants.ControlsHeight &&
+                playRecordedSoundButton.Frame.Height == Constants.ControlsHeight &&
                 playRecordedSoundButton.Frame.Width == 100f 
             );
             #endregion

@@ -18,7 +18,7 @@ namespace CorpTraining.iOS
 
         public List<ScreenAnswer> Answers { get; set; }
 
-        public string Answer { get; set; }
+        public int SelectedOptionId { get; set; }
 
         private AVPlayer MediaPlayer { get; set; }
 
@@ -28,7 +28,7 @@ namespace CorpTraining.iOS
             Screens = screens;
             Index = index;
             Answers = answers;
-            Answer = null;
+            SelectedOptionId = Constants.DefaultOptionId;
         }
 
         protected virtual void PushNextScreen()
@@ -62,12 +62,13 @@ namespace CorpTraining.iOS
             {
                 NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, ((sender, e) =>
                         {
-                            if (Answer != null)
+                            if (SelectedOptionId != Constants.DefaultOptionId)
                             {
                                 Answers.Add(new ScreenAnswer
                                     {
-//                                        ScreenId = Screens[Index].Id,
-//                                        Option = Answer,
+                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
+                                        ScreenId = Screens[Index].Id,
+                                        OptionId = SelectedOptionId,
                                     });
                             }
 
@@ -78,11 +79,13 @@ namespace CorpTraining.iOS
             {
                 NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, (async (sender, e) =>
                         {
-                            if (Answer != null)
+                            if (SelectedOptionId != Constants.DefaultOptionId)
                             {
                                 Answers.Add(new ScreenAnswer
                                     {
-//                                        ScreenId = Screens[Index].Id,
+                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
+                                        ScreenId = Screens[Index].Id,
+                                        OptionId = SelectedOptionId,
                                     });
                             }
 
@@ -113,12 +116,8 @@ namespace CorpTraining.iOS
                             }
                             else
                             {
-//                                alertTitle = "Something goes wrong";
-//                                alertMessage = response; 
-
-                                // Fake for demo!!
-                                alertTitle = "Congrats!";
-                                alertMessage = "Your answer has been submitted successfully.";
+                                alertTitle = "Something goes wrong";
+                                alertMessage = ""; // Need message from server!!
                             }
                             var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
                             submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
@@ -146,15 +145,15 @@ namespace CorpTraining.iOS
                 Axis = UILayoutConstraintAxis.Vertical,
                 Alignment = UIStackViewAlignment.Leading,
                 Distribution = UIStackViewDistribution.EqualSpacing,
-                Spacing = UIConstants.BigGap,
+                Spacing = Constants.BigGap,
             };
             scrollView.AddSubview(stackView);
 
-            var twiceHorizontalPad = UIConstants.HorizontalPad * 2;
+            var twiceHorizontalPad = Constants.HorizontalPad * 2;
             View.ConstrainLayout(() =>
-                stackView.Frame.Top == scrollView.Frame.Top + UIConstants.VerticalPad &&
-                stackView.Frame.Bottom == scrollView.Frame.Bottom - UIConstants.VerticalPad &&
-                stackView.Frame.Left == scrollView.Frame.Left + UIConstants.HorizontalPad &&
+                stackView.Frame.Top == scrollView.Frame.Top + Constants.VerticalPad &&
+                stackView.Frame.Bottom == scrollView.Frame.Bottom - Constants.VerticalPad &&
+                stackView.Frame.Left == scrollView.Frame.Left + Constants.HorizontalPad &&
                 stackView.Frame.Width == scrollView.Frame.Width - twiceHorizontalPad // required!
             );
             scrollView.ContentSize = stackView.Frame.Size;
@@ -242,7 +241,7 @@ namespace CorpTraining.iOS
                 );
 
                 // Options
-                var optionsUIs = new List<Tuple<UIButton, UIButton>>();
+                var optionsUIs = new List<Tuple<UIButton, UIButton, Option>>();
 
                 var i = 1;
                 foreach (var option in Screens[Index].Options)
@@ -252,7 +251,7 @@ namespace CorpTraining.iOS
                         Axis = UILayoutConstraintAxis.Horizontal,
                         Alignment = UIStackViewAlignment.Center,
                         Distribution = UIStackViewDistribution.EqualSpacing,
-                        Spacing = UIConstants.SmallGap,
+                        Spacing = Constants.SmallGap,
                     };
                     stackView.AddArrangedSubview(optionStackView);
 
@@ -260,18 +259,11 @@ namespace CorpTraining.iOS
                     optionStackView.AddArrangedSubview(optionRadioButton);
                     optionRadioButton.SetImage(UIImage.FromBundle("radio_enable.png"), UIControlState.Normal);
                     optionRadioButton.SetImage(UIImage.FromBundle("radio_disable.png"), UIControlState.Disabled);
+                    optionRadioButton.Enabled = false;
                     View.ConstrainLayout(() =>
                         optionRadioButton.Frame.Height == 20f &&
                         optionRadioButton.Frame.Width == 20f 
                     );
-                    if (i == 1)
-                    {
-                        Answer = option.Title;
-                    }
-                    else
-                    {
-                        optionRadioButton.Enabled = false;
-                    }
 
                     var optionTextButton = new UIButton(UIButtonType.System)
                     {
@@ -282,14 +274,14 @@ namespace CorpTraining.iOS
                     optionTextButton.SetTitle(option.Title, UIControlState.Normal);
                     optionStackView.AddArrangedSubview(optionTextButton);
 
-                    var maxWidth = View.Frame.Width - UIConstants.HorizontalPad * 2 - optionRadioButton.Frame.Width;
+                    var maxWidth = View.Frame.Width - Constants.HorizontalPad * 2 - optionRadioButton.Frame.Width;
                     var textSize = UIHelper.GetTextSize(option.Title, optionTextButton.Font, maxWidth, float.MaxValue);
                     var textHeight = textSize.Height;
                     View.ConstrainLayout(() =>
                         optionTextButton.Frame.Height == textHeight
                     );
 
-                    optionsUIs.Add(new Tuple<UIButton, UIButton>(optionRadioButton, optionTextButton));
+                    optionsUIs.Add(new Tuple<UIButton, UIButton, Option>(optionRadioButton, optionTextButton, option));
                     i++;
                 }
 
@@ -297,7 +289,7 @@ namespace CorpTraining.iOS
                 {
                     tuple.Item2.TouchUpInside += (sender, e) =>
                     {
-                        Answer = tuple.Item2.Title(UIControlState.Normal);
+                        SelectedOptionId = tuple.Item3.Id;
                         tuple.Item1.Enabled = true;
 
                         foreach (var otherTuple in optionsUIs)
@@ -308,6 +300,8 @@ namespace CorpTraining.iOS
                             }
                         }
                     };
+
+//                    tuple.Item1.TouchUpInside
                 }
             }
         }

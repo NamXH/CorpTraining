@@ -101,7 +101,6 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Utilities\EasyLayout.cs" />
-    <Compile Include="Utilities\UIConstants.cs" />
     <Compile Include="ViewControllers\AccountViewController.cs" />
     <Compile Include="ViewControllers\AdminViewController.cs" />
     <Compile Include="ViewControllers\LessonsViewController.cs" />
@@ -117,6 +116,7 @@
     <Compile Include="Obsolete\LessonScreenVideoViewController.cs" />
     <Compile Include="Obsolete\LessonScreenViewControllerGenerator.cs" />
     <Compile Include="Utilities\UIHelper.cs" />
+    <Compile Include="Utilities\Constants.cs" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -20,12 +20,12 @@ namespace CorpTraining.iOS
             var signOutButton = new UIButton(UIButtonType.RoundedRect)
             {
                 BackgroundColor = UIColor.Red,
-                Font = UIFont.BoldSystemFontOfSize(UIConstants.NormalFontSize),
+                Font = UIFont.BoldSystemFontOfSize(Constants.NormalFontSize),
             };
             View.AddSubview(signOutButton);
             signOutButton.SetTitle("Sign Out", UIControlState.Normal);
             signOutButton.SetTitleColor(UIColor.White, UIControlState.Normal);
-            signOutButton.Layer.CornerRadius = UIConstants.CornerRadius;
+            signOutButton.Layer.CornerRadius = Constants.CornerRadius;
             signOutButton.TouchUpInside += async (sender, e) =>
             {
                 signOutButton.Enabled = false;
@@ -37,10 +37,10 @@ namespace CorpTraining.iOS
             };
 
             View.ConstrainLayout(() =>
-                signOutButton.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
-                signOutButton.Frame.Right == View.Frame.Right - UIConstants.HorizontalPad &&
+                signOutButton.Frame.Left == View.Frame.Left + Constants.HorizontalPad &&
+                signOutButton.Frame.Right == View.Frame.Right - Constants.HorizontalPad &&
                 signOutButton.Frame.GetCenterY() == View.Frame.GetCenterY() &&
-                signOutButton.Frame.Height == UIConstants.ControlsHeight
+                signOutButton.Frame.Height == Constants.ControlsHeight
             );
         }
     }

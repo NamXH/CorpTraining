@@ -14,23 +14,23 @@ namespace CorpTraining.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            View.BackgroundColor = UIConstants.MainColor;
+            View.BackgroundColor = Constants.MainColor;
 
             var stackView = new UIStackView
             {
                 Axis = UILayoutConstraintAxis.Vertical,
                 Alignment = UIStackViewAlignment.Fill,
                 Distribution = UIStackViewDistribution.EqualSpacing,
-                Spacing = UIConstants.SmallGap,
+                Spacing = Constants.SmallGap,
                 TranslatesAutoresizingMaskIntoConstraints = false,
             };
             View.AddSubview(stackView);
-            var barHeight = UIConstants.StatusBarHeight + (float)NavigationController.NavigationBar.Frame.Size.Height;
-            var topPad = barHeight + UIConstants.VerticalPad * 2;
+            var barHeight = Constants.StatusBarHeight + (float)NavigationController.NavigationBar.Frame.Size.Height;
+            var topPad = barHeight + Constants.VerticalPad * 2;
             View.ConstrainLayout(() =>
                 stackView.Frame.Top == View.Frame.Top + topPad &&
-                stackView.Frame.Left == View.Frame.Left + UIConstants.HorizontalPad &&
-                stackView.Frame.Right == View.Frame.Right - UIConstants.VerticalPad
+                stackView.Frame.Left == View.Frame.Left + Constants.HorizontalPad &&
+                stackView.Frame.Right == View.Frame.Right - Constants.VerticalPad
             );
 
             var firstNameTextField = new UITextField
@@ -40,10 +40,10 @@ namespace CorpTraining.iOS
             };
             stackView.AddArrangedSubview(firstNameTextField);
             firstNameTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            firstNameTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            firstNameTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            firstNameTextField.Layer.BorderWidth = Constants.BorderWidth;
+            firstNameTextField.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                firstNameTextField.Frame.Height == UIConstants.ControlsHeight
+                firstNameTextField.Frame.Height == Constants.ControlsHeight
             );
 
             var lastNameTextField = new UITextField
@@ -53,10 +53,10 @@ namespace CorpTraining.iOS
             };
             stackView.AddArrangedSubview(lastNameTextField);
             lastNameTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            lastNameTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            lastNameTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            lastNameTextField.Layer.BorderWidth = Constants.BorderWidth;
+            lastNameTextField.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                lastNameTextField.Frame.Height == UIConstants.ControlsHeight
+                lastNameTextField.Frame.Height == Constants.ControlsHeight
             );
 
             var emailTextField = new UITextField
@@ -68,10 +68,10 @@ namespace CorpTraining.iOS
             };
             stackView.AddArrangedSubview(emailTextField);
             emailTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            emailTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            emailTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            emailTextField.Layer.BorderWidth = Constants.BorderWidth;
+            emailTextField.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                emailTextField.Frame.Height == UIConstants.ControlsHeight
+                emailTextField.Frame.Height == Constants.ControlsHeight
             );
 
             var phoneTextField = new UITextField
@@ -82,10 +82,10 @@ namespace CorpTraining.iOS
             };
             stackView.AddArrangedSubview(phoneTextField);
             phoneTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            phoneTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            phoneTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            phoneTextField.Layer.BorderWidth = Constants.BorderWidth;
+            phoneTextField.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                phoneTextField.Frame.Height == UIConstants.ControlsHeight
+                phoneTextField.Frame.Height == Constants.ControlsHeight
             );
 
             var passwordTextField = new UITextField
@@ -97,10 +97,10 @@ namespace CorpTraining.iOS
             };
             stackView.AddArrangedSubview(passwordTextField);
             passwordTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            passwordTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            passwordTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            passwordTextField.Layer.BorderWidth = Constants.BorderWidth;
+            passwordTextField.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                passwordTextField.Frame.Height == UIConstants.ControlsHeight
+                passwordTextField.Frame.Height == Constants.ControlsHeight
             );
 
             var confirmPasswordTextField = new UITextField
@@ -111,23 +111,23 @@ namespace CorpTraining.iOS
             };
             stackView.AddArrangedSubview(confirmPasswordTextField);
             confirmPasswordTextField.Layer.BorderColor = UIColor.Gray.CGColor;
-            confirmPasswordTextField.Layer.BorderWidth = UIConstants.BorderWidth;
-            confirmPasswordTextField.Layer.CornerRadius = UIConstants.CornerRadius;
+            confirmPasswordTextField.Layer.BorderWidth = Constants.BorderWidth;
+            confirmPasswordTextField.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                confirmPasswordTextField.Frame.Height == UIConstants.ControlsHeight
+                confirmPasswordTextField.Frame.Height == Constants.ControlsHeight
             );
 
             var submitButton = new UIButton(UIButtonType.System)
             {
-                BackgroundColor = UIColor.FromHSB(UIConstants.MainColorHue + 0.08f, UIConstants.MainColorSaturation + 0.1f, UIConstants.MainColorBrightness),
-                Font = UIFont.BoldSystemFontOfSize(UIConstants.NormalFontSize),
+                BackgroundColor = UIColor.FromHSB(Constants.MainColorHue + 0.08f, Constants.MainColorSaturation + 0.1f, Constants.MainColorBrightness),
+                Font = UIFont.BoldSystemFontOfSize(Constants.NormalFontSize),
             };
             stackView.AddArrangedSubview(submitButton);
             submitButton.SetTitle("Submit", UIControlState.Normal);
             submitButton.SetTitleColor(UIColor.White, UIControlState.Normal);
-            submitButton.Layer.CornerRadius = UIConstants.CornerRadius;
+            submitButton.Layer.CornerRadius = Constants.CornerRadius;
             View.ConstrainLayout(() =>
-                submitButton.Frame.Height == UIConstants.ControlsHeight
+                submitButton.Frame.Height == Constants.ControlsHeight
             );
             submitButton.TouchUpInside += async (sender, e) =>
             {
