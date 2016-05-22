@@ -300,8 +300,6 @@ namespace CorpTraining.iOS
                             }
                         }
                     };
-
-//                    tuple.Item1.TouchUpInside
                 }
             }
         }
