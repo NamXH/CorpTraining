@@ -56,6 +56,7 @@ namespace CorpTraining.iOS
         {
             base.ViewDidLoad();
 
+
             #region Navigation Bar Buttons
             if (Index < Screens.Count - 1)
             {
@@ -65,8 +66,8 @@ namespace CorpTraining.iOS
                             {
                                 Answers.Add(new ScreenAnswer
                                     {
-                                        QuestionId = Screens[Index].Id,
-                                        Option = Answer,
+//                                        ScreenId = Screens[Index].Id,
+//                                        Option = Answer,
                                     });
                             }
 
@@ -81,13 +82,12 @@ namespace CorpTraining.iOS
                             {
                                 Answers.Add(new ScreenAnswer
                                     {
-										QuestionId = Screens[Index].Id,
-                                        Option = Answer,
+//                                        ScreenId = Screens[Index].Id,
                                     });
                             }
 
                             var loadingOverlay = new LoadingOverlay(View.Bounds);
-                            string response = null;
+                            bool response = false;
                             try
                             {
                                 View.Add(loadingOverlay);
@@ -106,7 +106,7 @@ namespace CorpTraining.iOS
 
                             string alertTitle = null;
                             string alertMessage = null;
-                            if (response == "success")
+                            if (response)
                             {
                                 alertTitle = "Congrats!";
                                 alertMessage = "Your answer has been submitted successfully.";

@@ -147,10 +147,14 @@ namespace CorpTraining.iOS
                     Tuple<bool, string> registrationResult = null;
                     try
                     {
+//                        registrationResult = await UserUtil.RegisterUserThenLoginAsync(user); Can't use right now!!
                         registrationResult = await UserUtil.RegisterUserAsync(user);
                         if (registrationResult.Item1)
                         {
-                            UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController();
+//                            UIApplication.SharedApplication.Windows[0].RootViewController = new TabViewController(); Can't use right now!!
+                            var alert = UIAlertController.Create("Success", "Registration successful", UIAlertControllerStyle.Alert);
+                            alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                            PresentViewController(alert, true, null); 
                         }
                         else
                         {

@@ -10,6 +10,7 @@ namespace CorpTraining
 {
 	public static class UserUtil
 	{
+        public static User CurrentUser { get; set; }
 
 		private static async Task<HttpResponseMessage> MakeServerPostRequest(string url, StringContent content){
 			HttpClient client = new HttpClient ();
@@ -53,7 +54,18 @@ namespace CorpTraining
 
 		}
 
+        private static async Task<bool> StoreUserDataLocally(string token)
+        {
+            var response = await GetUserProfileByTokenAsync(token);
+            CurrentUser = response.Item1 ? response.Item2 : null;
+            return response.Item1;
+        }
 
+        private static async Task<bool> StoreUserDataLocally()
+        {
+            var token = GetCurrentToken();
+            return await StoreUserDataLocally(token);
+        }
 
 		/// <summary>Authenticate a user.
 		///<para>Returns Tuple<result, token></para>
@@ -75,8 +87,10 @@ namespace CorpTraining
 			UserDB userDB = new UserDB();
 
 			if (response.IsSuccessStatusCode){
-				string token = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["token"];
+				string token = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["token"]; // @Juan: Why ReadAsStringAsync twice?? Why blocking the thread with .Result??
 				userDB.InsertToken (token);
+
+                await StoreUserDataLocally(token); // The server should return user data right away so we don't have to make another request!!
 				return new Tuple<string, string> (result, token);
 			}
 
@@ -129,6 +143,20 @@ namespace CorpTraining
 			}
 		}
 
+        // Should make this function make less requests to server!! We want to login user right after successfully register!!
+        // Right now the registration is successful but I cannot authenticate that user??? They don't use the password provided?
+        public static async Task<Tuple<bool, string>> RegisterUserThenLoginAsync (User user)
+        {
+            var registrationResponse = await RegisterUserAsync(user);
+
+            if (registrationResponse.Item1)
+            {
+                var authResponse = await AuthenticateUserAsync(user.Email, user.Password);
+
+            }
+
+            return registrationResponse;
+        }
 
 
 		/// <summary>Logout a user
