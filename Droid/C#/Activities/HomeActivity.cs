@@ -45,6 +45,22 @@ namespace CorpTraining.Droid
 			ib_menu.Click += delegate(object sender, EventArgs e) {
 				drawer.OpenDrawer (lv_menu);	
 			};
+			vp_content.PageSelected += delegate(object sender, Android.Support.V4.View.ViewPager.PageSelectedEventArgs e) {
+				switch (e.Position) {
+				case 0:
+					tv_title.Text = "Lessons";
+					break;
+				case 1:
+					tv_title.Text = "Account";
+					break;
+				case 2:
+					tv_title.Text = "Settings";
+					break;
+				default:
+					break;
+				}
+			};
+
 		}
 
 		public override void initData ()
@@ -82,6 +98,7 @@ namespace CorpTraining.Droid
 			};
 			//set first page
 			pagerList [0].initData ();
+			tv_title.Text = "Lessons";
 		}
 
 		public override void initView ()

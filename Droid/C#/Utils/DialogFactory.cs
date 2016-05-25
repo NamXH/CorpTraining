@@ -22,13 +22,14 @@ namespace CorpTraining.Droid
 					break;
 				case Constants.RETURN_LIST:
 					//enter into homeactivity
-					VideoPlayActivity video = context as VideoPlayActivity;
+					ScreensActivity video = context as ScreensActivity;
 					video.StartActivity (new Intent (video, typeof(HomeActivity)));
 					video.Finish ();
 					break;
-				case Constants.ANSWER_QUESTIONS:
-					VideoPlayActivity vactivity = context as VideoPlayActivity;
-					//todo
+				case Constants.TIME_UP:
+					//jump to result activity
+
+
 					break;
 				default:
 					break;
@@ -51,15 +52,15 @@ namespace CorpTraining.Droid
 					home.StartActivity (new Intent (home, typeof(LoginActivity)));
 					home.Finish ();
 					break;
-				case Constants.START_NOW:
-					//jump to answer questions
-
-					break;
 				case Constants.RETURN_LIST_NEG:
 					//enter into homeactivity
-					VideoPlayActivity video = context as VideoPlayActivity;
+					ScreensActivity video = context as ScreensActivity;
 					video.StartActivity (new Intent (video, typeof(HomeActivity)));
 					video.Finish ();
+					break;
+				case Constants.SUBMIT_ANSWERS:
+					//jump to result activity
+
 					break;
 				default:
 					break;

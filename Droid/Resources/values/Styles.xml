@@ -29,4 +29,25 @@
 		<item name="android:shadowRadius">1</item>
 		<item name="android:gravity">center_horizontal</item>
 	</style>
+	<style name="NextStyle">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:background">@drawable/btn_green_selector</item>
+		<item name="android:text">NEXT</item>
+		<item name="android:textColor">@android:color/black</item>
+		<item name="android:textSize">22.0sp</item>
+		<item name="android:layout_gravity">right</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:drawableRight">@mipmap/next</item>
+	</style>
+	<style name="PreviousStyle">
+		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:background">@drawable/btn_green_selector</item>
+		<item name="android:text">PREVIOUS</item>
+		<item name="android:textColor">@android:color/black</item>
+		<item name="android:textSize">22.0sp</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:drawableLeft">@mipmap/previous</item>
+	</style>
 </resources>

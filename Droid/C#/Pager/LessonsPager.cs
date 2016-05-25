@@ -45,19 +45,18 @@ namespace CorpTraining.Droid
 
 		private async void getVideoUrlFromServer ()
 		{
-			var result = await LessonUtil.GetScreenByPositionAsync (lessonId, 0);
-			string url = result.VideoUrl;
-			if (!string.IsNullOrEmpty (url)) {
-				Intent intent = new Intent (activity, typeof(VideoPlayActivity));
-				intent.PutExtra (Constants.VIDEO_URL, url);
+			var result = await LessonUtil.GetScreensByLessonAsync (lessonId);
+			if (result != null && result.Count > 0) {
+				Constants.screens = result;
+				//jump to screenactivity
+				Intent intent = new Intent (activity, typeof(ScreensActivity));
 				intent.PutExtra (Constants.LESSON_TITLE, currentLesson.Title);
 				intent.PutExtra (Constants.LESSON_DES, currentLesson.Description);
 				activity.StartActivity (intent);
-				activity.Finish ();
 			} else {
 				lv_list.Visibility = ViewStates.Visible;
 				ll_load.Visibility = ViewStates.Invisible;
-				DialogFactory.ToastDialog (activity, "Connect error", "Connect error,please try again later!", 0);
+				DialogFactory.ToastDialog (activity, "Empty lesson", "This lesson has not uploaded yet!Please try again later", 0);
 			}
 		}
 

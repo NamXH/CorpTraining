@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_play"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@drawable/selector_audio_btn_play" />
+    <SeekBar
+        android:id="@+id/sb_audio"
+        style="@android:style/Widget.SeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:thumbOffset="0dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:max="100"
+        android:maxHeight="3dp"
+        android:minHeight="3dp"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_horizontal_audio"
+        android:thumb="@mipmap/audio_seek_thumb"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2" />
+    <TextView
+        android:id="@+id/tv_play_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:text="00:00" />
+    <Button
+        android:id="@+id/btn_voice"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_voice" />
+    <SeekBar
+        android:id="@+id/sb_voice"
+        style="@android:style/Widget.SeekBar"
+        android:progressDrawable="@drawable/progress_horizontal"
+        android:thumb="@mipmap/audio_seek_thumb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="3dp"
+        android:maxHeight="3dp"
+        android:max="100"
+        android:progress="50"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical" />
+</LinearLayout>

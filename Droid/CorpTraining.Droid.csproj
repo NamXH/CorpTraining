@@ -84,9 +84,12 @@
     <Compile Include="C#\CustomedView\RefreshListView.cs" />
     <Compile Include="C#\Utils\ObjectTypeHelper.cs" />
     <Compile Include="C#\Adapter\MenuListViewAdapter.cs" />
-    <Compile Include="C#\Activities\VideoPlayActivity.cs" />
     <Compile Include="C#\Receiver\BatteryChangedReceiver.cs" />
     <Compile Include="C#\Utils\Utils.cs" />
+    <Compile Include="C#\Activities\ScreensActivity.cs" />
+    <Compile Include="C#\Fragments\VideoTextFragment.cs" />
+    <Compile Include="C#\Fragments\BaseVideoFragment.cs" />
+    <Compile Include="C#\Fragments\TextAudioFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -152,13 +155,11 @@
     <AndroidResource Include="Resources\drawable\btn_drawableleft_selector.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\menu_arr_select.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\menu_arr_normal.png" />
-    <AndroidResource Include="Resources\layout\activity_videoplay.axml" />
     <AndroidResource Include="Resources\mipmap-hdpi\base_bg.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\bg_player_status.9.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\bg_player_top_control.9.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\selector_btn_voice.png" />
     <AndroidResource Include="Resources\drawable\progress_horizontal.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\seekbar_thumb.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\bg_player_bottom_seekbar.9.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\ic_battery_80.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\ic_battery_60.png" />
@@ -191,6 +192,24 @@
     <AndroidResource Include="Resources\drawable\selector_btn_defaultscreen.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\btn_default_screen_pressed.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\btn_default_screen_normal.png" />
+    <AndroidResource Include="Resources\layout\activity_screens.axml" />
+    <AndroidResource Include="Resources\layout\fragment_video.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\previous.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\next.png" />
+    <AndroidResource Include="Resources\layout\fragment_videotext.axml" />
+    <AndroidResource Include="Resources\layout\fragment_basevideo.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\seekbar_thumb.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\icon_share.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\audio_seek_thumb.png" />
+    <AndroidResource Include="Resources\layout\fragment_textaudio.axml" />
+    <AndroidResource Include="Resources\layout\fragment_audio.axml" />
+    <AndroidResource Include="Resources\drawable\selector_audio_btn_play.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\btn_audio_pause_normal.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\btn_audio_pause_pressed.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\btn_audio_play_normal.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\btn_audio_play_pressed.png" />
+    <AndroidResource Include="Resources\drawable\progress_horizontal_audio.xml" />
+    <AndroidResource Include="Resources\drawable\selector_audio_btn_pause.xml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -215,5 +234,6 @@
     <Folder Include="C#\Pager\" />
     <Folder Include="C#\Adapter\" />
     <Folder Include="C#\Receiver\" />
+    <Folder Include="C#\Fragments\" />
   </ItemGroup>
 </Project>

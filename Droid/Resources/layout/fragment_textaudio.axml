@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:showDividers="none"
+    android:weightSum="100">
+    <include
+        layout="@layout/fragment_audio" />
+    <TextView
+        android:text="Default Text"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="60"
+        android:id="@+id/displayText"
+        android:textSize="18sp"
+        android:scrollbars="vertical"
+        android:overScrollMode="ifContentScrolls"
+        android:verticalScrollbarPosition="defaultPosition"
+        android:fadeScrollbars="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginTop="5dp" />
+    <EditText
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="20"
+        android:id="@+id/editText1"
+        android:hint="Please input your answer here:"
+        android:typeface="sans"
+        android:background="#ff212121"
+        android:textSize="18dp"
+        android:gravity="top"
+        android:textColorHint="#ff76ff03" />
+</LinearLayout>
