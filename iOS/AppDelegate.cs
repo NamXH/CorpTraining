@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using UIKit;
+using System;
 
 namespace CorpTraining.iOS
 {
@@ -24,10 +25,17 @@ namespace CorpTraining.iOS
             // create a new window instance based on the screen size
             Window = new UIWindow(UIScreen.MainScreen.Bounds);
 
-            var loginViewController = new LoginViewController();
-            var navigationController = new UINavigationController(loginViewController);
-
-            Window.RootViewController = navigationController;
+            if (String.IsNullOrEmpty(UserUtil.GetCurrentToken()))
+            {
+                var loginViewController = new LoginViewController();
+                var navigationController = new UINavigationController(loginViewController);
+                Window.RootViewController = navigationController;
+            }
+            else
+            {
+                var tabViewController = new TabViewController();
+                Window.RootViewController = tabViewController;
+            }
 
             // make the window visible
             Window.MakeKeyAndVisible();
