@@ -72,14 +72,14 @@ namespace CorpTraining.iOS
                                 }
                                 catch
                                 {
-                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection and try again.", UIAlertControllerStyle.Alert);
                                     alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                                     PresentViewController(alert, true, null); 
                                 }
 
                                 if (currentUser == null)
                                 {
-                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection and try again.", UIAlertControllerStyle.Alert);
                                     alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                                     PresentViewController(alert, true, null); 
                                 }
@@ -102,6 +102,7 @@ namespace CorpTraining.iOS
             {
                 NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, async (sender, e) =>
                         {
+                            #region Add Answer
                             if (SelectedOptionId != Constants.DefaultOptionId)
                             {
                                 // Workaround for not having current user in database
@@ -134,44 +135,57 @@ namespace CorpTraining.iOS
                                         });
                                 }
                             }
+                            #endregion
 
-                            var loadingOverlay = new LoadingOverlay(View.Bounds);
-                            bool response = false;
-                            try
+                            #region Send Answers to server
+                            if ((Answers != null) && (Answers.Count > 0))
                             {
-                                View.Add(loadingOverlay);
-                                response = await LessonUtil.SendLessonAnswers(LessonId, Answers);
-                            }
-                            catch (Exception ex)
-                            {
-                                var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-                                PresentViewController(alert, true, null);
-                            }
-                            finally
-                            {
-                                loadingOverlay.HideThenRemove();
-                            }
+                                var loadingOverlay = new LoadingOverlay(View.Bounds);
+                                bool response = false;
+                                try
+                                {
+                                    View.Add(loadingOverlay);
+                                    response = await LessonUtil.SendLessonAnswers(LessonId, Answers);
+                                }
+                                catch (Exception ex)
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null);
+                                }
+                                finally
+                                {
+                                    loadingOverlay.HideThenRemove();
+                                }
 
-                            string alertTitle = null;
-                            string alertMessage = null;
-                            if (response)
-                            {
-                                alertTitle = "Congrats!";
-                                alertMessage = "Your answer has been submitted successfully.";
+                                string alertTitle = null;
+                                string alertMessage = null;
+                                if (response)
+                                {
+                                    alertTitle = "Congrats!";
+                                    alertMessage = "Your answer has been submitted successfully.";
+                                }
+                                else
+                                {
+                                    alertTitle = "Something goes wrong";
+                                    alertMessage = ""; // Need message from server!!
+                                }
+                                var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
+                                submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
+                                        {
+                                            NavigationController.PopToRootViewController(true);
+                                        }));
+                                PresentViewController(submissionAlert, true, null);
                             }
                             else
                             {
-                                alertTitle = "Something goes wrong";
-                                alertMessage = ""; // Need message from server!!
+                                var alert = UIAlertController.Create("Nothing to submit", "You haven't selected any answer", UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                PresentViewController(alert, true, null); 
                             }
-                            var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
-                            submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
-                                    {
-                                        NavigationController.PopToRootViewController(true);
-                                    }));
-                            PresentViewController(submissionAlert, true, null);
+                            #endregion
                         }), true); 
+                        
             }
             #endregion
 

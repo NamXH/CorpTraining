@@ -142,8 +142,12 @@ namespace CorpTraining
             var content = await response.Content.ReadAsStringAsync();
 
             User user = JsonConvert.DeserializeObject<User>(content);
-            if (user.Email != null && user.FirstName != null && user.Id != null && user.LastName != null && user.Phone != null)
+//            if (user.Email != null && user.FirstName != null && user.Id != null && user.LastName != null && user.Phone != null)
+//                return new Tuple<bool, User>(true, user);
+            if (user.Id != null)
+            {
                 return new Tuple<bool, User>(true, user);
+            }
 
             return new Tuple<bool, User>(false, null);
         }
