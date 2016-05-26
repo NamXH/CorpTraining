@@ -60,33 +60,79 @@ namespace CorpTraining.iOS
             #region Navigation Bar Buttons
             if (Index < Screens.Count - 1)
             {
-                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, ((sender, e) =>
+                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, async (sender, e) =>
                         {
                             if (SelectedOptionId != Constants.DefaultOptionId)
                             {
-                                Answers.Add(new ScreenAnswer
-                                    {
-                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
-                                        ScreenId = Screens[Index].Id,
-                                        OptionId = SelectedOptionId,
-                                    });
+                                // Workaround for not having current user in database
+                                User currentUser = null;
+                                try
+                                {
+                                    currentUser = await UserUtil.GetCurrentUserAsync();
+                                }
+                                catch
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+
+                                if (currentUser == null)
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+                                else
+                                {
+                                    Answers.Add(new ScreenAnswer
+                                        {
+//                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
+                                            UserId = currentUser.Id.GetValueOrDefault(),
+                                            ScreenId = Screens[Index].Id,
+                                            OptionId = SelectedOptionId,
+                                        });
+                                }
                             }
 
                             PushNextScreen();
-                        })), true);
+                        }), true);
             }
             else
             {
-                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, (async (sender, e) =>
+                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, async (sender, e) =>
                         {
                             if (SelectedOptionId != Constants.DefaultOptionId)
                             {
-                                Answers.Add(new ScreenAnswer
-                                    {
-                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
-                                        ScreenId = Screens[Index].Id,
-                                        OptionId = SelectedOptionId,
-                                    });
+                                // Workaround for not having current user in database
+                                User currentUser = null;
+                                try
+                                {
+                                    currentUser = await UserUtil.GetCurrentUserAsync();
+                                }
+                                catch
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+
+                                if (currentUser == null)
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+                                else
+                                {
+                                    Answers.Add(new ScreenAnswer
+                                        {
+//                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
+                                            UserId = currentUser.Id.GetValueOrDefault(),
+                                            ScreenId = Screens[Index].Id,
+                                            OptionId = SelectedOptionId,
+                                        });
+                                }
                             }
 
                             var loadingOverlay = new LoadingOverlay(View.Bounds);
@@ -125,7 +171,7 @@ namespace CorpTraining.iOS
                                         NavigationController.PopToRootViewController(true);
                                     }));
                             PresentViewController(submissionAlert, true, null);
-                        })), true); 
+                        }), true); 
             }
             #endregion
 
