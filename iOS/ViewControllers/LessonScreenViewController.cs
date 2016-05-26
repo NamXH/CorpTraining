@@ -228,7 +228,10 @@ namespace CorpTraining.iOS
                 catch (Exception ex)
                 {
                     // Display error or skip this part !!
-                    throw ex;
+//                    throw ex;
+                    var alert = UIAlertController.Create("Something goes wrong", "Invalid format for video or audio data", UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                    PresentViewController(alert, true, null); 
                 }
                 var playerViewController = new AVPlayerViewController
                 {
@@ -259,7 +262,10 @@ namespace CorpTraining.iOS
                     catch (Exception ex)
                     {
                         // Display error!!
-                        throw ex;
+//                        throw ex;
+                        var alert = UIAlertController.Create("Something goes wrong", "Invalid format for image data", UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                        PresentViewController(alert, true, null); 
                     }
 
                     stackView.AddArrangedSubview(imageView);
