@@ -51,8 +51,8 @@ namespace CorpTraining.Droid
 				string lastname = et_lastname.Text;
 				string email = et_email.Text;
 				string phonenumber = et_phonenumber.Text;
-				string password = et_password.Text;
-				string confirmpwd = et_confirmpwd.Text;
+				//string password = et_password.Text;
+				//string confirmpwd = et_confirmpwd.Text;
 				//Empty check
 				if (string.IsNullOrEmpty (firstname)) {
 					tv_firstname.SetTextColor (Color.Red);
@@ -66,33 +66,32 @@ namespace CorpTraining.Droid
 				} else if (string.IsNullOrEmpty (phonenumber)) {
 					tv_phonenumber.SetTextColor (Color.Red);
 					DialogFactory.ToastDialog (this, "Empty info", "Phone number cannot be empty!", 0);
-				} else if (string.IsNullOrEmpty (password)) {
+				} /*else if (string.IsNullOrEmpty (password)) {
 					tv_password.SetTextColor (Color.Red);
 					DialogFactory.ToastDialog (this, "Empty info", "Password cannot be empty!", 0);
 				} else if (string.IsNullOrEmpty (confirmpwd)) {
 					tv_email.SetTextColor (Color.Red);
 					DialogFactory.ToastDialog (this, "Empty info", "Confirm password cannot be empty!", 0);
-				} else {
+				}*/ else {
 					//email check
 					Match match = Regex.Match (email, "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,3}){1,3})$");
 					if (match.Success) {
 						//check password and confirmpassword
-						if (password.Equals (confirmpwd)) {
-							//Create user and set info
-							user = new User ();
-							user.FirstName = firstname;
-							user.LastName = lastname;
-							user.Password = password;
-							user.Phone = phonenumber;
-							user.Email = email;
-							//connect to server
-							registerUser ();
-						} else {
+						//Create user and set info
+						user = new User ();
+						user.FirstName = firstname;
+						user.LastName = lastname;
+						//user.Password = password;
+						user.Phone = phonenumber;
+						user.Email = email;
+						//connect to server
+						registerUser ();
+					} /*else {
 							DialogFactory.ToastDialog (this, "Password", "Password cannot match confirm password!", 0);
 							tv_password.SetTextColor (Color.Red);
 							tv_confirmpwd.SetTextColor (Color.Red);
-						}
-					} else {
+						}*/
+					 else {
 						//email format incorrect
 						DialogFactory.ToastDialog (this, "Email Format", "Email format is incorrent!", 0);
 						tv_email.SetTextColor (Color.Red);
@@ -108,8 +107,8 @@ namespace CorpTraining.Droid
 			tv_lastname.SetTextColor (Color.Black);
 			tv_email.SetTextColor (Color.Black);
 			tv_phonenumber.SetTextColor (Color.Black);
-			tv_password.SetTextColor (Color.Black);
-			tv_confirmpwd.SetTextColor (Color.Black);
+			//tv_password.SetTextColor (Color.Black);
+			//tv_confirmpwd.SetTextColor (Color.Black);
 		}
 
 		private async void registerUser ()
@@ -117,10 +116,10 @@ namespace CorpTraining.Droid
 			var result = await UserUtil.RegisterUserAsync (user);
 			if (result.Item1 == true) {
 				//register successfully
-				DialogFactory.ToastDialog (this, "Register success", "Congratulations,you have registered successfully!", Constants.REGISTER_SUCCESS);
+				DialogFactory.ToastDialog (this, "Register success", "Congratulations,you have registered successfully!You will receive an email with password!", Constants.REGISTER_SUCCESS);
 			} else {
 				//register fail
-				DialogFactory.ToastDialog (this, "Register fail", "this account has been registered", 0);//to do: more specific error msg
+				DialogFactory.ToastDialog (this, "Register fail", "this email has been registered", 0);//to do: more specific error msg
 			}
 
 		}
@@ -138,15 +137,15 @@ namespace CorpTraining.Droid
 			et_lastname = FindViewById<EditText> (Resource.Id.et_lastname);
 			et_email = FindViewById<EditText> (Resource.Id.et_email);
 			et_phonenumber = FindViewById<EditText> (Resource.Id.et_phonenumber);
-			et_password = FindViewById<EditText> (Resource.Id.et_password);
-			et_confirmpwd = FindViewById<EditText> (Resource.Id.et_confirmpwd);
+			//et_password = FindViewById<EditText> (Resource.Id.et_password);
+			//et_confirmpwd = FindViewById<EditText> (Resource.Id.et_confirmpwd);
 
 			tv_firstname = FindViewById<TextView> (Resource.Id.tv_firstname);
 			tv_lastname = FindViewById<TextView> (Resource.Id.tv_lastname);
 			tv_email = FindViewById<TextView> (Resource.Id.tv_email);
 			tv_phonenumber = FindViewById<TextView> (Resource.Id.tv_phonenumber);
-			tv_password = FindViewById<TextView> (Resource.Id.tv_password);
-			tv_confirmpwd = FindViewById<TextView> (Resource.Id.tv_confirmpwd);
+			//tv_password = FindViewById<TextView> (Resource.Id.tv_password);
+			//tv_confirmpwd = FindViewById<TextView> (Resource.Id.tv_confirmpwd);
 
 		}
 

@@ -12,6 +12,8 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 using Android.Support.V4.View;
+using Android.Views.InputMethods;
+using Android.Hardware.Input;
 
 namespace CorpTraining.Droid
 {
@@ -33,8 +35,10 @@ namespace CorpTraining.Droid
 		private int duration;
 		private string lesson_title;
 		private string lesson_des;
+		private int lesson_id;
 		private int screenCount = 0;
 		public Dictionary<int,string> answer;
+		private InputMethodManager manager;
 		//record the answer
 		public override void initListner ()
 		{
@@ -59,6 +63,7 @@ namespace CorpTraining.Droid
 			//receive intent
 			lesson_title = Intent.GetStringExtra (Constants.LESSON_TITLE);
 			lesson_des = Intent.GetStringExtra (Constants.LESSON_DES);
+			lesson_id = Intent.GetIntExtra (Constants.LESSON_ID, 0);
 			//set total time
 			duration = 80 * Constants.screens.Count * 1000;
 			//set screenCounts
@@ -90,6 +95,7 @@ namespace CorpTraining.Droid
 			screen = Constants.screens [currentScreen];
 			if (screen != null) {
 				switch (screen.Type) {
+				case "video":
 				case "video_text":
 					//must finish watching video
 					nextBtn.Visibility = ViewStates.Invisible;
@@ -114,17 +120,18 @@ namespace CorpTraining.Droid
 				case "audio_image":
 					
 					break;
-				case "audio_text_image":
-					
+				case "text_image_audio":
+					showTextImageAudioFragment ();
 					break;
 				case "audio_text_image_edittext":
 					
 					break;
-				case "video":
-					
-					break;
 				case "text_audio":
+				case "audio_text":
 					showTextAudioFragment ();
+					break;
+				case "question":
+					showQuestionFragment ();
 					break;
 				default:
 					break;
@@ -148,12 +155,13 @@ namespace CorpTraining.Droid
 		private Boolean updateAnswers ()
 		{
 			switch (screen.Type) {
+			case "video":
 			case "video_text":
 				var videoText = fragment as VideoTextFragment;
 				string text_answer = videoText.et_answer.Text;
 				if (string.IsNullOrEmpty (text_answer)) {
 					//not answer the question
-					DialogFactory.ToastDialog (this, "Empty answer", "Please type your answer", 0);
+					DialogFactory.ToastDialog (this, "Empty note", "Please take some note", 0);
 					return false;
 				}
 				//record the answer
@@ -177,13 +185,34 @@ namespace CorpTraining.Droid
 			case "audio_image":
 
 				break;
-			case "audio_text_image":
-
+			case "text_image_audio":
+				var textimageaudio = fragment as TextImageAudioFragment;
+				string textimageaudio_answer = textimageaudio.et_note.Text;
+				if (string.IsNullOrEmpty (textimageaudio_answer)) {
+					//not answer the question
+					DialogFactory.ToastDialog (this, "Empty answer", "Please type your answer", 0);
+					return false;
+				}
+				//record the answer
+				recordAnswer (textimageaudio_answer);
 				break;
 			case "audio_text_image_edittext":
 
 				break;
-			case "video":
+			case "text_audio":
+			case "audio_text":
+				var textaudio = fragment as TextAudioFragment;
+				string textaudio_answer = textaudio.editText1.Text;
+				if (string.IsNullOrEmpty (textaudio_answer)) {
+					//not answer the question
+					DialogFactory.ToastDialog (this, "Empty answer", "Please type your answer", 0);
+					return false;
+				}
+				//record the answer
+				recordAnswer (textaudio_answer);
+				break;
+			case "question":
+				var question = fragment as QuestionFragment;
 
 				break;
 			default:
@@ -195,12 +224,12 @@ namespace CorpTraining.Droid
 
 		public void recordAnswer (String text_answer)
 		{
-			if (answer.ContainsKey (currentScreen)) {
+			if (answer.ContainsKey (screen.Id)) {
 				//correct
-				answer [currentScreen] = text_answer;
+				answer [screen.Id] = text_answer;
 			} else {
 				//insert
-				answer.Add (currentScreen, text_answer);
+				answer.Add (screen.Id, text_answer);
 			}	
 		}
 
@@ -226,6 +255,7 @@ namespace CorpTraining.Droid
 					currentScreen--;
 				validateBtns ();
 				updateScreen ();
+				hideInput ();
 				handler.RemoveCallbacksAndMessages (null);
 			}
 		}
@@ -237,7 +267,20 @@ namespace CorpTraining.Droid
 					currentScreen++;
 				validateBtns ();
 				updateScreen ();
+				hideInput ();
 				handler.RemoveCallbacksAndMessages (null);
+			}
+		}
+
+		private void hideInput ()
+		{
+			if (manager == null) {
+				manager = (InputMethodManager)GetSystemService (Context.InputMethodService);
+			}
+			if (manager.IsActive && CurrentFocus != null) {
+				if (CurrentFocus.WindowToken != null) {
+					manager.HideSoftInputFromWindow (CurrentFocus.WindowToken, HideSoftInputFlags.NotAlways);
+				}             
 			}
 		}
 
@@ -247,37 +290,62 @@ namespace CorpTraining.Droid
 		/// </summary>
 		private void showVideoTextFragment ()
 		{
-			var videoText = fragment as VideoTextFragment;
-			if (videoText == null) {
-				// Make new fragment to show this selection.
-				videoText = new VideoTextFragment (screen);
-				// Execute a transaction, replacing any existing
-				// fragment with this one inside the frame.
-				var ft = FragmentManager.BeginTransaction ();
-				ft.Replace (Resource.Id.fragmentContainer, videoText);
-				ft.SetTransition (FragmentTransit.FragmentFade);
-				ft.Commit ();
-				fragment = videoText;
-			}
+
+			// Make new fragment to show this selection.
+			var videoText = new VideoTextFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, videoText);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = videoText;
 		}
 
 		private void showTextAudioFragment ()
 		{
-			var audioText = fragment as TextAudioFragment;
-			if (audioText == null) {
-				// Make new fragment to show this selection.
-				audioText = new TextAudioFragment (screen);
-				// Execute a transaction, replacing any existing
-				// fragment with this one inside the frame.
-				var ft = FragmentManager.BeginTransaction ();
-				ft.Replace (Resource.Id.fragmentContainer, audioText);
-				ft.SetTransition (FragmentTransit.FragmentFade);
-				ft.Commit ();
-				fragment = audioText;
-			}
+			// Make new fragment to show this selection.
+			var audioText = new TextAudioFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, audioText);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = audioText;
 		}
 
+		private void showTextImageAudioFragment ()
+		{
+			// Make new fragment to show this selection.
+			var textImageAudio = new TextImageAudioFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, textImageAudio);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = textImageAudio;
+		}
 
+		private void showQuestionFragment ()
+		{
+			
+			// Make new fragment to show this selection.
+			var question = new QuestionFragment (screen, lesson_id);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, question);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = question;
+		}
+
+		public void submit ()
+		{
+			
+		}
 	}
 
 	public class MyCountDownTimer:CountDownTimer

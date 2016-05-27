@@ -16,13 +16,11 @@ namespace CorpTraining.Droid
 {
 	public class VideoTextFragment : BaseVideoFragment
 	{
-		private Screen screen;
 		public EditText et_answer;
 		private TextView tv_answertitle;
 
-		public VideoTextFragment (Screen screen)
+		public VideoTextFragment (Screen screen) : base (screen)
 		{
-			this.screen = screen;
 		}
 
 		public override int getLayoutResource ()
@@ -42,9 +40,9 @@ namespace CorpTraining.Droid
 			tv_answertitle = rootView.FindViewById<TextView> (Resource.Id.tv_answertitle);
 			var activity = Activity as ScreensActivity;
 			tv_answertitle.Text = (screen.Text == null) ? "Enter here" : screen.Text;
-			if (activity.answer.ContainsKey (screen.Position)) {
+			if (activity.answer.ContainsKey (screen.Id)) {
 				//contains
-				et_answer.Text = activity.answer [screen.Position];
+				et_answer.Text = activity.answer [screen.Id];
 			}
 		}
 

@@ -90,6 +90,8 @@
     <Compile Include="C#\Fragments\VideoTextFragment.cs" />
     <Compile Include="C#\Fragments\BaseVideoFragment.cs" />
     <Compile Include="C#\Fragments\TextAudioFragment.cs" />
+    <Compile Include="C#\Fragments\TextImageAudioFragment.cs" />
+    <Compile Include="C#\Fragments\QuestionFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -210,6 +212,9 @@
     <AndroidResource Include="Resources\mipmap-hdpi\btn_audio_play_pressed.png" />
     <AndroidResource Include="Resources\drawable\progress_horizontal_audio.xml" />
     <AndroidResource Include="Resources\drawable\selector_audio_btn_pause.xml" />
+    <AndroidResource Include="Resources\layout\fragment_textimageaudio.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\default_bitmap.png" />
+    <AndroidResource Include="Resources\layout\fragment_question.axml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

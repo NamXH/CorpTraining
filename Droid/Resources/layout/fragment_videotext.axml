@@ -60,8 +60,8 @@
                     android:gravity="center_vertical">
                     <Button
                         android:id="@+id/btn_voice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/selector_btn_voice" />
                     <SeekBar
                         android:id="@+id/sb_voice"
@@ -172,7 +172,8 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:text="NOW LOADING......"
-                    android:layout_marginLeft="8dp" />
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/tv_loading" />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -192,7 +193,7 @@
         android:gravity="center_horizontal"
         android:id="@+id/tv_answertitle" />
     <EditText
-        android:hint="Please input your answer here:"
+        android:hint="Please input your notes here:"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

@@ -7,6 +7,9 @@ using Android.Text.Format;
 using Android.Widget;
 using Android.Media;
 using Android.OS;
+using Android.Graphics;
+using System.Threading.Tasks;
+using System.Net;
 
 
 namespace CorpTraining.Droid
@@ -133,6 +136,21 @@ namespace CorpTraining.Droid
 				sb_audio.Progress = mp.CurrentPosition;
 				sendUpdateTime (handler, tv_play_time, sb_audio, mp);
 			}, 300);
+		}
+
+		//set bitmap
+		public static async Task setImageView (ImageView iv, string url)
+		{
+			Bitmap bitmap = null;
+			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create (EncodeURL (url));
+			request.Method = "GET";
+			request.ContentType = "multipart/form-data";
+			using (WebResponse response = await request.GetResponseAsync ()) {
+				using (System.IO.Stream stream = response.GetResponseStream ()) {
+					bitmap = BitmapFactory.DecodeStream (stream);
+				}
+			}
+			iv.SetImageBitmap (bitmap);
 		}
 
 	}

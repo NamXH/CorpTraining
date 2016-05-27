@@ -21,6 +21,7 @@ namespace CorpTraining.Droid
 		public const string VIDEO_URL = "video_url";
 		public const string LESSON_TITLE = "lesson_title";
 		public const string LESSON_DES = "lesson_des";
+		public const string LESSON_ID = "lesson_id";
 		/** update system time */
 		public static readonly int UPDATE_SYSTEM_TIME = 0;
 		/** update current play-time */
@@ -37,6 +38,7 @@ namespace CorpTraining.Droid
 
 		//sharedpreference name
 		public static readonly string PREFERENCE_NAME = "answer";
+		public static readonly string PREFERENCE_CONFIG = "config";
 
 	}
 }

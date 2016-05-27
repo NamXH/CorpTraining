@@ -52,6 +52,7 @@ namespace CorpTraining.Droid
 				Intent intent = new Intent (activity, typeof(ScreensActivity));
 				intent.PutExtra (Constants.LESSON_TITLE, currentLesson.Title);
 				intent.PutExtra (Constants.LESSON_DES, currentLesson.Description);
+				intent.PutExtra (Constants.LESSON_ID, currentLesson.Id);
 				activity.StartActivity (intent);
 			} else {
 				lv_list.Visibility = ViewStates.Visible;
@@ -113,7 +114,7 @@ namespace CorpTraining.Droid
 			//set values
 			holder.tv_title.Text = list [position].Title;
 			holder.tv_description.Text = list [position].Description;
-			holder.tv_size.Text = list [position].ScreenCount + " questions in total";
+			holder.tv_size.Text = list [position].ScreenCount + " pages in total";
 			return convertView;
 		}
 

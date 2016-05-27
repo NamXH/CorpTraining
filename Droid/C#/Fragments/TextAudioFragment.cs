@@ -19,6 +19,7 @@ namespace CorpTraining.Droid
 	{
 		private MediaPlayer mp = new MediaPlayer ();
 		private Screen screen;
+		public EditText editText1;
 
 		public TextAudioFragment (Screen screen)
 		{
@@ -30,6 +31,12 @@ namespace CorpTraining.Droid
 			base.OnCreateView (inflater, container, savedInstanceState);
 			var view = inflater.Inflate (Resource.Layout.fragment_textaudio, container, false);
 			view.FindViewById<TextView> (Resource.Id.displayText).Text = ((screen.Text == null) ? "No text" : screen.Text);
+			editText1 = view.FindViewById<EditText> (Resource.Id.editText1);
+			var activity = Activity as ScreensActivity;
+			if (activity.answer.ContainsKey (screen.Id)) {
+				//contains
+				editText1.Text = activity.answer [screen.Id];
+			}
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
 			return view;
 		}

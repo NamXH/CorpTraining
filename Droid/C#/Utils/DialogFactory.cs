@@ -60,7 +60,8 @@ namespace CorpTraining.Droid
 					break;
 				case Constants.SUBMIT_ANSWERS:
 					//jump to result activity
-
+					ScreensActivity screenactivity = context as ScreensActivity;
+					screenactivity.submit ();
 					break;
 				default:
 					break;

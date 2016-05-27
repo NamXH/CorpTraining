@@ -21,6 +21,7 @@ using Java.Security;
 using NineOldAndroids.Animation;
 using Android.Content.PM;
 using Android.Text;
+using Android.Preferences;
 
 namespace CorpTraining.Droid
 {
@@ -60,13 +61,26 @@ namespace CorpTraining.Droid
 		private View view;
 		public string video_url;
 		public View rootView;
+		public Screen screen;
+		public ISharedPreferences preference;
+		public ISharedPreferencesEditor editor;
+		public bool isWatched;
+		private TextView tv_loading;
+
+		public BaseVideoFragment (Screen screen)
+		{
+			this.screen = screen;
+		}
 
 		public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView (inflater, container, savedInstanceState);
 			view = inflater.Inflate (getLayoutResource (), container, false);
 			rootView = view;
-			isFullScreen = false;
+			//read isWatched from preferences
+			preference = Activity.GetSharedPreferences (Constants.PREFERENCE_CONFIG, FileCreationMode.Private);
+			editor = preference.Edit ();
+			isWatched = preference.GetBoolean (screen.Id + "", false);
 			initView ();
 			initData ();
 			initListner ();
@@ -119,6 +133,8 @@ namespace CorpTraining.Droid
 				vv.SeekTo (0);
 				tv_current_position.Text = Utils.formatMillis (0L);
 				var activity = Activity as ScreensActivity;
+				//set iswatched
+				editor.PutBoolean (screen.Id + "", true);
 				activity.validateBtns ();
 			};
 
@@ -175,34 +191,38 @@ namespace CorpTraining.Droid
 			if (!LibsChecker.CheckVitamioLibs (Activity)) {
 				return;
 			}
-			//get video_url
-			video_url = getVideoUrl ();
-			if (!string.IsNullOrEmpty (video_url)) {
-				vv.SetVideoURI (Android.Net.Uri.Parse (Utils.EncodeURL (video_url)));
+			if (!isWatched) {
+				//get video_url
+				video_url = getVideoUrl ();
+				if (!string.IsNullOrEmpty (video_url)) {
+					vv.SetVideoURI (Android.Net.Uri.Parse (Utils.EncodeURL (video_url)));
+				} else {
+					DialogFactory.ToastDialog (Activity, "Connect error", "Connect error,please try again later!", Constants.RETURN_LIST);
+				}
+				vv.RequestFocus ();
+				vv.Prepared += delegate(object sender, IO.Vov.Vitamio.MediaPlayer.PreparedEventArgs e) {
+					e.P0.SetPlaybackSpeed (1.0f);//start play
+					vv.Start ();
+					//put duration
+					string duration = Utils.formatMillis (vv.Duration);//set duration
+					tv_duration.Text = duration;
+					sb_video.Max = (int)vv.Duration;
+					updateCurrentPosition ();
+					btn_play.SetBackgroundResource (Resource.Drawable.selector_btn_pause);//set play button
+					tv_title.Text = Activity.Intent.GetStringExtra (Constants.LESSON_TITLE) + ":" + Activity.Intent.GetStringExtra (Constants.LESSON_DES);//set video title
+					//hide the loading progress bar
+					hideLoadingCtl ();
+				};
+				//control volume
+				initVolume ();
+				// scale volume
+				maxVlumeScreenHeightScale = ((float)maxVolume) / Utils.getWindowWidth (Activity);
+				//set screen width and height
+				screenWidth = Utils.getWindowWidth (Activity);
+				screenHeight = Utils.getWindowHeight (Activity);
 			} else {
-				DialogFactory.ToastDialog (Activity, "Connect error", "Connect error,please try again later!", Constants.RETURN_LIST);
+				tv_loading.Text = "You have watched this video!";
 			}
-			vv.RequestFocus ();
-			vv.Prepared += delegate(object sender, IO.Vov.Vitamio.MediaPlayer.PreparedEventArgs e) {
-				e.P0.SetPlaybackSpeed (1.0f);//start play
-				vv.Start ();
-				//put duration
-				string duration = Utils.formatMillis (vv.Duration);//set duration
-				tv_duration.Text = duration;
-				sb_video.Max = (int)vv.Duration;
-				updateCurrentPosition ();
-				btn_play.SetBackgroundResource (Resource.Drawable.selector_btn_pause);//set play button
-				tv_title.Text = Activity.Intent.GetStringExtra (Constants.LESSON_TITLE) + ":" + Activity.Intent.GetStringExtra (Constants.LESSON_DES);//set video title
-				//hide the loading progress bar
-				hideLoadingCtl ();
-			};
-			//control volume
-			initVolume ();
-			// scale volume
-			maxVlumeScreenHeightScale = ((float)maxVolume) / Utils.getWindowWidth (Activity);
-			//set screen width and height
-			screenWidth = Utils.getWindowWidth (Activity);
-			screenHeight = Utils.getWindowHeight (Activity);
 		}
 
 		/// <summary>
@@ -289,6 +309,7 @@ namespace CorpTraining.Droid
 			btn_voice = view.FindViewById<Button> (Resource.Id.btn_voice);
 			btn_exit = view.FindViewById<Button> (Resource.Id.btn_exit);
 			ll_loading = view.FindViewById<LinearLayout> (Resource.Id.ll_loading);
+			tv_loading = view.FindViewById<TextView> (Resource.Id.tv_loading);
 			ll_loading.Visibility = ViewStates.Visible;
 			handler = new MyHandler (tv_system_time, tv_current_position, vv, sb_video, this);
 		}
@@ -323,7 +344,7 @@ namespace CorpTraining.Droid
 			updatePlayBtn ();
 		}
 
-		//更新播放按钮背景
+		//update button
 		protected void updatePlayBtn ()
 		{
 			if (vv.IsPlaying) {
@@ -332,49 +353,6 @@ namespace CorpTraining.Droid
 				btn_play.SetBackgroundResource (Resource.Drawable.selector_btn_play);
 			}
 		}
-
-		/*
-		/// <summary>
-		/// full screen button
-		/// </summary>
-		public void toggleFullscreen ()
-		{
-			var p = (RelativeLayout.LayoutParams)vv.LayoutParameters;
-			//set default width and height of videoview
-			if (!isFullScreen) {
-				vvWidth = vv.MeasuredWidth;
-				vvHeight = vv.MeasuredHeight;
-			}
-
-			if (isFullScreen) {
-				//current is full screen,switch to default
-				p.Width = vvWidth;
-				p.Height = vvHeight;
-				Activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Portrait;
-			} else {
-				//current is default screen,switch to full screen
-				p.Width = screenWidth;
-				p.Height = screenHeight;
-				Activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
-			}
-			isFullScreen = !isFullScreen;
-			vv.RequestLayout ();
-		}
-
-		/// <summary>
-		/// Updates the full screen button.
-		/// </summary>
-		void updateFullScreen ()
-		{
-			int resourceid;
-			if (isFullScreen) {
-				resourceid = Resource.Drawable.selector_btn_fullscreen;
-			} else {
-				resourceid = Resource.Drawable.selector_btn_defaultscreen;
-			}
-			btn_fullscreen.SetBackgroundResource (resourceid);
-		}
-		*/
 
 		/** change volume */
 		public void changeVolume (float distanceYY)

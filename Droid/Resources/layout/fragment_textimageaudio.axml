@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include
+        layout="@layout/fragment_audio" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:layout_marginTop="5dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:id="@+id/ll_images"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="10dp">
+        <!--
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="40"
+                android:id="@+id/imageView1" />
+            <TextView
+                android:text="This is subtitle"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_weight="10"
+                android:layout_height="0dp"
+                android:id="@+id/subTxt1"
+                android:textSize="20dp"
+                android:layout_gravity="center"/>
+              -->
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:layout_width="0dp"
+            android:weightSum="50">
+            <TextView
+                android:text="Default Text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_weight="20"
+                android:layout_height="0dp"
+                android:id="@+id/questionTxt"
+                android:textSize="16sp"
+                android:scrollbars="vertical"
+                android:overScrollMode="ifContentScrolls"
+                android:verticalScrollbarPosition="defaultPosition"
+                android:fadeScrollbars="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+            <EditText
+                android:hint="Please input your answer here:"
+                android:layout_width="match_parent"
+                android:layout_weight="30"
+                android:layout_height="0dp"
+                android:textSize="20dp"
+                android:gravity="top"
+                android:background="#ff212121"
+                android:textColorHint="#ff76ff03"
+                android:id="@+id/et_note" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
