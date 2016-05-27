@@ -60,72 +60,132 @@ namespace CorpTraining.iOS
             #region Navigation Bar Buttons
             if (Index < Screens.Count - 1)
             {
-                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, ((sender, e) =>
+                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Next", UIBarButtonItemStyle.Plain, async (sender, e) =>
                         {
                             if (SelectedOptionId != Constants.DefaultOptionId)
                             {
-                                Answers.Add(new ScreenAnswer
-                                    {
-                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
-                                        ScreenId = Screens[Index].Id,
-                                        OptionId = SelectedOptionId,
-                                    });
+                                // Workaround for not having current user in database
+                                User currentUser = null;
+                                try
+                                {
+                                    currentUser = await UserUtil.GetCurrentUserAsync();
+                                }
+                                catch
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection and try again.", UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+
+                                if (currentUser == null)
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection and try again.", UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+                                else
+                                {
+                                    Answers.Add(new ScreenAnswer
+                                        {
+//                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
+                                            UserId = currentUser.Id.GetValueOrDefault(),
+                                            ScreenId = Screens[Index].Id,
+                                            OptionId = SelectedOptionId,
+                                        });
+                                }
                             }
 
                             PushNextScreen();
-                        })), true);
+                        }), true);
             }
             else
             {
-                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, (async (sender, e) =>
+                NavigationItem.SetRightBarButtonItem(new UIBarButtonItem("Submit", UIBarButtonItemStyle.Plain, async (sender, e) =>
                         {
+                            #region Add Answer
                             if (SelectedOptionId != Constants.DefaultOptionId)
                             {
-                                Answers.Add(new ScreenAnswer
-                                    {
-                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
-                                        ScreenId = Screens[Index].Id,
-                                        OptionId = SelectedOptionId,
-                                    });
-                            }
+                                // Workaround for not having current user in database
+                                User currentUser = null;
+                                try
+                                {
+                                    currentUser = await UserUtil.GetCurrentUserAsync();
+                                }
+                                catch
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
 
-                            var loadingOverlay = new LoadingOverlay(View.Bounds);
-                            bool response = false;
-                            try
-                            {
-                                View.Add(loadingOverlay);
-                                response = await LessonUtil.SendLessonAnswers(LessonId, Answers);
+                                if (currentUser == null)
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again."), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null); 
+                                }
+                                else
+                                {
+                                    Answers.Add(new ScreenAnswer
+                                        {
+//                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
+                                            UserId = currentUser.Id.GetValueOrDefault(),
+                                            ScreenId = Screens[Index].Id,
+                                            OptionId = SelectedOptionId,
+                                        });
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
-                                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-                                PresentViewController(alert, true, null);
-                            }
-                            finally
-                            {
-                                loadingOverlay.HideThenRemove();
-                            }
+                            #endregion
 
-                            string alertTitle = null;
-                            string alertMessage = null;
-                            if (response)
+                            #region Send Answers to server
+                            if ((Answers != null) && (Answers.Count > 0))
                             {
-                                alertTitle = "Congrats!";
-                                alertMessage = "Your answer has been submitted successfully.";
+                                var loadingOverlay = new LoadingOverlay(View.Bounds);
+                                bool response = false;
+                                try
+                                {
+                                    View.Add(loadingOverlay);
+                                    response = await LessonUtil.SendLessonAnswers(LessonId, Answers);
+                                }
+                                catch (Exception ex)
+                                {
+                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
+                                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                    PresentViewController(alert, true, null);
+                                }
+                                finally
+                                {
+                                    loadingOverlay.HideThenRemove();
+                                }
+
+                                string alertTitle = null;
+                                string alertMessage = null;
+                                if (response)
+                                {
+                                    alertTitle = "Congrats!";
+                                    alertMessage = "Your answer has been submitted successfully.";
+                                }
+                                else
+                                {
+                                    alertTitle = "Something goes wrong";
+                                    alertMessage = ""; // Need message from server!!
+                                }
+                                var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
+                                submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
+                                        {
+                                            NavigationController.PopToRootViewController(true);
+                                        }));
+                                PresentViewController(submissionAlert, true, null);
                             }
                             else
                             {
-                                alertTitle = "Something goes wrong";
-                                alertMessage = ""; // Need message from server!!
+                                var alert = UIAlertController.Create("Nothing to submit", "You haven't selected any answer", UIAlertControllerStyle.Alert);
+                                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                                PresentViewController(alert, true, null); 
                             }
-                            var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
-                            submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
-                                    {
-                                        NavigationController.PopToRootViewController(true);
-                                    }));
-                            PresentViewController(submissionAlert, true, null);
-                        })), true); 
+                            #endregion
+                        }), true); 
+                        
             }
             #endregion
 
@@ -168,7 +228,10 @@ namespace CorpTraining.iOS
                 catch (Exception ex)
                 {
                     // Display error or skip this part !!
-                    throw ex;
+//                    throw ex;
+                    var alert = UIAlertController.Create("Something goes wrong", "Invalid format for video or audio data", UIAlertControllerStyle.Alert);
+                    alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                    PresentViewController(alert, true, null); 
                 }
                 var playerViewController = new AVPlayerViewController
                 {
@@ -199,7 +262,10 @@ namespace CorpTraining.iOS
                     catch (Exception ex)
                     {
                         // Display error!!
-                        throw ex;
+//                        throw ex;
+                        var alert = UIAlertController.Create("Something goes wrong", "Invalid format for image data", UIAlertControllerStyle.Alert);
+                        alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+                        PresentViewController(alert, true, null); 
                     }
 
                     stackView.AddArrangedSubview(imageView);
