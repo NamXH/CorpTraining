@@ -82,11 +82,19 @@ namespace CorpTraining.Droid
 			editor = preference.Edit ();
 			isWatched = preference.GetBoolean (screen.Id + "", false);
 			initView ();
-			initData ();
+			if (!isWatched) {
+				initData ();
+			} else {
+				ll_loading.Visibility = ViewStates.Visible;
+				tv_loading.Text = "You have watched this video!";
+				var activity = Activity as ScreensActivity;
+				activity.validateBtns ();
+			}
 			initListner ();
 			init ();
 			return view;
 		}
+
 
 		public abstract void init ();
 
@@ -134,7 +142,7 @@ namespace CorpTraining.Droid
 				tv_current_position.Text = Utils.formatMillis (0L);
 				var activity = Activity as ScreensActivity;
 				//set iswatched
-				editor.PutBoolean (screen.Id + "", true);
+				editor.PutBoolean (screen.Id + "", true).Commit ();
 				activity.validateBtns ();
 			};
 
@@ -191,38 +199,34 @@ namespace CorpTraining.Droid
 			if (!LibsChecker.CheckVitamioLibs (Activity)) {
 				return;
 			}
-			if (!isWatched) {
-				//get video_url
-				video_url = getVideoUrl ();
-				if (!string.IsNullOrEmpty (video_url)) {
-					vv.SetVideoURI (Android.Net.Uri.Parse (Utils.EncodeURL (video_url)));
-				} else {
-					DialogFactory.ToastDialog (Activity, "Connect error", "Connect error,please try again later!", Constants.RETURN_LIST);
-				}
-				vv.RequestFocus ();
-				vv.Prepared += delegate(object sender, IO.Vov.Vitamio.MediaPlayer.PreparedEventArgs e) {
-					e.P0.SetPlaybackSpeed (1.0f);//start play
-					vv.Start ();
-					//put duration
-					string duration = Utils.formatMillis (vv.Duration);//set duration
-					tv_duration.Text = duration;
-					sb_video.Max = (int)vv.Duration;
-					updateCurrentPosition ();
-					btn_play.SetBackgroundResource (Resource.Drawable.selector_btn_pause);//set play button
-					tv_title.Text = Activity.Intent.GetStringExtra (Constants.LESSON_TITLE) + ":" + Activity.Intent.GetStringExtra (Constants.LESSON_DES);//set video title
-					//hide the loading progress bar
-					hideLoadingCtl ();
-				};
-				//control volume
-				initVolume ();
-				// scale volume
-				maxVlumeScreenHeightScale = ((float)maxVolume) / Utils.getWindowWidth (Activity);
-				//set screen width and height
-				screenWidth = Utils.getWindowWidth (Activity);
-				screenHeight = Utils.getWindowHeight (Activity);
+			//get video_url
+			video_url = getVideoUrl ();
+			if (!string.IsNullOrEmpty (video_url)) {
+				vv.SetVideoURI (Android.Net.Uri.Parse (Utils.EncodeURL (video_url)));
 			} else {
-				tv_loading.Text = "You have watched this video!";
+				DialogFactory.ToastDialog (Activity, "Connect error", "Connect error,please try again later!", Constants.RETURN_LIST);
 			}
+			vv.RequestFocus ();
+			vv.Prepared += delegate(object sender, IO.Vov.Vitamio.MediaPlayer.PreparedEventArgs e) {
+				e.P0.SetPlaybackSpeed (1.0f);//start play
+				vv.Start ();
+				//put duration
+				string duration = Utils.formatMillis (vv.Duration);//set duration
+				tv_duration.Text = duration;
+				sb_video.Max = (int)vv.Duration;
+				updateCurrentPosition ();
+				btn_play.SetBackgroundResource (Resource.Drawable.selector_btn_pause);//set play button
+				tv_title.Text = Activity.Intent.GetStringExtra (Constants.LESSON_TITLE) + ":" + Activity.Intent.GetStringExtra (Constants.LESSON_DES);//set video title
+				//hide the loading progress bar
+				hideLoadingCtl ();
+			};
+			//control volume
+			initVolume ();
+			// scale volume
+			maxVlumeScreenHeightScale = ((float)maxVolume) / Utils.getWindowWidth (Activity);
+			//set screen width and height
+			screenWidth = Utils.getWindowWidth (Activity);
+			screenHeight = Utils.getWindowHeight (Activity);
 		}
 
 		/// <summary>
@@ -290,6 +294,7 @@ namespace CorpTraining.Droid
 			}
 			handler.RemoveCallbacksAndMessages (null);
 		}
+
 
 		private void initView ()
 		{
@@ -377,6 +382,7 @@ namespace CorpTraining.Droid
 			sb_video.Progress = cp;
 			handler.SendEmptyMessageDelayed (Constants.UPDATE_CURRENT_POSITION, 300);
 		}
+			
 	}
 
 	public class MyAnimatorListener:Java.Lang.Object,Animator.IAnimatorListener
@@ -447,6 +453,7 @@ namespace CorpTraining.Droid
 				break;
 			}
 		}
+
 	}
 }
 

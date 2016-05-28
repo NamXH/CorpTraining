@@ -27,7 +27,7 @@
         android:layout_height="10dp"
         android:layout_weight="20"
         android:id="@+id/editText1"
-        android:hint="Please input your answer here:"
+        android:hint="Please input your note here:"
         android:typeface="sans"
         android:background="#ff212121"
         android:textSize="18dp"

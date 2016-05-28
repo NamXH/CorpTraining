@@ -58,7 +58,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true" />
             <EditText
-                android:hint="Please input your answer here:"
+                android:hint="Please input your note here:"
                 android:layout_width="match_parent"
                 android:layout_weight="30"
                 android:layout_height="0dp"

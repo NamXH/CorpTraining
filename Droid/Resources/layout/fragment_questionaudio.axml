@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:showDividers="none"
+    android:weightSum="100">
+    <include
+        layout="@layout/fragment_audio" />
+    <TextView
+        android:text="Default Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_weight="40"
+        android:layout_height="0dp"
+        android:id="@+id/questionTxt"
+        android:textSize="20sp"
+        android:scrollbars="vertical"
+        android:overScrollMode="ifContentScrolls"
+        android:verticalScrollbarPosition="defaultPosition"
+        android:fadeScrollbars="true" />
+    <RadioGroup
+        android:id="@+id/choicesRadioGrp"
+        android:layout_width="match_parent"
+        android:layout_weight="45"
+        android:layout_height="0dp"
+        android:orientation="vertical" />
+</LinearLayout>

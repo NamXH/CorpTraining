@@ -38,7 +38,11 @@ namespace CorpTraining.Droid
 		private int lesson_id;
 		private int screenCount = 0;
 		public Dictionary<int,string> answer;
+		//record all answers
 		private InputMethodManager manager;
+		private List<string> ids;
+		private ISharedPreferences preference;
+		private ISharedPreferencesEditor editor;
 		//record the answer
 		public override void initListner ()
 		{
@@ -64,6 +68,10 @@ namespace CorpTraining.Droid
 			lesson_title = Intent.GetStringExtra (Constants.LESSON_TITLE);
 			lesson_des = Intent.GetStringExtra (Constants.LESSON_DES);
 			lesson_id = Intent.GetIntExtra (Constants.LESSON_ID, 0);
+			ids = new List<string> ();
+			Constants.selectedAnswer = new Dictionary<int, int> ();
+			preference = GetSharedPreferences (Constants.PREFERENCE_CONFIG, FileCreationMode.Private);
+			editor = preference.Edit ();
 			//set total time
 			duration = 80 * Constants.screens.Count * 1000;
 			//set screenCounts
@@ -93,6 +101,7 @@ namespace CorpTraining.Droid
 			FindViewById<TextView> (Resource.Id.navigationTxt).Text = (currentScreen + 1) + " / " + screenCount;
 			//get screen
 			screen = Constants.screens [currentScreen];
+
 			if (screen != null) {
 				switch (screen.Type) {
 				case "video":
@@ -100,15 +109,16 @@ namespace CorpTraining.Droid
 					//must finish watching video
 					nextBtn.Visibility = ViewStates.Invisible;
 					previousBtn.Visibility = ViewStates.Invisible;
+					ids.Add (screen.Id + "");
 					showVideoTextFragment ();
 					break;
 
 				case "audio_question_image":
 					
 					break;
-
+				case "question_audio":
 				case "audio_question":
-					
+					showQuestionAudioFragment ();
 					break;
 
 				case "audio_edittext":
@@ -166,14 +176,12 @@ namespace CorpTraining.Droid
 				}
 				//record the answer
 				recordAnswer (text_answer);
+				//record screenId
+
 				break;
 
 			case "audio_question_image":
-
-				break;
-
-			case "audio_question":
-
+				
 				break;
 
 			case "audio_edittext":
@@ -190,7 +198,7 @@ namespace CorpTraining.Droid
 				string textimageaudio_answer = textimageaudio.et_note.Text;
 				if (string.IsNullOrEmpty (textimageaudio_answer)) {
 					//not answer the question
-					DialogFactory.ToastDialog (this, "Empty answer", "Please type your answer", 0);
+					DialogFactory.ToastDialog (this, "Empty answer", "Please take some note", 0);
 					return false;
 				}
 				//record the answer
@@ -205,15 +213,33 @@ namespace CorpTraining.Droid
 				string textaudio_answer = textaudio.editText1.Text;
 				if (string.IsNullOrEmpty (textaudio_answer)) {
 					//not answer the question
-					DialogFactory.ToastDialog (this, "Empty answer", "Please type your answer", 0);
+					DialogFactory.ToastDialog (this, "Empty answer", "Please take some note", 0);
 					return false;
 				}
 				//record the answer
 				recordAnswer (textaudio_answer);
 				break;
-			case "question":
+			case "question"://selected
 				var question = fragment as QuestionFragment;
-
+				var checkedId = (question.choicesRadioGroup as RadioGroup).CheckedRadioButtonId;
+				if (checkedId < 0) {
+					//not selected
+					DialogFactory.ToastDialog (this, "No selection", "Please select one answer", 0);
+					return false;
+				}
+				recordAnswer (checkedId + "");
+				recordSelectedAnswer (screen.Id, screen.Options [checkedId].Id);
+				break;
+			case "audio_question":
+			case "question_audio"://selected
+				var audioquestion = fragment as QuestionAudioFragment;
+				var cId = (audioquestion.choicesRadioGroup as RadioGroup).CheckedRadioButtonId;
+				if (cId < 0) {
+					//not selected
+					DialogFactory.ToastDialog (this, "No selection", "Please select one answer", 0);
+					return false;
+				}
+				recordAnswer (cId + "");
 				break;
 			default:
 				break;
@@ -329,8 +355,7 @@ namespace CorpTraining.Droid
 		}
 
 		private void showQuestionFragment ()
-		{
-			
+		{			
 			// Make new fragment to show this selection.
 			var question = new QuestionFragment (screen, lesson_id);
 			// Execute a transaction, replacing any existing
@@ -342,10 +367,43 @@ namespace CorpTraining.Droid
 			fragment = question;
 		}
 
+		private void showQuestionAudioFragment ()
+		{
+			// Make new fragment to show this selection.
+			var questionaudio = new QuestionAudioFragment (screen, lesson_id);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, questionaudio);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = questionaudio;
+		}
+
+		private void recordSelectedAnswer (int screen_id, int option_id)
+		{
+			if (Constants.selectedAnswer.ContainsKey (screen_id)) {
+				//correct
+				Constants.selectedAnswer [screen_id] = option_id;
+			} else {
+				//insert
+				Constants.selectedAnswer.Add (screen_id, option_id);
+			}	
+		}
+
 		public void submit ()
 		{
-			
+			//make iswatched false
+			foreach (var item in ids) {
+				editor.PutBoolean (item, false);
+			}
+			editor.Commit ();
+			//jump to result activity:
+			Intent intent = new Intent (this, typeof(ResultActivity));
+			StartActivity (intent);
+			Finish ();
 		}
+
 	}
 
 	public class MyCountDownTimer:CountDownTimer

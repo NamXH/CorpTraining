@@ -11,19 +11,20 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Content.PM;
+using Android.Media;
 
 namespace CorpTraining.Droid
 {
-	public class QuestionFragment : Fragment
+	public class QuestionAudioFragment : Fragment
 	{
 		private Screen screen;
 		private TextView questionTxt;
 		public ViewGroup choicesRadioGroup;
 		private List<Option> options;
 		private int lesson_id;
+		MediaPlayer mp = new MediaPlayer ();
 
-		public QuestionFragment (Screen screen, int id)
+		public QuestionAudioFragment (Screen screen, int id)
 		{
 			this.screen = screen;
 			this.lesson_id = id;
@@ -32,9 +33,11 @@ namespace CorpTraining.Droid
 		public override Android.Views.View OnCreateView (Android.Views.LayoutInflater inflater, Android.Views.ViewGroup container, Android.OS.Bundle savedInstanceState)
 		{
 			base.OnCreateView (inflater, container, savedInstanceState);
-			var view = inflater.Inflate (Resource.Layout.fragment_question, container, false);
+			var view = inflater.Inflate (Resource.Layout.fragment_questionaudio, container, false);
 			choicesRadioGroup = (ViewGroup)view.FindViewById<RadioGroup> (Resource.Id.choicesRadioGrp);
 			questionTxt = view.FindViewById<TextView> (Resource.Id.questionTxt);
+			questionTxt.Text = (screen.Question == null) ? "No question" : screen.Question;
+			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
 			populateChoices (view);
 			return view;
 		}
@@ -65,6 +68,13 @@ namespace CorpTraining.Droid
 			if (id == -1) {
 				(choicesRadioGroup as RadioGroup).ClearCheck ();
 			}
+		}
+
+		public override void OnDestroy ()
+		{			
+			ScreensActivity.handler.RemoveCallbacksAndMessages (null);//remove all messages
+			mp.Stop ();
+			base.OnDestroy ();
 		}
 	}
 }

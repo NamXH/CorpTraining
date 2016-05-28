@@ -39,6 +39,10 @@ namespace CorpTraining.Droid
 		//sharedpreference name
 		public static readonly string PREFERENCE_NAME = "answer";
 		public static readonly string PREFERENCE_CONFIG = "config";
+		public static readonly string SELECTED_ANSWER = "selected_answer";
+
+		//record answer
+		public static Dictionary<int,int> selectedAnswer;
 
 	}
 }

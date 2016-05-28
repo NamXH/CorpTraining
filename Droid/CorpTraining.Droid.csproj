@@ -92,6 +92,8 @@
     <Compile Include="C#\Fragments\TextAudioFragment.cs" />
     <Compile Include="C#\Fragments\TextImageAudioFragment.cs" />
     <Compile Include="C#\Fragments\QuestionFragment.cs" />
+    <Compile Include="C#\Fragments\QuestionAudioFragment.cs" />
+    <Compile Include="C#\Activities\ResultActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -215,6 +217,8 @@
     <AndroidResource Include="Resources\layout\fragment_textimageaudio.axml" />
     <AndroidResource Include="Resources\mipmap-hdpi\default_bitmap.png" />
     <AndroidResource Include="Resources\layout\fragment_question.axml" />
+    <AndroidResource Include="Resources\layout\fragment_questionaudio.axml" />
+    <AndroidResource Include="Resources\layout\activity_result.axml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
