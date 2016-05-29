@@ -31,6 +31,12 @@ namespace CorpTraining.Droid
 					ScreensActivity screenactivity = context as ScreensActivity;
 					screenactivity.submit ();					
 					break;
+				case Constants.LOGIN_TIMEOUT:
+					//jump to login
+					var ha = context as HomeActivity;
+					ha.StartActivity (new Intent (ha, typeof(LoginActivity)));
+					ha.Finish ();
+					break;
 				default:
 					break;
 				}

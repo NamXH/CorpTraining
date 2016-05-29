@@ -94,6 +94,8 @@
     <Compile Include="C#\Fragments\QuestionFragment.cs" />
     <Compile Include="C#\Fragments\QuestionAudioFragment.cs" />
     <Compile Include="C#\Activities\ResultActivity.cs" />
+    <Compile Include="C#\Adapter\ResultListViewAdapter.cs" />
+    <Compile Include="C#\Fragments\AudioVideoTextFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -219,6 +221,11 @@
     <AndroidResource Include="Resources\layout\fragment_question.axml" />
     <AndroidResource Include="Resources\layout\fragment_questionaudio.axml" />
     <AndroidResource Include="Resources\layout\activity_result.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_scanner_malware.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\act_scanning_03.png" />
+    <AndroidResource Include="Resources\drawable\progress_horizontal_score.xml" />
+    <AndroidResource Include="Resources\layout\item_resultlistview.axml" />
+    <AndroidResource Include="Resources\layout\fragment_audiovideotext.axml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

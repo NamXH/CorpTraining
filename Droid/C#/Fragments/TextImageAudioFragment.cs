@@ -18,7 +18,7 @@ namespace CorpTraining.Droid
 {
 	public class TextImageAudioFragment : Fragment
 	{
-		MediaPlayer mp = new MediaPlayer ();
+		public MediaPlayer mp = new MediaPlayer ();
 		private ImageView iv1;
 		private TextView subtxt1;
 		private Screen screen;
@@ -43,6 +43,10 @@ namespace CorpTraining.Droid
 				//contains
 				et_note.Text = activity.answer [screen.Id];
 			}
+			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
+			mp.Prepared += delegate(object sender, EventArgs e) {
+				activity.validateBtns ();
+			};
 			//dynamically make textview
 			images = new List<Image> (screen.Images);
 			if (images != null && images.Count > 0) {
@@ -61,7 +65,7 @@ namespace CorpTraining.Droid
 					ll_images.AddView (tv, textparam);
 				}
 			}
-			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
+
 			return view;
 		}
 
@@ -69,6 +73,7 @@ namespace CorpTraining.Droid
 		{			
 			ScreensActivity.handler.RemoveCallbacksAndMessages (null);//remove all messages
 			mp.Stop ();
+			mp.Release ();
 			base.OnDestroy ();
 		}
 	}

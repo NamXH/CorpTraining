@@ -10,6 +10,7 @@ namespace CorpTraining.Droid
 		public const int REGISTER_SUCCESS = 1;
 		public const int RETURN_LIST = 2;
 		public const int TIME_UP = 3;
+		public const int LOGIN_TIMEOUT = 4;
 
 		public const int CHANGE_COLOR = 2;
 
@@ -42,8 +43,9 @@ namespace CorpTraining.Droid
 		public static readonly string SELECTED_ANSWER = "selected_answer";
 
 		//record answer
-		public static Dictionary<int,int> selectedAnswer;
-
+		public static List<ScreenAnswer> screenAnswers;
+		//record current user
+		public static User currentUser;
 	}
 }
 

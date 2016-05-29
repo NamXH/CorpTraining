@@ -50,4 +50,20 @@
 		<item name="android:layout_weight">1</item>
 		<item name="android:drawableLeft">@mipmap/previous</item>
 	</style>
+	<style name="TitleStyle">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">50dp</item>
+		<item name="android:background">#8866ff00</item>
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@android:color/black</item>
+		<item name="android:textSize">22sp</item>
+	</style>
+	<style name="MyHorizontalProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+		<item name="android:indeterminateOnly">false</item>
+		<item name="android:progressDrawable">@android:drawable/progress_horizontal</item>
+		<item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+		<item name="android:minHeight">20dip</item>
+		<item name="android:maxHeight">20dip</item>
+		<item name="android:mirrorForRtl">true</item>
+	</style>
 </resources>

@@ -43,6 +43,7 @@ namespace CorpTraining.Droid
 		private List<string> ids;
 		private ISharedPreferences preference;
 		private ISharedPreferencesEditor editor;
+		private Dictionary<int,int> selectedAnswer;
 		//record the answer
 		public override void initListner ()
 		{
@@ -51,7 +52,7 @@ namespace CorpTraining.Droid
 
 		public override void initData ()
 		{
-			
+
 		}
 
 		public override void initView ()
@@ -69,7 +70,7 @@ namespace CorpTraining.Droid
 			lesson_des = Intent.GetStringExtra (Constants.LESSON_DES);
 			lesson_id = Intent.GetIntExtra (Constants.LESSON_ID, 0);
 			ids = new List<string> ();
-			Constants.selectedAnswer = new Dictionary<int, int> ();
+			selectedAnswer = new Dictionary<int, int> ();
 			preference = GetSharedPreferences (Constants.PREFERENCE_CONFIG, FileCreationMode.Private);
 			editor = preference.Edit ();
 			//set total time
@@ -77,6 +78,7 @@ namespace CorpTraining.Droid
 			//set screenCounts
 			screenCount = Constants.screens.Count;
 			answer = new Dictionary<int,String> ();
+			Constants.screenAnswers = new List<ScreenAnswer> ();
 			validateBtns ();
 			updateScreen ();
 			nextBtn.Click += NextBtn_Click;
@@ -103,12 +105,12 @@ namespace CorpTraining.Droid
 			screen = Constants.screens [currentScreen];
 
 			if (screen != null) {
+				nextBtn.Visibility = ViewStates.Invisible;
+				previousBtn.Visibility = ViewStates.Invisible;
 				switch (screen.Type) {
 				case "video":
 				case "video_text":
 					//must finish watching video
-					nextBtn.Visibility = ViewStates.Invisible;
-					previousBtn.Visibility = ViewStates.Invisible;
 					ids.Add (screen.Id + "");
 					showVideoTextFragment ();
 					break;
@@ -130,6 +132,7 @@ namespace CorpTraining.Droid
 				case "audio_image":
 					
 					break;
+				case "text_audio_image":
 				case "text_image_audio":
 					showTextImageAudioFragment ();
 					break;
@@ -142,6 +145,10 @@ namespace CorpTraining.Droid
 					break;
 				case "question":
 					showQuestionFragment ();
+					break;
+				case "audio_text_video":
+					ids.Add (screen.Id + "");
+					showAudioTextVideoFragment ();
 					break;
 				default:
 					break;
@@ -177,7 +184,6 @@ namespace CorpTraining.Droid
 				//record the answer
 				recordAnswer (text_answer);
 				//record screenId
-
 				break;
 
 			case "audio_question_image":
@@ -193,6 +199,7 @@ namespace CorpTraining.Droid
 			case "audio_image":
 
 				break;
+			case "text_audio_image":
 			case "text_image_audio":
 				var textimageaudio = fragment as TextImageAudioFragment;
 				string textimageaudio_answer = textimageaudio.et_note.Text;
@@ -228,7 +235,7 @@ namespace CorpTraining.Droid
 					return false;
 				}
 				recordAnswer (checkedId + "");
-				recordSelectedAnswer (screen.Id, screen.Options [checkedId].Id);
+				recordSelectedAnswer (screen.Id, question.options [checkedId].Id);
 				break;
 			case "audio_question":
 			case "question_audio"://selected
@@ -240,6 +247,14 @@ namespace CorpTraining.Droid
 					return false;
 				}
 				recordAnswer (cId + "");
+				recordSelectedAnswer (screen.Id, audioquestion.options [cId].Id);
+				break;
+			case "audio_text_video":
+				var audioTextVideo = fragment as AudioVideoTextFragment;
+				string audioString = audioTextVideo.et_answer.Text;
+				//record the answer
+				recordAnswer (audioString);
+				//record screenId
 				break;
 			default:
 				break;
@@ -380,16 +395,35 @@ namespace CorpTraining.Droid
 			fragment = questionaudio;
 		}
 
+		private void showAudioTextVideoFragment ()
+		{
+			// Make new fragment to show this selection.
+			var audioTextVideo = new AudioVideoTextFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, audioTextVideo);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = audioTextVideo;
+		}
+
+		/// <summary>
+		/// Records the selected answer.
+		/// </summary>
+		/// <param name="screen_id">Screen identifier.</param>
+		/// <param name="option_id">Option identifier.</param>
 		private void recordSelectedAnswer (int screen_id, int option_id)
 		{
-			if (Constants.selectedAnswer.ContainsKey (screen_id)) {
+			if (selectedAnswer.ContainsKey (screen_id)) {
 				//correct
-				Constants.selectedAnswer [screen_id] = option_id;
+				selectedAnswer [screen_id] = option_id;
 			} else {
 				//insert
-				Constants.selectedAnswer.Add (screen_id, option_id);
+				selectedAnswer.Add (screen_id, option_id);
 			}	
 		}
+
 
 		public void submit ()
 		{
@@ -398,12 +432,20 @@ namespace CorpTraining.Droid
 				editor.PutBoolean (item, false);
 			}
 			editor.Commit ();
+			//pack screenanswer from selectedanswers
+			foreach (var item in selectedAnswer) {
+				ScreenAnswer sa = new ScreenAnswer ();
+				sa.ScreenId = item.Key;
+				sa.OptionId = item.Value;
+				sa.UserId = (int)Constants.currentUser.Id;
+				Constants.screenAnswers.Add (sa);
+			}
 			//jump to result activity:
 			Intent intent = new Intent (this, typeof(ResultActivity));
+			intent.PutExtra (Constants.LESSON_ID, lesson_id);
 			StartActivity (intent);
 			Finish ();
 		}
-
 	}
 
 	public class MyCountDownTimer:CountDownTimer

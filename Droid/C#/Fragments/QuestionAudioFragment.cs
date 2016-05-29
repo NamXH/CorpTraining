@@ -20,7 +20,7 @@ namespace CorpTraining.Droid
 		private Screen screen;
 		private TextView questionTxt;
 		public ViewGroup choicesRadioGroup;
-		private List<Option> options;
+		public List<Option> options;
 		private int lesson_id;
 		MediaPlayer mp = new MediaPlayer ();
 
@@ -39,6 +39,10 @@ namespace CorpTraining.Droid
 			questionTxt.Text = (screen.Question == null) ? "No question" : screen.Question;
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
 			populateChoices (view);
+			mp.Prepared += delegate(object sender, EventArgs e) {
+				var activity = Activity as ScreensActivity;
+				activity.validateBtns ();
+			};
 			return view;
 		}
 
@@ -74,6 +78,7 @@ namespace CorpTraining.Droid
 		{			
 			ScreensActivity.handler.RemoveCallbacksAndMessages (null);//remove all messages
 			mp.Stop ();
+			mp.Release ();
 			base.OnDestroy ();
 		}
 	}

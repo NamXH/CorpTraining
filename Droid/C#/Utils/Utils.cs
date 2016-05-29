@@ -117,10 +117,7 @@ namespace CorpTraining.Droid
 				context.SendBroadcast (i);
 			}
 			try {
-				mp.Completion += delegate(object sender, EventArgs e) {
-
-				};
-				mp.SetDataSource (context, Android.Net.Uri.Parse (EncodeURL (audioUri)));
+				mp.SetDataSource (context, Android.Net.Uri.Parse (audioUri));
 				mp.PrepareAsync ();
 
 			} catch (Exception ex) {

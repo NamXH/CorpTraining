@@ -31,6 +31,7 @@ namespace CorpTraining.Droid
 			lv_list.Visibility = ViewStates.Invisible;
 			ll_load.Visibility = ViewStates.Visible;
 			currentLesson = new Lesson ();
+			Constants.currentUser = new User ();
 			//load data
 			getLessonsFromServer ();
 			lv_list.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs e) {
@@ -65,9 +66,14 @@ namespace CorpTraining.Droid
 		{
 			try {
 				var lessons = await LessonUtil.GetLessonsAsync ();
+				Constants.currentUser = await UserUtil.GetCurrentUserAsync ();
 				lessonList = new List<Lesson> (lessons);
 			} catch (Exception ex) {
 				DialogFactory.ToastDialog (activity, "Server busy", "Server is busy,please drag down to refresh later", 0);
+			}
+			if (Constants.currentUser == null) {
+				//illegal login
+				DialogFactory.ToastDialog (activity, "Login timeout", "Timeout,please login again", Constants.LOGIN_TIMEOUT);
 			}
 			lv_list.onRefreshComplete ();
 			lv_list.Adapter = new MyListViewAdapter (activity, lessonList);

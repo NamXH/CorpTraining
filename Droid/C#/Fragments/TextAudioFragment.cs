@@ -38,6 +38,9 @@ namespace CorpTraining.Droid
 				editText1.Text = activity.answer [screen.Id];
 			}
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
+			mp.Prepared += delegate(object sender, EventArgs e) {
+				activity.validateBtns ();
+			};
 			return view;
 		}
 
@@ -45,6 +48,7 @@ namespace CorpTraining.Droid
 		{
 			ScreensActivity.handler.RemoveCallbacksAndMessages (null);//remove all messages
 			mp.Stop ();
+			mp.Release ();
 			base.OnDestroy ();
 		}
 	}

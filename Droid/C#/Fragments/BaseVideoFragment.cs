@@ -88,7 +88,9 @@ namespace CorpTraining.Droid
 				ll_loading.Visibility = ViewStates.Visible;
 				tv_loading.Text = "You have watched this video!";
 				var activity = Activity as ScreensActivity;
-				activity.validateBtns ();
+				if (!screen.Type.Equals ("audio_text_video")) {
+					activity.validateBtns ();
+				}
 			}
 			initListner ();
 			init ();
@@ -136,15 +138,16 @@ namespace CorpTraining.Droid
 					break;
 				}
 			};
-
-			vv.Completion += delegate(object sender, IO.Vov.Vitamio.MediaPlayer.CompletionEventArgs e) {
-				vv.SeekTo (0);
-				tv_current_position.Text = Utils.formatMillis (0L);
-				var activity = Activity as ScreensActivity;
-				//set iswatched
-				editor.PutBoolean (screen.Id + "", true).Commit ();
-				activity.validateBtns ();
-			};
+			if (!screen.Type.Equals ("audio-text-video")) {
+				vv.Completion += delegate(object sender, IO.Vov.Vitamio.MediaPlayer.CompletionEventArgs e) {
+					vv.SeekTo (0);
+					tv_current_position.Text = Utils.formatMillis (0L);
+					var activity = Activity as ScreensActivity;
+					//set iswatched
+					editor.PutBoolean (screen.Id + "", true).Commit ();
+					activity.validateBtns ();
+				};
+			}
 
 			btn_voice.Click += delegate(object sender, EventArgs e) {
 				toggleMute ();

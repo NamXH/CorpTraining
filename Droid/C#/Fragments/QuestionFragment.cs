@@ -12,6 +12,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Android.Content.PM;
+using System.Threading.Tasks;
 
 namespace CorpTraining.Droid
 {
@@ -20,7 +21,7 @@ namespace CorpTraining.Droid
 		private Screen screen;
 		private TextView questionTxt;
 		public ViewGroup choicesRadioGroup;
-		private List<Option> options;
+		public List<Option> options;
 		private int lesson_id;
 
 		public QuestionFragment (Screen screen, int id)
@@ -65,6 +66,7 @@ namespace CorpTraining.Droid
 			if (id == -1) {
 				(choicesRadioGroup as RadioGroup).ClearCheck ();
 			}
+			activity.validateBtns ();
 		}
 	}
 }
