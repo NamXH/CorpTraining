@@ -142,6 +142,8 @@
     <BundleResource Include="Resources\radio_disable%402x.png" />
     <BundleResource Include="Resources\radio_enable%402x.png" />
     <BundleResource Include="Resources\microphone.png" />
+    <BundleResource Include="Resources\checkmark%402x.png" />
+    <BundleResource Include="Resources\blank%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="sqlite-net">

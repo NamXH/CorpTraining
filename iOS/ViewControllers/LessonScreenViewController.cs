@@ -323,8 +323,8 @@ namespace CorpTraining.iOS
 
                     var optionRadioButton = new UIButton(UIButtonType.RoundedRect);
                     optionStackView.AddArrangedSubview(optionRadioButton);
-                    optionRadioButton.SetImage(UIImage.FromBundle("radio_enable.png"), UIControlState.Normal);
-                    optionRadioButton.SetImage(UIImage.FromBundle("radio_disable.png"), UIControlState.Disabled);
+                    optionRadioButton.SetImage(UIImage.FromBundle("checkmark.png"), UIControlState.Normal);
+                    optionRadioButton.SetImage(UIImage.FromBundle("blank.png"), UIControlState.Disabled);
                     optionRadioButton.Enabled = false;
                     View.ConstrainLayout(() =>
                         optionRadioButton.Frame.Height == 20f &&
