@@ -214,6 +214,7 @@ namespace CorpTraining.iOS
                 stackView.Frame.Top == scrollView.Frame.Top + Constants.VerticalPad &&
                 stackView.Frame.Bottom == scrollView.Frame.Bottom - Constants.VerticalPad &&
                 stackView.Frame.Left == scrollView.Frame.Left + Constants.HorizontalPad &&
+                stackView.Frame.Right == scrollView.Frame.Right + Constants.HorizontalPad &&
                 stackView.Frame.Width == scrollView.Frame.Width - twiceHorizontalPad // required!
             );
             scrollView.ContentSize = stackView.Frame.Size;
@@ -249,6 +250,8 @@ namespace CorpTraining.iOS
                 foreach (var image in Screens[Index].Images)
                 {
                     var imageView = new UIImageView();
+                    imageView.BackgroundColor = UIColor.Brown;
+                    imageView.ContentMode = UIViewContentMode.ScaleAspectFit;
                     try
                     {
                         using (var url = new NSUrl(image.Url))
@@ -268,9 +271,12 @@ namespace CorpTraining.iOS
                         PresentViewController(alert, true, null); 
                     }
 
+                    var imageRatio = imageView.IntrinsicContentSize.Width / imageView.IntrinsicContentSize.Height;
+                    var stackViewWidth = View.Frame.Width - twiceHorizontalPad;
+                    var resizedHeight = stackViewWidth / imageRatio; // Pretty hacky!! Maybe can achieve the same thing by setting vertical hugging priority?
                     stackView.AddArrangedSubview(imageView);
                     View.ConstrainLayout(() =>
-                        imageView.Frame.Width == stackView.Frame.Width
+                        imageView.Frame.Height == resizedHeight
                     );
                 }
             }
