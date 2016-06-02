@@ -56,7 +56,6 @@ namespace CorpTraining.iOS
         {
             base.ViewDidLoad();
 
-
             #region Navigation Bar Buttons
             if (Index < Screens.Count - 1)
             {
@@ -380,6 +379,12 @@ namespace CorpTraining.iOS
                         }
                     };
                 }
+            }
+
+            // Start media automatically
+            if (!String.IsNullOrEmpty(mediaPlayerUrl))
+            {
+                MediaPlayer.Play();
             }
         }
     }
