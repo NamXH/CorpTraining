@@ -78,12 +78,13 @@ namespace CorpTraining.iOS
 
                                 if (currentUser == null)
                                 {
-                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection and try again.", UIAlertControllerStyle.Alert);
+                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection, sign out and try again.", UIAlertControllerStyle.Alert);
                                     alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                                     PresentViewController(alert, true, null); 
                                 }
                                 else
                                 {
+                                    Answers.RemoveAll(x => x.ScreenId == Screens[Index].Id);
                                     Answers.Add(new ScreenAnswer
                                         {
 //                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
@@ -125,6 +126,7 @@ namespace CorpTraining.iOS
                                 }
                                 else
                                 {
+                                    Answers.RemoveAll(x => x.ScreenId == Screens[Index].Id);
                                     Answers.Add(new ScreenAnswer
                                         {
 //                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
