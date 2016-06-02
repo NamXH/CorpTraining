@@ -25,6 +25,7 @@ namespace CorpTraining.iOS
         public const float BigGap = 20f;
 
         public const float NormalFontSize = 20;
+        public const float LargeFontSize = 21;
 
         public const float MainColorHue = 0.553f;
         public const float MainColorSaturation = 0.650f;

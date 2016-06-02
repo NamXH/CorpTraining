@@ -256,7 +256,6 @@ namespace CorpTraining.iOS
                 foreach (var image in Screens[Index].Images)
                 {
                     var imageView = new UIImageView();
-                    imageView.BackgroundColor = UIColor.Brown;
                     imageView.ContentMode = UIViewContentMode.ScaleAspectFit;
                     try
                     {
@@ -296,6 +295,7 @@ namespace CorpTraining.iOS
                         Text = text.TextValue,
                         Lines = 0,
                         LineBreakMode = UILineBreakMode.WordWrap,
+                        Font = UIFont.SystemFontOfSize(Constants.LargeFontSize),
                     };
                     stackView.AddArrangedSubview(textLabel);
                     View.ConstrainLayout(() =>
@@ -312,6 +312,7 @@ namespace CorpTraining.iOS
                     Text = Screens[Index].Question,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
+                    Font = UIFont.SystemFontOfSize(Constants.LargeFontSize),
                 };
                 stackView.AddArrangedSubview(questionLabel);
                 View.ConstrainLayout(() =>
@@ -348,6 +349,7 @@ namespace CorpTraining.iOS
                         LineBreakMode = UILineBreakMode.WordWrap,
                         HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
                         VerticalAlignment = UIControlContentVerticalAlignment.Center,
+                        Font = UIFont.SystemFontOfSize(Constants.LargeFontSize),
                     };
                     optionTextButton.SetTitle(option.Title, UIControlState.Normal);
                     optionStackView.AddArrangedSubview(optionTextButton);
