@@ -243,6 +243,13 @@ namespace CorpTraining.iOS
                 View.ConstrainLayout(() =>
                     playerViewController.View.Frame.Width == stackView.Frame.Width
                 );
+
+                if (String.IsNullOrWhiteSpace(Screens[Index].VideoUrl))
+                {
+                    View.ConstrainLayout(() =>
+                        playerViewController.View.Frame.Height == Constants.AudioPlayerHeight
+                    ); 
+                }
             }
 
             if (Screens[Index].Images != null)

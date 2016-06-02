@@ -121,10 +121,10 @@ namespace CorpTraining.iOS
             cell.TextLabel.Text = Items[indexPath.Row].Title;
 
             // If lesson is finished then add check mark
-            if (true) // Place holder!!
-            {
-                cell.Accessory = UITableViewCellAccessory.Checkmark; 
-            }
+//            if (true) // Place holder!!
+//            {
+//                cell.Accessory = UITableViewCellAccessory.Checkmark; 
+//            }
 
             return cell;
         }

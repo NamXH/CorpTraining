@@ -20,6 +20,7 @@ namespace CorpTraining.iOS
         public const float MaximumControlsWidth = 400;
         // Height is fixed for specific device, hard to be adaptive!!
         public const float ControlsHeight = 50;
+        public const float AudioPlayerHeight = 40;
         public const float SmallGap = 10f;
         public const float BigGap = 20f;
 
