@@ -74,6 +74,30 @@ namespace CorpTraining
 			return lessonList;
 		}
 
+		public static async Task<IList<Lesson>> GetLessonsByModuleAsync (int moduleId)
+		{
+			IList<Lesson> lessonList;
+
+			JsonValue jsonDoc = await MakeServerRequest(Globals.MODULES_URL + moduleId + "/" + Globals.LESSONS_MODULE_URL);
+
+			JArray lessonArray = JArray.Parse(jsonDoc.ToString());
+			lessonList = JsonConvert.DeserializeObject<IList<Lesson>>(lessonArray.ToString());
+
+			return lessonList;
+		}
+
+		public static async Task<IList<Module>> GetModulesAsync ()
+		{
+			IList<Module> moduleList;
+
+			JsonValue jsonDoc = await MakeServerRequest(Globals.MODULES_URL);
+
+			JArray modulesArray = JArray.Parse(jsonDoc.ToString());
+			moduleList = JsonConvert.DeserializeObject<IList<Module>>(modulesArray.ToString());
+
+			return moduleList;
+		}
+
 		/// <summary>
 		/// Get a simple lesson with basic parameters.
 		/// </summary>
@@ -272,7 +296,7 @@ namespace CorpTraining
 		/// <summary>Sends the answers for a specific lesson.
 		/// <para>It will return success if it was succesfull, and null if it wasn't</para>
 		/// </summary>
-		public static async Task<bool> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
+		public static async Task<Tuple<string, int, int>> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
 		{//TODO handle the answer response from the server when its done
 
 			var jsonAnswers = JsonConvert.SerializeObject (screenAnswers);
@@ -282,10 +306,15 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest(Globals.LESSONS_URL+lessonId+"/"+Globals.ANSWER_URL, content);
 
-			if (response.IsSuccessStatusCode /* && JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"].Equals ("sucess")*/)
-				return true;
-			else
+			return new Tuple<string, int, int> ("fail", 0, 0);
+
+			//  JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"].Equals ("sucess")
+
+			/*if (!response.IsSuccessStatusCode)
 				return false;
+			else
+				return true;
+			*/
 		}
 
 

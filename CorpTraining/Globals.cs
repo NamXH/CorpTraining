@@ -36,6 +36,10 @@ namespace CorpTraining
 		public static string POSITION_SCREEN_URL="screens/position/";
 
 		public static string ANSWER_URL="testanswers/";
+
+		public static string MODULES_URL=LESSONS_URL + "modules/";
+
+		public static string LESSONS_MODULE_URL="lessons/";
 	}
 }
 
