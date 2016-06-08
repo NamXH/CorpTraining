@@ -12,7 +12,7 @@ namespace CorpTraining.iOS
         {
             Tabs = new List<UIViewController>();
 
-            var lessonNavigation = new UINavigationController(new LessonsViewController());
+            var lessonNavigation = new UINavigationController(new ModulesViewController());
             lessonNavigation.TabBarItem.Image = UIImage.FromBundle("book.png");
             lessonNavigation.TabBarItem.Title = "Lessons";
             Tabs.Add(lessonNavigation);
