@@ -321,6 +321,12 @@ namespace CorpTraining.iOS
                 var i = 1;
                 foreach (var option in Screens[Index].Options)
                 {
+                    var transparentGap = new UIView();
+                    stackView.AddArrangedSubview(transparentGap);
+                    View.ConstrainLayout(() =>
+                        transparentGap.Frame.Height == 5f
+                    );
+
                     var optionStackView = new UIStackView
                     {
                         Axis = UILayoutConstraintAxis.Horizontal,
