@@ -59,7 +59,7 @@ namespace CorpTraining
 
 		}
 
-		/// <summary>Get the lesson list.
+		/// <summary>Get the lesson list
 		/// <para>Returns a list of lessons</para>
 		/// </summary>
 		public static async Task<IList<Lesson>> GetLessonsAsync ()
@@ -267,7 +267,7 @@ namespace CorpTraining
 			return screen;
 		}
 
-		/// <summary>Get a specific lesson.
+		/// <summary>Get a specific lesson
 		/// <para>Returns a lesson object from the lesson Rest url</para>
 		/// </summary>
 		public static async Task<Lesson> GetLessonByUrlAsync (string lessonUrl)
