@@ -294,10 +294,10 @@ namespace CorpTraining
 		}
 
 		/// <summary>Sends the answers for a specific lesson.
-		/// <para>It will return success if it was succesfull, and null if it wasn't</para>
+		/// <para>It will return  Tuple<result, totalScore, userScore> always</para>
 		/// </summary>
 		public static async Task<Tuple<string, int, int>> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
-		{//TODO handle the answer response from the server when its done
+		{
 
 			var jsonAnswers = JsonConvert.SerializeObject (screenAnswers);
 			var content = new StringContent (jsonAnswers, Encoding.UTF8, "application/json");
@@ -306,15 +306,17 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest(Globals.LESSONS_URL+lessonId+"/"+Globals.ANSWER_URL, content);
 
-			return new Tuple<string, int, int> ("fail", 0, 0);
+			string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
 
-			//  JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"].Equals ("sucess")
+			int totalScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["totalScore"];
 
-			/*if (!response.IsSuccessStatusCode)
-				return false;
-			else
-				return true;
-			*/
+			int userScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["userScore"];
+
+			//if(result.Equals("fail"))
+			//			return new Tuple<string, int, int> ("fail", 0, 0);
+
+			return new Tuple<string, int, int> (result, totalScore, userScore);
+		
 		}
 
 
