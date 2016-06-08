@@ -96,11 +96,11 @@ namespace CorpTraining.iOS
 
             if ((lessons != null) && (lessons.Count > 0))
             {
-                Container.NavigationController.PushViewController(new LessonsViewController(lessons), true);
+                Container.NavigationController.PushViewController(new LessonsViewController(lessons, Items[indexPath.Row].Name), true);
             }
             else
             {
-                var alert = UIAlertController.Create("Oops!", "There is nothing in this module.", UIAlertControllerStyle.Alert);
+                var alert = UIAlertController.Create("Oops!", "There is nothing in this module", UIAlertControllerStyle.Alert);
                 alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                 Container.PresentViewController(alert, true, null); 
             }

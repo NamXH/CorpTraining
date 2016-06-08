@@ -10,10 +10,10 @@ namespace CorpTraining.iOS
     {
         public IList<Lesson> Lessons { get; set; }
 
-        public LessonsViewController(IList<Lesson> lessons)
+        public LessonsViewController(IList<Lesson> lessons, string moduleName)
             : base()
         {
-            Title = "Lessons";
+            Title = moduleName;
             Lessons = lessons;
         }
 
