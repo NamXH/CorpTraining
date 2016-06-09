@@ -15,45 +15,50 @@ namespace CorpTraining
 	{
 		
 
-		private static async Task<JsonValue> MakeServerRequest(string url){
+		private static async Task<JsonValue> MakeServerRequest (string url)
+		{
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create (new Uri (url)); 
 			request.ContentType = "application/json";
 			request.Method = "GET";
 			JsonValue jsonDoc;
-			try{
-				using (WebResponse response = await request.GetResponseAsync ())
-				{
-					using (Stream stream = response.GetResponseStream ())
-					{
+			try {
+				using (WebResponse response = await request.GetResponseAsync ()) {
+					using (Stream stream = response.GetResponseStream ()) {
 						jsonDoc = await Task.Run (() => JsonObject.Load (stream));
 					}
 				}
-			}catch (WebException e){
-				if(e.Response==null)
-					throw new WebException ("Error connecting to the server: " + url +" Possible Internet problems");
+			} catch (WebException e) {
+				if (e.Response == null)
+					throw new WebException ("Error connecting to the server: " + url + " Possible Internet problems");
 
-				throw new WebException ("Error connecting to the server: " + url +" Status code: " +((HttpWebResponse)e.Response).StatusCode);
+				throw new WebException ("Error connecting to the server: " + url + " Status code: " + ((HttpWebResponse)e.Response).StatusCode);
 			}
+
 			return jsonDoc;
 
 		}
 
-		private static async Task<HttpResponseMessage> MakeServerPostRequest(string url, StringContent content){
+		private static async Task<HttpResponseMessage> MakeServerPostRequest (string url, StringContent content)
+		{
 			HttpClient client = new HttpClient ();
 			client.MaxResponseContentBufferSize = 256000;
 
 			var uri = new Uri (string.Format (url));
 
 			HttpResponseMessage response = null;
-			try{
+			try {
 
 				response = await client.PostAsync (uri, content);
 
-			}catch (WebException e){
-				if(e.Response==null)
-					throw new WebException ("Error connecting to the server: " + url +" Possible Internet problems");
+			} catch (WebException e) {
+				if (e.Response == null)
+					throw new WebException ("Error connecting to the server: " + url + " Possible Internet problems");
 
-				throw new WebException ("Error connecting to the server: " + url +" Status code: " +((HttpWebResponse)e.Response).StatusCode);
+				throw new WebException ("Error connecting to the server: " + url + " Status code: " + ((HttpWebResponse)e.Response).StatusCode);
+			}
+
+			if ((int)response.StatusCode == 500 || (int)response.StatusCode == 401 || (int)response.StatusCode == 403 || (int)response.StatusCode == 404 || (int)response.StatusCode == 502 || (int)response.StatusCode == 503 || (int)response.StatusCode == 504) {
+				throw new WebException ("Error connecting to the server. Status code: " + response.StatusCode);
 			}
 			return response;
 
@@ -66,10 +71,10 @@ namespace CorpTraining
 		{
 			IList<Lesson> lessonList;
 
-			JsonValue jsonDoc = await MakeServerRequest(Globals.LESSONS_URL);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL);
 
-			JArray lessonArray = JArray.Parse(jsonDoc.ToString());
-			lessonList = JsonConvert.DeserializeObject<IList<Lesson>>(lessonArray.ToString());
+			JArray lessonArray = JArray.Parse (jsonDoc.ToString ());
+			lessonList = JsonConvert.DeserializeObject<IList<Lesson>> (lessonArray.ToString ());
 
 			return lessonList;
 		}
@@ -78,10 +83,10 @@ namespace CorpTraining
 		{
 			IList<Lesson> lessonList;
 
-			JsonValue jsonDoc = await MakeServerRequest(Globals.MODULES_URL + moduleId + "/" + Globals.LESSONS_MODULE_URL);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.MODULES_URL + moduleId + "/" + Globals.LESSONS_MODULE_URL);
 
-			JArray lessonArray = JArray.Parse(jsonDoc.ToString());
-			lessonList = JsonConvert.DeserializeObject<IList<Lesson>>(lessonArray.ToString());
+			JArray lessonArray = JArray.Parse (jsonDoc.ToString ());
+			lessonList = JsonConvert.DeserializeObject<IList<Lesson>> (lessonArray.ToString ());
 
 			return lessonList;
 		}
@@ -90,10 +95,10 @@ namespace CorpTraining
 		{
 			IList<Module> moduleList;
 
-			JsonValue jsonDoc = await MakeServerRequest(Globals.MODULES_URL);
+			JsonValue jsonDoc = await MakeServerRequest (Globals.MODULES_URL);
 
-			JArray modulesArray = JArray.Parse(jsonDoc.ToString());
-			moduleList = JsonConvert.DeserializeObject<IList<Module>>(modulesArray.ToString());
+			JArray modulesArray = JArray.Parse (jsonDoc.ToString ());
+			moduleList = JsonConvert.DeserializeObject<IList<Module>> (modulesArray.ToString ());
 
 			return moduleList;
 		}
@@ -107,9 +112,9 @@ namespace CorpTraining
 			JObject lessonJson;
 
 			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + id);
-			try{
+			try {
 				lessonJson = JObject.Parse (jsonDoc.ToString ());
-			}catch(JsonSerializationException){
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
@@ -120,106 +125,109 @@ namespace CorpTraining
 		/// <summary>
 		/// Get a Screen list by lesson
 		/// </summary>
-		public static async Task<List<Screen>> GetScreensByLessonAsync (int lessonId){
+		public static async Task<List<Screen>> GetScreensByLessonAsync (int lessonId)
+		{
 
-			List<Screen> screenList = new List<Screen>();
+			List<Screen> screenList = new List<Screen> ();
 			JArray screenArray;
 
-			try
-			{
+			try {
 				JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL);
-				screenArray = JArray.Parse(jsonDoc.ToString());
+				screenArray = JArray.Parse (jsonDoc.ToString ());
 
-				foreach (JObject screenJson in screenArray){  //TODO Once the server returns every screen parameter in the screen list, this should be modified
-					Screen screen = await GetScreenByIdAsync(lessonId,(int)screenJson["id"]);
-					screenList.Add(screen);
+				foreach (JObject screenJson in screenArray) {  //TODO Once the server returns every screen parameter in the screen list, this should be modified
+					Screen screen = await GetScreenByIdAsync (lessonId, (int)screenJson ["id"]);
+					screenList.Add (screen);
 				}
-			}
-			catch(JsonSerializationException)
-			{
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. ");
 			}
 
 			return screenList;
 		}
 
-		public static async Task<Screen> GetNextScreenByIdAsync (int lessonId, int currentScreenId){
+		public static async Task<Screen> GetNextScreenByIdAsync (int lessonId, int currentScreenId)
+		{
 
 			Screen screen;
 			JObject screenJson;
 
 			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.NEXT_SCREEN_URL + currentScreenId);
 
-			try{
+			try {
 				screenJson = JObject.Parse (jsonDoc.ToString ());
-			}catch(JsonSerializationException){
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
-			if (screenJson.GetValue("id").ToString().Equals("") || screenJson.GetValue("id") == null)
+			if (screenJson.GetValue ("id").ToString ().Equals ("") || screenJson.GetValue ("id") == null)
 				return null;
 			screen = screenJson.ToObject<Screen> ();
 			return screen;
 		}
 
-		public static async Task<Screen> GetScreenByPositionAsync (int lessonId, int position){
+		public static async Task<Screen> GetScreenByPositionAsync (int lessonId, int position)
+		{
 			Screen screen;
 			JObject screenJson;
 
 			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.POSITION_SCREEN_URL + position);
 
-			try{
+			try {
 				screenJson = JObject.Parse (jsonDoc.ToString ());
-			}catch(JsonSerializationException){
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
-			if (screenJson.GetValue("id").ToString().Equals("") || screenJson.GetValue("id") == null)
+			if (screenJson.GetValue ("id").ToString ().Equals ("") || screenJson.GetValue ("id") == null)
 				return null;
 			screen = screenJson.ToObject<Screen> ();
 			return screen;
 
 		}
 
-		public static async Task<Screen> GetScreenByIdAsync (int lessonId, int screenId){
+		public static async Task<Screen> GetScreenByIdAsync (int lessonId, int screenId)
+		{
 			Screen screen;
 			JObject screenJson;
 
 			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL + screenId);
 
-			try{
+			try {
 				screenJson = JObject.Parse (jsonDoc.ToString ());
-			}catch(JsonSerializationException){
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
-			if (screenJson.GetValue("id").ToString().Equals("") || screenJson.GetValue("id") == null)
+			if (screenJson.GetValue ("id").ToString ().Equals ("") || screenJson.GetValue ("id") == null)
 				return null;
 			screen = screenJson.ToObject<Screen> ();
 			return screen;
 		}
 
-		public static async Task<IList<Option>> GetOptionsByScreenAsync (int lessonId, string screenId){
+		public static async Task<IList<Option>> GetOptionsByScreenAsync (int lessonId, string screenId)
+		{
 			IList<Option> optionList;
 
 			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL + screenId + "/" + Globals.OPTIONS_URL);
 
-			try{
-				JArray optionArray = JArray.Parse(jsonDoc.ToString());
-				optionList = JsonConvert.DeserializeObject<IList<Option>>(optionArray.ToString());
-			}catch(JsonSerializationException){
+			try {
+				JArray optionArray = JArray.Parse (jsonDoc.ToString ());
+				optionList = JsonConvert.DeserializeObject<IList<Option>> (optionArray.ToString ());
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
 			return optionList;
 		}
 
-		public static async Task<IList<Image>> GetImagesByScreenAsync (int lessonId, string screenId){
+		public static async Task<IList<Image>> GetImagesByScreenAsync (int lessonId, string screenId)
+		{
 			IList<Image> imageList;
 
 			JsonValue jsonDoc = await MakeServerRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.SCREENS_URL + screenId + "/" + Globals.IMAGES_URL);
-			JArray imageArray = JArray.Parse(jsonDoc.ToString());
-			imageList = JsonConvert.DeserializeObject<IList<Image>>(imageArray.ToString());
+			JArray imageArray = JArray.Parse (jsonDoc.ToString ());
+			imageList = JsonConvert.DeserializeObject<IList<Image>> (imageArray.ToString ());
 
 			return imageList;
 		}
@@ -232,32 +240,33 @@ namespace CorpTraining
 		/// <summary>Get a specific screen.
 		/// <para>Returns a screen object from the screen Rest url</para>
 		/// </summary>
-		public static async Task<Screen> GetScreenByUrlAsync (string screenUrl){
+		public static async Task<Screen> GetScreenByUrlAsync (string screenUrl)
+		{
 
 			Screen screen;
-			List<Option> optionList = new List<Option>();
-			List<Image> imageList = new List<Image>();
+			List<Option> optionList = new List<Option> ();
+			List<Image> imageList = new List<Image> ();
 			JObject screenJson;
 
 
 			JsonValue jsonDoc = await MakeServerRequest (screenUrl);
-			try{
+			try {
 				screenJson = JObject.Parse (jsonDoc.ToString ());
-			}catch(JsonSerializationException){
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
-			foreach (string optionUrl in screenJson ["questions"]){  
+			foreach (string optionUrl in screenJson ["questions"]) {  
 				Option option = await GetOptionByUrlAsync (optionUrl);
-				optionList.Add(option);
+				optionList.Add (option);
 			}
 
 			screenJson.Remove ("questions");
 			screenJson ["options"] = JToken.FromObject (optionList);
 
-			foreach (string imageUrl in screenJson ["images"]){  
+			foreach (string imageUrl in screenJson ["images"]) {  
 				Image image = await GetImageByUrlAsync (imageUrl);
-				imageList.Add(image);
+				imageList.Add (image);
 			}
 
 			screenJson.Remove ("questions");
@@ -273,19 +282,19 @@ namespace CorpTraining
 		public static async Task<Lesson> GetLessonByUrlAsync (string lessonUrl)
 		{
 			Lesson lesson;
-			List<Screen> screenList = new List<Screen>();
+			List<Screen> screenList = new List<Screen> ();
 			JObject lessonJson;
 
 			JsonValue jsonDoc = await MakeServerRequest (lessonUrl);
-			try{
+			try {
 				lessonJson = JObject.Parse (jsonDoc.ToString ());
-			}catch(JsonSerializationException ){
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
-			foreach (string screenUrl in lessonJson ["screenList"]){  
+			foreach (string screenUrl in lessonJson ["screenList"]) {  
 				Screen screen = await GetScreenByUrlAsync (screenUrl);
-				screenList.Add(screen);
+				screenList.Add (screen);
 			}
 			lessonJson.Remove ("screenList");
 			lessonJson ["screens"] = JToken.FromObject (screenList);
@@ -304,18 +313,29 @@ namespace CorpTraining
 
 			HttpResponseMessage response = null;
 
-			response = await MakeServerPostRequest(Globals.LESSONS_URL+lessonId+"/"+Globals.ANSWER_URL, content);
+			response = await MakeServerPostRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.ANSWER_URL, content);
 
-			string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+			try {
 
-			int totalScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["totalScore"];
+				string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
 
-			int userScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["userScore"];
+				int totalScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["totalScore"];
 
-			//if(result.Equals("fail"))
-			//			return new Tuple<string, int, int> ("fail", 0, 0);
+				int userScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["userScore"];
 
-			return new Tuple<string, int, int> (result, totalScore, userScore);
+				return new Tuple<string, int, int> (result, totalScore, userScore);
+
+			} catch  (NullReferenceException) {
+				throw new NullReferenceException ("Error getting server information");
+			}
+			catch  (JsonException) {
+				throw new JsonException ("Error getting server information");
+			}
+			catch  (ArgumentException) {
+				throw new ArgumentException ("Error getting server information");
+			}
+
+
 		
 		}
 
@@ -329,9 +349,9 @@ namespace CorpTraining
 			Image image;
 
 			JsonValue jsonDoc = await MakeServerRequest (imageUrl);
-			try{
-				image = JsonConvert.DeserializeObject<Image>(jsonDoc.ToString());
-			}catch(JsonSerializationException ){
+			try {
+				image = JsonConvert.DeserializeObject<Image> (jsonDoc.ToString ());
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 			return image;
@@ -346,9 +366,9 @@ namespace CorpTraining
 
 			JsonValue jsonDoc = await MakeServerRequest (optionUrl);
 
-			try{
-				option = JsonConvert.DeserializeObject<Option>(jsonDoc.ToString());
-			}catch(JsonSerializationException ){
+			try {
+				option = JsonConvert.DeserializeObject<Option> (jsonDoc.ToString ());
+			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
 
