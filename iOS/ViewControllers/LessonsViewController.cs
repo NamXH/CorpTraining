@@ -10,10 +10,11 @@ namespace CorpTraining.iOS
     {
         public IList<Lesson> Lessons { get; set; }
 
-        public LessonsViewController()
+        public LessonsViewController(IList<Lesson> lessons, string moduleName)
             : base()
         {
-            Title = "Lessons";
+            Title = moduleName;
+            Lessons = lessons;
         }
 
         public async override void ViewDidLoad()
@@ -32,32 +33,14 @@ namespace CorpTraining.iOS
                 lessonsTable.Frame.Bottom == View.Frame.Bottom
             );
 
-            // Loading indicator
-            var loadingOverlay = new LoadingOverlay(View.Bounds);
-            View.AddSubview(loadingOverlay);
-
-            try
-            {
-                Lessons = await LessonUtil.GetLessonsAsync();
-            }
-            catch (Exception e)
-            {
-                var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, e.Message), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-                PresentViewController(alert, true, null); 
-            }
-
             if (Lessons != null)
             {
-                lessonsTable.Source = new LessonTableSource(this, Lessons);
-                lessonsTable.ReloadData();
+                lessonsTable.Source = new LessonsTableSource(this, Lessons);
             }
-
-            loadingOverlay.HideThenRemove();
         }
     }
 
-    public class LessonTableSource : UITableViewSource
+    public class LessonsTableSource : UITableViewSource
     {
         public UIViewController Container { get; private set; }
 
@@ -65,7 +48,7 @@ namespace CorpTraining.iOS
 
         private string cellIdentifier = "TableCell";
 
-        public LessonTableSource(UIViewController container, IList<Lesson> items)
+        public LessonsTableSource(UIViewController container, IList<Lesson> items)
         {
             Container = container;
             Items = items;
@@ -82,10 +65,10 @@ namespace CorpTraining.iOS
             var loadingOverlay = new LoadingOverlay(Container.View.Bounds);
             Container.View.Add(loadingOverlay);
 
-            List<Screen> screens = null;
+            IList<Screen> screens = null;
             try
             {
-                screens = (await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id)).ToList();
+                screens = (await LessonUtil.GetScreensByLessonAsync(Items[indexPath.Row].Id));
             }
             catch (Exception e)
             {
@@ -121,10 +104,10 @@ namespace CorpTraining.iOS
             cell.TextLabel.Text = Items[indexPath.Row].Title;
 
             // If lesson is finished then add check mark
-            if (true) // Place holder!!
-            {
-                cell.Accessory = UITableViewCellAccessory.Checkmark; 
-            }
+//            if (true) // Place holder!!
+//            {
+//                cell.Accessory = UITableViewCellAccessory.Checkmark; 
+//            }
 
             return cell;
         }

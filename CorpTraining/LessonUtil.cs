@@ -59,7 +59,7 @@ namespace CorpTraining
 
 		}
 
-		/// <summary>Get the lesson list.
+		/// <summary>Get the lesson list
 		/// <para>Returns a list of lessons</para>
 		/// </summary>
 		public static async Task<IList<Lesson>> GetLessonsAsync ()
@@ -72,6 +72,30 @@ namespace CorpTraining
 			lessonList = JsonConvert.DeserializeObject<IList<Lesson>>(lessonArray.ToString());
 
 			return lessonList;
+		}
+
+		public static async Task<IList<Lesson>> GetLessonsByModuleAsync (int moduleId)
+		{
+			IList<Lesson> lessonList;
+
+			JsonValue jsonDoc = await MakeServerRequest(Globals.MODULES_URL + moduleId + "/" + Globals.LESSONS_MODULE_URL);
+
+			JArray lessonArray = JArray.Parse(jsonDoc.ToString());
+			lessonList = JsonConvert.DeserializeObject<IList<Lesson>>(lessonArray.ToString());
+
+			return lessonList;
+		}
+
+		public static async Task<IList<Module>> GetModulesAsync ()
+		{
+			IList<Module> moduleList;
+
+			JsonValue jsonDoc = await MakeServerRequest(Globals.MODULES_URL);
+
+			JArray modulesArray = JArray.Parse(jsonDoc.ToString());
+			moduleList = JsonConvert.DeserializeObject<IList<Module>>(modulesArray.ToString());
+
+			return moduleList;
 		}
 
 		/// <summary>
@@ -243,7 +267,7 @@ namespace CorpTraining
 			return screen;
 		}
 
-		/// <summary>Get a specific lesson.
+		/// <summary>Get a specific lesson
 		/// <para>Returns a lesson object from the lesson Rest url</para>
 		/// </summary>
 		public static async Task<Lesson> GetLessonByUrlAsync (string lessonUrl)
@@ -270,10 +294,10 @@ namespace CorpTraining
 		}
 
 		/// <summary>Sends the answers for a specific lesson.
-		/// <para>It will return success if it was succesfull, and null if it wasn't</para>
+		/// <para>It will return  Tuple<result, totalScore, userScore> always</para>
 		/// </summary>
-		public static async Task<bool> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
-		{//TODO handle the answer response from the server when its done
+		public static async Task<Tuple<string, int, int>> SendLessonAnswers (int lessonId, List<ScreenAnswer> screenAnswers)
+		{
 
 			var jsonAnswers = JsonConvert.SerializeObject (screenAnswers);
 			var content = new StringContent (jsonAnswers, Encoding.UTF8, "application/json");
@@ -282,10 +306,17 @@ namespace CorpTraining
 
 			response = await MakeServerPostRequest(Globals.LESSONS_URL+lessonId+"/"+Globals.ANSWER_URL, content);
 
-			if (response.IsSuccessStatusCode /* && JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"].Equals ("sucess")*/)
-				return true;
-			else
-				return false;
+			string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
+
+			int totalScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["totalScore"];
+
+			int userScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["userScore"];
+
+			//if(result.Equals("fail"))
+			//			return new Tuple<string, int, int> ("fail", 0, 0);
+
+			return new Tuple<string, int, int> (result, totalScore, userScore);
+		
 		}
 
 

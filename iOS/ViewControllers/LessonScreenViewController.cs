@@ -56,7 +56,6 @@ namespace CorpTraining.iOS
         {
             base.ViewDidLoad();
 
-
             #region Navigation Bar Buttons
             if (Index < Screens.Count - 1)
             {
@@ -79,12 +78,13 @@ namespace CorpTraining.iOS
 
                                 if (currentUser == null)
                                 {
-                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection and try again.", UIAlertControllerStyle.Alert);
+                                    var alert = UIAlertController.Create("Something goes wrong", "Please check your Internet connection, sign out and try again.", UIAlertControllerStyle.Alert);
                                     alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                                     PresentViewController(alert, true, null); 
                                 }
                                 else
                                 {
+                                    Answers.RemoveAll(x => x.ScreenId == Screens[Index].Id);
                                     Answers.Add(new ScreenAnswer
                                         {
 //                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
@@ -126,6 +126,7 @@ namespace CorpTraining.iOS
                                 }
                                 else
                                 {
+                                    Answers.RemoveAll(x => x.ScreenId == Screens[Index].Id);
                                     Answers.Add(new ScreenAnswer
                                         {
 //                                        UserId = UserUtil.CurrentUser.Id.GetValueOrDefault(),
@@ -141,7 +142,7 @@ namespace CorpTraining.iOS
                             if ((Answers != null) && (Answers.Count > 0))
                             {
                                 var loadingOverlay = new LoadingOverlay(View.Bounds);
-                                bool response = false;
+                                Tuple<string, int, int> response = null;
                                 try
                                 {
                                     View.Add(loadingOverlay);
@@ -149,7 +150,7 @@ namespace CorpTraining.iOS
                                 }
                                 catch (Exception ex)
                                 {
-                                    var alert = UIAlertController.Create("Something goes wrong", String.Format("Please check your Internet connection and try again.{0} Details: {1}", Environment.NewLine, ex.Message), UIAlertControllerStyle.Alert);
+                                    var alert = UIAlertController.Create("Something goes wrong", ex.Message, UIAlertControllerStyle.Alert);
                                     alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                                     PresentViewController(alert, true, null);
                                 }
@@ -158,24 +159,18 @@ namespace CorpTraining.iOS
                                     loadingOverlay.HideThenRemove();
                                 }
 
-                                string alertTitle = null;
-                                string alertMessage = null;
-                                if (response)
+                                if (response != null)
                                 {
-                                    alertTitle = "Congrats!";
-                                    alertMessage = "Your answer has been submitted successfully.";
+                                    var alertTitle = response.Item1;
+                                    var alertMessage = String.Format("Your result: {0}/{1}", response.Item3, response.Item2);
+                                
+                                    var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
+                                    submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
+                                            {
+                                                NavigationController.PopToRootViewController(true);
+                                            }));
+                                    PresentViewController(submissionAlert, true, null);
                                 }
-                                else
-                                {
-                                    alertTitle = "Something goes wrong";
-                                    alertMessage = ""; // Need message from server!!
-                                }
-                                var submissionAlert = UIAlertController.Create(alertTitle, alertMessage, UIAlertControllerStyle.Alert);
-                                submissionAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, (UIAlertAction obj) =>
-                                        {
-                                            NavigationController.PopToRootViewController(true);
-                                        }));
-                                PresentViewController(submissionAlert, true, null);
                             }
                             else
                             {
@@ -214,6 +209,7 @@ namespace CorpTraining.iOS
                 stackView.Frame.Top == scrollView.Frame.Top + Constants.VerticalPad &&
                 stackView.Frame.Bottom == scrollView.Frame.Bottom - Constants.VerticalPad &&
                 stackView.Frame.Left == scrollView.Frame.Left + Constants.HorizontalPad &&
+                stackView.Frame.Right == scrollView.Frame.Right + Constants.HorizontalPad &&
                 stackView.Frame.Width == scrollView.Frame.Width - twiceHorizontalPad // required!
             );
             scrollView.ContentSize = stackView.Frame.Size;
@@ -242,6 +238,13 @@ namespace CorpTraining.iOS
                 View.ConstrainLayout(() =>
                     playerViewController.View.Frame.Width == stackView.Frame.Width
                 );
+
+                if (String.IsNullOrWhiteSpace(Screens[Index].VideoUrl))
+                {
+                    View.ConstrainLayout(() =>
+                        playerViewController.View.Frame.Height == Constants.AudioPlayerHeight
+                    ); 
+                }
             }
 
             if (Screens[Index].Images != null)
@@ -249,6 +252,7 @@ namespace CorpTraining.iOS
                 foreach (var image in Screens[Index].Images)
                 {
                     var imageView = new UIImageView();
+                    imageView.ContentMode = UIViewContentMode.ScaleAspectFit;
                     try
                     {
                         using (var url = new NSUrl(image.Url))
@@ -268,9 +272,12 @@ namespace CorpTraining.iOS
                         PresentViewController(alert, true, null); 
                     }
 
+                    var imageRatio = imageView.IntrinsicContentSize.Width / imageView.IntrinsicContentSize.Height;
+                    var stackViewWidth = View.Frame.Width - twiceHorizontalPad;
+                    var resizedHeight = stackViewWidth / imageRatio; // Pretty hacky!! Maybe can achieve the same thing by setting vertical hugging priority?
                     stackView.AddArrangedSubview(imageView);
                     View.ConstrainLayout(() =>
-                        imageView.Frame.Width == stackView.Frame.Width
+                        imageView.Frame.Height == resizedHeight
                     );
                 }
             }
@@ -284,6 +291,7 @@ namespace CorpTraining.iOS
                         Text = text.TextValue,
                         Lines = 0,
                         LineBreakMode = UILineBreakMode.WordWrap,
+                        Font = UIFont.SystemFontOfSize(Constants.LargeFontSize),
                     };
                     stackView.AddArrangedSubview(textLabel);
                     View.ConstrainLayout(() =>
@@ -300,6 +308,7 @@ namespace CorpTraining.iOS
                     Text = Screens[Index].Question,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
+                    Font = UIFont.SystemFontOfSize(Constants.LargeFontSize),
                 };
                 stackView.AddArrangedSubview(questionLabel);
                 View.ConstrainLayout(() =>
@@ -312,6 +321,12 @@ namespace CorpTraining.iOS
                 var i = 1;
                 foreach (var option in Screens[Index].Options)
                 {
+                    var transparentGap = new UIView();
+                    stackView.AddArrangedSubview(transparentGap);
+                    View.ConstrainLayout(() =>
+                        transparentGap.Frame.Height == 5f
+                    );
+
                     var optionStackView = new UIStackView
                     {
                         Axis = UILayoutConstraintAxis.Horizontal,
@@ -323,8 +338,8 @@ namespace CorpTraining.iOS
 
                     var optionRadioButton = new UIButton(UIButtonType.RoundedRect);
                     optionStackView.AddArrangedSubview(optionRadioButton);
-                    optionRadioButton.SetImage(UIImage.FromBundle("radio_enable.png"), UIControlState.Normal);
-                    optionRadioButton.SetImage(UIImage.FromBundle("radio_disable.png"), UIControlState.Disabled);
+                    optionRadioButton.SetImage(UIImage.FromBundle("checkmark.png"), UIControlState.Normal);
+                    optionRadioButton.SetImage(UIImage.FromBundle("blank.png"), UIControlState.Disabled);
                     optionRadioButton.Enabled = false;
                     View.ConstrainLayout(() =>
                         optionRadioButton.Frame.Height == 20f &&
@@ -336,6 +351,7 @@ namespace CorpTraining.iOS
                         LineBreakMode = UILineBreakMode.WordWrap,
                         HorizontalAlignment = UIControlContentHorizontalAlignment.Left,
                         VerticalAlignment = UIControlContentVerticalAlignment.Center,
+                        Font = UIFont.SystemFontOfSize(Constants.LargeFontSize),
                     };
                     optionTextButton.SetTitle(option.Title, UIControlState.Normal);
                     optionStackView.AddArrangedSubview(optionTextButton);
@@ -367,6 +383,12 @@ namespace CorpTraining.iOS
                         }
                     };
                 }
+            }
+
+            // Start media automatically
+            if (!String.IsNullOrEmpty(mediaPlayerUrl))
+            {
+                MediaPlayer.Play();
             }
         }
     }

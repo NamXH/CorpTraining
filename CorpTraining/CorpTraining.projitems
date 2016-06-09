@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UserDB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Orm\UserDao.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ScreenAnswer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Module.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Orm\" />
