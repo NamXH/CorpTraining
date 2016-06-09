@@ -27,7 +27,6 @@ namespace CorpTraining.Droid
 		private List<Option> options;
 		public List<string> standardAnswer;
 		public List<bool> right;
-		private Button btn_review;
 		private Button btn_back;
 		private ResultListViewAdapter adapter;
 		private int correct = 0;
@@ -38,6 +37,7 @@ namespace CorpTraining.Droid
 			SetContentView (Resource.Layout.activity_result);
 			initView ();
 			initData ();
+			initListener ();
 		}
 
 		private void initView ()
@@ -45,7 +45,6 @@ namespace CorpTraining.Droid
 			iv_scan = FindViewById<ImageView> (Resource.Id.iv_scan);
 			tv_initiate = FindViewById<TextView> (Resource.Id.tv_initiate);
 			pb_anti = FindViewById<ProgressBar> (Resource.Id.pb_anti);
-			btn_review = FindViewById<Button> (Resource.Id.btn_review);
 			btn_back = FindViewById<Button> (Resource.Id.btn_back);
 			lv_score = FindViewById<ListView> (Resource.Id.lv_score);
 			//set animation
@@ -67,42 +66,56 @@ namespace CorpTraining.Droid
 			getCorrectAnswerFromServer ();
 		}
 
+		private void initListener ()
+		{
+			btn_back.Click += delegate(object sender, EventArgs e) {
+				Intent intent = new Intent (this, typeof(HomeActivity));
+				intent.PutExtra ("email", Constants.currentUser.Email);
+				intent.PutExtra ("token", UserUtil.GetCurrentToken ());
+				StartActivity (intent);	
+				Finish ();
+			};
+
+		}
+
 		private async void getCorrectAnswerFromServer ()
 		{
 			//get correct answer
 			foreach (var screen in Constants.screens) {
 				string type = screen.Type;
-				if (type.Equals ("question") || type.Equals ("audio_question") || type.Equals ("question_audio")) {
-					IList<Option> list = await LessonUtil.GetOptionsByScreenAsync (Intent.GetIntExtra (Constants.LESSON_ID, 0), screen.Id + "");
-					options = new List<Option> (list);
-					foreach (var option in options) {
-						if (option.Detail == true) {
-							correctAnswers.Add (screen.Id, option.Id);
-							switch (option.Order) {
-							case 0:
-								standardAnswer.Add ("A");
-								break;
-							case 1:
-								standardAnswer.Add ("B");
-								break;
-							case 2:
-								standardAnswer.Add ("C");
-								break;
-							case 3:
-								standardAnswer.Add ("D");
-								break;
-							case 4:
-								standardAnswer.Add ("E");
-								break;
-							case 5:
-								standardAnswer.Add ("F");
-								break;
-							case 6:
-								standardAnswer.Add ("G");
-								break;
-							default:
-								standardAnswer.Add ("H");
-								break;
+				if (type != null) {
+					if (type.Equals ("question") || type.Equals ("audio_question") || type.Equals ("question_audio")) {
+						IList<Option> list = await LessonUtil.GetOptionsByScreenAsync (Intent.GetIntExtra (Constants.LESSON_ID, 0), screen.Id + "");
+						options = new List<Option> (list);
+						foreach (var option in options) {
+							if (option.Detail == true) {
+								correctAnswers.Add (screen.Id, option.Id);
+								switch (option.Order) {
+								case 0:
+									standardAnswer.Add ("A");
+									break;
+								case 1:
+									standardAnswer.Add ("B");
+									break;
+								case 2:
+									standardAnswer.Add ("C");
+									break;
+								case 3:
+									standardAnswer.Add ("D");
+									break;
+								case 4:
+									standardAnswer.Add ("E");
+									break;
+								case 5:
+									standardAnswer.Add ("F");
+									break;
+								case 6:
+									standardAnswer.Add ("G");
+									break;
+								default:
+									standardAnswer.Add ("H");
+									break;
+								}
 							}
 						}
 					}

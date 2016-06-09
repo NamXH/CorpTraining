@@ -18,25 +18,7 @@
             android:layout_weight="50"
             android:id="@+id/ll_images"
             android:gravity="center_horizontal"
-            android:layout_marginRight="10dp">
-        <!--
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="40"
-                android:id="@+id/imageView1" />
-            <TextView
-                android:text="This is subtitle"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_weight="10"
-                android:layout_height="0dp"
-                android:id="@+id/subTxt1"
-                android:textSize="20dp"
-                android:layout_gravity="center"/>
-              -->
-        </LinearLayout>
+            android:layout_marginRight="10dp" />
         <LinearLayout
             android:orientation="vertical"
             android:layout_height="match_parent"
@@ -46,7 +28,7 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="50"
+                android:layout_weight="20"
                 android:scrollbars="vertical"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp">
@@ -55,6 +37,16 @@
                     android:layout_height="match_parent"
                     android:id="@+id/ll_text" />
             </ScrollView>
+            <EditText
+                android:hint="Please input your answer here:"
+                android:layout_width="match_parent"
+                android:layout_weight="30"
+                android:layout_height="0dp"
+                android:textSize="20dp"
+                android:gravity="top"
+                android:background="#ff212121"
+                android:textColorHint="#ff76ff03"
+                android:id="@+id/et_answer" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

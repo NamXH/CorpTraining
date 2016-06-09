@@ -214,8 +214,8 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f090013
 			public const int auto_save_password = 2131296275;
 			
-			// aapt resource value: 0x7f090027
-			public const int btn_back = 2131296295;
+			// aapt resource value: 0x7f090026
+			public const int btn_back = 2131296294;
 			
 			// aapt resource value: 0x7f090011
 			public const int btn_cancel = 2131296273;
@@ -223,32 +223,29 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f090020
 			public const int btn_continue = 2131296288;
 			
-			// aapt resource value: 0x7f09003e
-			public const int btn_exit = 2131296318;
+			// aapt resource value: 0x7f09003d
+			public const int btn_exit = 2131296317;
 			
-			// aapt resource value: 0x7f090049
-			public const int btn_fullscreen = 2131296329;
+			// aapt resource value: 0x7f090045
+			public const int btn_fullscreen = 2131296325;
 			
 			// aapt resource value: 0x7f090010
 			public const int btn_login = 2131296272;
 			
-			// aapt resource value: 0x7f09002e
-			public const int btn_next = 2131296302;
-			
-			// aapt resource value: 0x7f090030
-			public const int btn_play = 2131296304;
-			
 			// aapt resource value: 0x7f09002d
-			public const int btn_pre = 2131296301;
+			public const int btn_next = 2131296301;
+			
+			// aapt resource value: 0x7f09002f
+			public const int btn_play = 2131296303;
+			
+			// aapt resource value: 0x7f09002c
+			public const int btn_pre = 2131296300;
 			
 			// aapt resource value: 0x7f090017
 			public const int btn_regback = 2131296279;
 			
-			// aapt resource value: 0x7f090026
-			public const int btn_review = 2131296294;
-			
-			// aapt resource value: 0x7f09003d
-			public const int btn_share = 2131296317;
+			// aapt resource value: 0x7f09003c
+			public const int btn_share = 2131296316;
 			
 			// aapt resource value: 0x7f090012
 			public const int btn_signup = 2131296274;
@@ -256,29 +253,23 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f090016
 			public const int btn_start = 2131296278;
 			
-			// aapt resource value: 0x7f09002b
-			public const int btn_submit = 2131296299;
+			// aapt resource value: 0x7f09002a
+			public const int btn_submit = 2131296298;
 			
-			// aapt resource value: 0x7f090033
-			public const int btn_voice = 2131296307;
+			// aapt resource value: 0x7f090032
+			public const int btn_voice = 2131296306;
 			
-			// aapt resource value: 0x7f090044
-			public const int choicesRadioGrp = 2131296324;
+			// aapt resource value: 0x7f090042
+			public const int choicesRadioGrp = 2131296322;
 			
 			// aapt resource value: 0x7f090025
 			public const int details = 2131296293;
 			
-			// aapt resource value: 0x7f090045
-			public const int displayText = 2131296325;
-			
 			// aapt resource value: 0x7f090000
 			public const int dl_menu = 2131296256;
 			
-			// aapt resource value: 0x7f090046
-			public const int editText1 = 2131296326;
-			
-			// aapt resource value: 0x7f090042
-			public const int et_answer = 2131296322;
+			// aapt resource value: 0x7f090044
+			public const int et_answer = 2131296324;
 			
 			// aapt resource value: 0x7f09001d
 			public const int et_email = 2131296285;
@@ -289,17 +280,14 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f09001b
 			public const int et_lastname = 2131296283;
 			
-			// aapt resource value: 0x7f090048
-			public const int et_note = 2131296328;
-			
 			// aapt resource value: 0x7f09001f
 			public const int et_phonenumber = 2131296287;
 			
 			// aapt resource value: 0x7f090001
 			public const int fl_content = 2131296257;
 			
-			// aapt resource value: 0x7f09002c
-			public const int fragmentContainer = 2131296300;
+			// aapt resource value: 0x7f09002b
+			public const int fragmentContainer = 2131296299;
 			
 			// aapt resource value: 0x7f090004
 			public const int ib_exit = 2131296260;
@@ -310,56 +298,59 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f09000c
 			public const int input = 2131296268;
 			
-			// aapt resource value: 0x7f09005c
-			public const int iv_arrow = 2131296348;
+			// aapt resource value: 0x7f090058
+			public const int iv_arrow = 2131296344;
 			
-			// aapt resource value: 0x7f090037
-			public const int iv_battery = 2131296311;
+			// aapt resource value: 0x7f090036
+			public const int iv_battery = 2131296310;
 			
-			// aapt resource value: 0x7f09004b
-			public const int iv_icon = 2131296331;
+			// aapt resource value: 0x7f090047
+			public const int iv_icon = 2131296327;
 			
 			// aapt resource value: 0x7f090021
 			public const int iv_scan = 2131296289;
 			
-			// aapt resource value: 0x7f090050
-			public const int iv_titlepicture = 2131296336;
+			// aapt resource value: 0x7f09004c
+			public const int iv_titlepicture = 2131296332;
 			
 			// aapt resource value: 0x7f09000a
 			public const int left_menu = 2131296266;
 			
-			// aapt resource value: 0x7f090039
-			public const int ll_bottom_ctrl = 2131296313;
+			// aapt resource value: 0x7f090038
+			public const int ll_bottom_ctrl = 2131296312;
 			
-			// aapt resource value: 0x7f09004a
-			public const int ll_comment = 2131296330;
+			// aapt resource value: 0x7f090046
+			public const int ll_comment = 2131296326;
 			
-			// aapt resource value: 0x7f090051
-			public const int ll_content = 2131296337;
+			// aapt resource value: 0x7f09004d
+			public const int ll_content = 2131296333;
 			
-			// aapt resource value: 0x7f090047
-			public const int ll_images = 2131296327;
+			// aapt resource value: 0x7f090043
+			public const int ll_images = 2131296323;
 			
-			// aapt resource value: 0x7f09004c
-			public const int ll_item = 2131296332;
+			// aapt resource value: 0x7f090048
+			public const int ll_item = 2131296328;
 			
-			// aapt resource value: 0x7f090060
-			public const int ll_load = 2131296352;
+			// aapt resource value: 0x7f09005c
+			public const int ll_load = 2131296348;
 			
-			// aapt resource value: 0x7f09002f
-			public const int ll_loading = 2131296303;
+			// aapt resource value: 0x7f09002e
+			public const int ll_loading = 2131296302;
 			
 			// aapt resource value: 0x7f09000f
 			public const int ll_logininfo = 2131296271;
 			
-			// aapt resource value: 0x7f090028
-			public const int ll_questions = 2131296296;
+			// aapt resource value: 0x7f090027
+			public const int ll_questions = 2131296295;
 			
 			// aapt resource value: 0x7f090014
 			public const int ll_root = 2131296276;
 			
-			// aapt resource value: 0x7f090036
-			public const int ll_top_ctrl = 2131296310;
+			// aapt resource value: 0x7f090040
+			public const int ll_text = 2131296320;
+			
+			// aapt resource value: 0x7f090035
+			public const int ll_top_ctrl = 2131296309;
 			
 			// aapt resource value: 0x7f09000d
 			public const int login_accounts = 2131296269;
@@ -370,41 +361,41 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f09000b
 			public const int loginpage = 2131296267;
 			
-			// aapt resource value: 0x7f09005f
-			public const int lv_list = 2131296351;
+			// aapt resource value: 0x7f09005b
+			public const int lv_list = 2131296347;
 			
 			// aapt resource value: 0x7f090024
 			public const int lv_score = 2131296292;
 			
-			// aapt resource value: 0x7f090058
-			public const int mediacontroller_file_name = 2131296344;
-			
 			// aapt resource value: 0x7f090054
-			public const int mediacontroller_play_pause = 2131296340;
+			public const int mediacontroller_file_name = 2131296340;
 			
-			// aapt resource value: 0x7f090057
-			public const int mediacontroller_seekbar = 2131296343;
+			// aapt resource value: 0x7f090050
+			public const int mediacontroller_play_pause = 2131296336;
 			
-			// aapt resource value: 0x7f090055
-			public const int mediacontroller_time_current = 2131296341;
+			// aapt resource value: 0x7f090053
+			public const int mediacontroller_seekbar = 2131296339;
 			
-			// aapt resource value: 0x7f090056
-			public const int mediacontroller_time_total = 2131296342;
+			// aapt resource value: 0x7f090051
+			public const int mediacontroller_time_current = 2131296337;
 			
-			// aapt resource value: 0x7f090029
-			public const int navigationTxt = 2131296297;
+			// aapt resource value: 0x7f090052
+			public const int mediacontroller_time_total = 2131296338;
+			
+			// aapt resource value: 0x7f090028
+			public const int navigationTxt = 2131296296;
 			
 			// aapt resource value: 0x7f090023
 			public const int pb_anti = 2131296291;
 			
-			// aapt resource value: 0x7f090059
-			public const int pb_progress = 2131296345;
+			// aapt resource value: 0x7f090055
+			public const int pb_progress = 2131296341;
 			
-			// aapt resource value: 0x7f09005a
-			public const int pb_pull_list_header = 2131296346;
+			// aapt resource value: 0x7f090056
+			public const int pb_pull_list_header = 2131296342;
 			
-			// aapt resource value: 0x7f090043
-			public const int questionTxt = 2131296323;
+			// aapt resource value: 0x7f090041
+			public const int questionTxt = 2131296321;
 			
 			// aapt resource value: 0x7f090008
 			public const int rb_account = 2131296264;
@@ -418,29 +409,26 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f090006
 			public const int rg_functions = 2131296262;
 			
-			// aapt resource value: 0x7f090031
-			public const int sb_audio = 2131296305;
-			
-			// aapt resource value: 0x7f09003b
-			public const int sb_video = 2131296315;
-			
-			// aapt resource value: 0x7f090034
-			public const int sb_voice = 2131296308;
-			
-			// aapt resource value: 0x7f09004e
-			public const int tv_answer = 2131296334;
-			
-			// aapt resource value: 0x7f090041
-			public const int tv_answertitle = 2131296321;
+			// aapt resource value: 0x7f090030
+			public const int sb_audio = 2131296304;
 			
 			// aapt resource value: 0x7f09003a
-			public const int tv_current_position = 2131296314;
+			public const int sb_video = 2131296314;
 			
-			// aapt resource value: 0x7f090053
-			public const int tv_description = 2131296339;
+			// aapt resource value: 0x7f090033
+			public const int sb_voice = 2131296307;
 			
-			// aapt resource value: 0x7f09003c
-			public const int tv_duration = 2131296316;
+			// aapt resource value: 0x7f09004a
+			public const int tv_answer = 2131296330;
+			
+			// aapt resource value: 0x7f090039
+			public const int tv_current_position = 2131296313;
+			
+			// aapt resource value: 0x7f09004f
+			public const int tv_description = 2131296335;
+			
+			// aapt resource value: 0x7f09003b
+			public const int tv_duration = 2131296315;
 			
 			// aapt resource value: 0x7f09001c
 			public const int tv_email = 2131296284;
@@ -454,50 +442,50 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f09001a
 			public const int tv_lastname = 2131296282;
 			
-			// aapt resource value: 0x7f090040
-			public const int tv_loading = 2131296320;
+			// aapt resource value: 0x7f09003f
+			public const int tv_loading = 2131296319;
 			
 			// aapt resource value: 0x7f090015
 			public const int tv_maintitle = 2131296277;
 			
-			// aapt resource value: 0x7f09004d
-			public const int tv_order = 2131296333;
+			// aapt resource value: 0x7f090049
+			public const int tv_order = 2131296329;
 			
 			// aapt resource value: 0x7f09001e
 			public const int tv_phonenumber = 2131296286;
 			
-			// aapt resource value: 0x7f090032
-			public const int tv_play_time = 2131296306;
+			// aapt resource value: 0x7f090031
+			public const int tv_play_time = 2131296305;
 			
-			// aapt resource value: 0x7f09005b
-			public const int tv_pull_list_header_title = 2131296347;
+			// aapt resource value: 0x7f090057
+			public const int tv_pull_list_header_title = 2131296343;
 			
-			// aapt resource value: 0x7f09005d
-			public const int tv_refresh = 2131296349;
+			// aapt resource value: 0x7f090059
+			public const int tv_refresh = 2131296345;
 			
-			// aapt resource value: 0x7f09004f
-			public const int tv_right = 2131296335;
+			// aapt resource value: 0x7f09004b
+			public const int tv_right = 2131296331;
 			
-			// aapt resource value: 0x7f090052
-			public const int tv_size = 2131296338;
+			// aapt resource value: 0x7f09004e
+			public const int tv_size = 2131296334;
 			
-			// aapt resource value: 0x7f090038
-			public const int tv_system_time = 2131296312;
+			// aapt resource value: 0x7f090037
+			public const int tv_system_time = 2131296311;
 			
-			// aapt resource value: 0x7f09005e
-			public const int tv_time = 2131296350;
+			// aapt resource value: 0x7f09005a
+			public const int tv_time = 2131296346;
 			
-			// aapt resource value: 0x7f09002a
-			public const int tv_timer = 2131296298;
+			// aapt resource value: 0x7f090029
+			public const int tv_timer = 2131296297;
 			
 			// aapt resource value: 0x7f090002
 			public const int tv_title = 2131296258;
 			
-			// aapt resource value: 0x7f090035
-			public const int video_view = 2131296309;
+			// aapt resource value: 0x7f090034
+			public const int video_view = 2131296308;
 			
-			// aapt resource value: 0x7f09003f
-			public const int view_brightness = 2131296319;
+			// aapt resource value: 0x7f09003e
+			public const int view_brightness = 2131296318;
 			
 			// aapt resource value: 0x7f090005
 			public const int vp_content = 2131296261;
@@ -546,52 +534,64 @@ namespace CorpTraining.Droid
 			public const int fragment_basevideo = 2130968585;
 			
 			// aapt resource value: 0x7f04000a
-			public const int fragment_question = 2130968586;
+			public const int fragment_null = 2130968586;
 			
 			// aapt resource value: 0x7f04000b
-			public const int fragment_questionaudio = 2130968587;
+			public const int fragment_question = 2130968587;
 			
 			// aapt resource value: 0x7f04000c
-			public const int fragment_textaudio = 2130968588;
+			public const int fragment_questionaudio = 2130968588;
 			
 			// aapt resource value: 0x7f04000d
-			public const int fragment_textimageaudio = 2130968589;
+			public const int fragment_text = 2130968589;
 			
 			// aapt resource value: 0x7f04000e
-			public const int fragment_video = 2130968590;
+			public const int fragment_textaudio = 2130968590;
 			
 			// aapt resource value: 0x7f04000f
-			public const int fragment_videotext = 2130968591;
+			public const int fragment_textessayaudioimagefragment = 2130968591;
 			
 			// aapt resource value: 0x7f040010
-			public const int item_leftmenu = 2130968592;
+			public const int fragment_textimageaudio = 2130968592;
 			
 			// aapt resource value: 0x7f040011
-			public const int item_resultlistview = 2130968593;
+			public const int fragment_textquestionaudioimage = 2130968593;
 			
 			// aapt resource value: 0x7f040012
-			public const int item_videolist = 2130968594;
+			public const int fragment_video = 2130968594;
 			
 			// aapt resource value: 0x7f040013
-			public const int mediacontroller = 2130968595;
+			public const int fragment_videotext = 2130968595;
 			
 			// aapt resource value: 0x7f040014
-			public const int popup_authenticate = 2130968596;
+			public const int item_leftmenu = 2130968596;
 			
 			// aapt resource value: 0x7f040015
-			public const int refresh_footer = 2130968597;
+			public const int item_resultlistview = 2130968597;
 			
 			// aapt resource value: 0x7f040016
-			public const int refresh_header = 2130968598;
+			public const int item_videolist = 2130968598;
 			
 			// aapt resource value: 0x7f040017
-			public const int viewpager_accountpager = 2130968599;
+			public const int mediacontroller = 2130968599;
 			
 			// aapt resource value: 0x7f040018
-			public const int viewpager_lessonspager = 2130968600;
+			public const int popup_authenticate = 2130968600;
 			
 			// aapt resource value: 0x7f040019
-			public const int viewpager_settingspager = 2130968601;
+			public const int refresh_footer = 2130968601;
+			
+			// aapt resource value: 0x7f04001a
+			public const int refresh_header = 2130968602;
+			
+			// aapt resource value: 0x7f04001b
+			public const int viewpager_accountpager = 2130968603;
+			
+			// aapt resource value: 0x7f04001c
+			public const int viewpager_lessonspager = 2130968604;
+			
+			// aapt resource value: 0x7f04001d
+			public const int viewpager_settingspager = 2130968605;
 			
 			static Layout()
 			{

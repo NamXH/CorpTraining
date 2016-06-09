@@ -12,6 +12,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Android.Media;
+using Android.Graphics;
+using Android.Views.Animations;
 
 namespace CorpTraining.Droid
 {
@@ -19,7 +21,8 @@ namespace CorpTraining.Droid
 	{
 		private MediaPlayer mp = new MediaPlayer ();
 		private Screen screen;
-		public EditText editText1;
+		private LinearLayout ll_text;
+		private List<Text> texts;
 
 		public TextAudioFragment (Screen screen)
 		{
@@ -30,13 +33,31 @@ namespace CorpTraining.Droid
 		{
 			base.OnCreateView (inflater, container, savedInstanceState);
 			var view = inflater.Inflate (Resource.Layout.fragment_textaudio, container, false);
-			view.FindViewById<TextView> (Resource.Id.displayText).Text = ((screen.Text == null) ? "No text" : screen.Text);
-			editText1 = view.FindViewById<EditText> (Resource.Id.editText1);
-			var activity = Activity as ScreensActivity;
-			if (activity.answer.ContainsKey (screen.Id)) {
-				//contains
-				editText1.Text = activity.answer [screen.Id];
+			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
+			//dynamically make text
+			if (screen.Texts == null) {
+				TextView textview = new TextView (Activity);
+				var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
+				textview.SetTextColor (Color.White);
+				textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
+				textview.Gravity = GravityFlags.Start;
+				textview.Text = "Enter here...";
+				ll_text.AddView (textview);
+			} else {
+				texts = new List<Text> (screen.Texts);
+				if (texts != null && texts.Count > 0) {
+					foreach (var text in texts) {
+						TextView textview = new TextView (Activity);
+						var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
+						textview.SetTextColor (Color.White);
+						textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
+						textview.Gravity = GravityFlags.Start;
+						textview.Text = text.TextValue;
+						ll_text.AddView (textview);
+					}
+				}
 			}
+			var activity = Activity as ScreensActivity;
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
 			mp.Prepared += delegate(object sender, EventArgs e) {
 				activity.validateBtns ();

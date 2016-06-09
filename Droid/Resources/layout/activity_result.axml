@@ -92,16 +92,10 @@
         android:orientation="horizontal"
         android:layout_margin="5dp">
         <Button
-            style="@style/PreviousStyle"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:text="REVIEW"
-            android:id="@+id/btn_review" />
-        <Button
             style="@style/NextStyle"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:text="BACK TO LESSONS"
+            android:text="BACK TO LESSONS LIST"
             android:id="@+id/btn_back" />
     </LinearLayout>
 </LinearLayout>

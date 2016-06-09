@@ -182,27 +182,16 @@
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="18sp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"
-        android:text="title"
-        android:gravity="center_horizontal"
-        android:id="@+id/tv_answertitle" />
-    <EditText
-        android:hint="Please input your note here:"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:textSize="20sp"
-        android:gravity="top"
-        android:background="#ff212121"
-        android:textColorHint="#ff76ff03"
+        android:scrollbars="vertical"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textColor="@android:color/background_light"
-        android:id="@+id/et_answer" />
+        android:layout_weight="2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ll_text" />
+    </ScrollView>
 </LinearLayout>

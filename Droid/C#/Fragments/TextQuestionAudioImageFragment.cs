@@ -12,12 +12,11 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Android.Media;
-using Android.Text;
 using Android.Graphics;
 
 namespace CorpTraining.Droid
 {
-	public class TextImageAudioFragment : Fragment
+	public class TextQuestionAudioImageFragment : Fragment
 	{
 		public MediaPlayer mp = new MediaPlayer ();
 		private ImageView iv1;
@@ -28,15 +27,21 @@ namespace CorpTraining.Droid
 		private LinearLayout ll_text;
 		private List<Text> texts;
 
-		public TextImageAudioFragment (Screen screen)
+		public ViewGroup choicesRadioGroup;
+		public List<Option> options;
+		private int lesson_id;
+		private TextView questionTxt;
+
+		public TextQuestionAudioImageFragment (Screen screen, int id)
 		{
 			this.screen = screen;
+			this.lesson_id = id;
 		}
 
 		public override Android.Views.View OnCreateView (Android.Views.LayoutInflater inflater, Android.Views.ViewGroup container, Android.OS.Bundle savedInstanceState)
 		{
 			base.OnCreateView (inflater, container, savedInstanceState);
-			var view = inflater.Inflate (Resource.Layout.fragment_textimageaudio, container, false);
+			var view = inflater.Inflate (Resource.Layout.fragment_textquestionaudioimage, container, false);
 			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
 			if (screen.Texts == null) {
@@ -85,7 +90,9 @@ namespace CorpTraining.Droid
 					ll_images.AddView (tv, textparam);
 				}
 			}
-
+			choicesRadioGroup = (ViewGroup)view.FindViewById<RadioGroup> (Resource.Id.choicesRadioGrp);
+			questionTxt = view.FindViewById<TextView> (Resource.Id.questionTxt);
+			populateChoices (view);
 			return view;
 		}
 
@@ -95,6 +102,35 @@ namespace CorpTraining.Droid
 			mp.Stop ();
 			mp.Release ();
 			base.OnDestroy ();
+		}
+
+		public async void populateChoices (View view)
+		{
+			//query to server
+			int id = -1;
+			options = new List<Option> (await LessonUtil.GetOptionsByScreenAsync (lesson_id, screen.Id + ""));
+			var activity = Activity as ScreensActivity;
+			if (activity.answer.ContainsKey (screen.Id)) {
+				id = int.Parse (activity.answer [screen.Id]);
+			}
+			for (int i = 0; i < options.Count; i++) {
+				Option option = options [i];
+				if (option != null) {
+					RadioButton rdBtn = new RadioButton (Application.Context);
+					rdBtn.Id = (i);
+					rdBtn.Text = option.Title;
+					if (i == id) {
+						//set checked
+						rdBtn.Checked = true;
+					}
+					choicesRadioGroup.AddView (rdBtn);
+				}
+			}
+			//remove default selected
+			if (id == -1) {
+				(choicesRadioGroup as RadioGroup).ClearCheck ();
+			}
+			activity.validateBtns ();
 		}
 	}
 }

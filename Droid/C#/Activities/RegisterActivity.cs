@@ -15,7 +15,7 @@ using Android.Graphics;
 
 namespace CorpTraining.Droid
 {
-	[Activity (Label = "CorpTraining", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]			
+	[Activity (Label = "CorpTraining", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]			
 	public class RegisterActivity : BaseActivity
 	{
 		private Button btn_regback;

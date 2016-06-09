@@ -12,12 +12,11 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Android.Media;
-using Android.Text;
 using Android.Graphics;
 
 namespace CorpTraining.Droid
 {
-	public class TextImageAudioFragment : Fragment
+	public class TextEssayAudioImageFragment : Fragment
 	{
 		public MediaPlayer mp = new MediaPlayer ();
 		private ImageView iv1;
@@ -27,8 +26,9 @@ namespace CorpTraining.Droid
 		private LinearLayout ll_images;
 		private LinearLayout ll_text;
 		private List<Text> texts;
+		public EditText et_answer;
 
-		public TextImageAudioFragment (Screen screen)
+		public TextEssayAudioImageFragment (Screen screen)
 		{
 			this.screen = screen;
 		}
@@ -36,7 +36,12 @@ namespace CorpTraining.Droid
 		public override Android.Views.View OnCreateView (Android.Views.LayoutInflater inflater, Android.Views.ViewGroup container, Android.OS.Bundle savedInstanceState)
 		{
 			base.OnCreateView (inflater, container, savedInstanceState);
-			var view = inflater.Inflate (Resource.Layout.fragment_textimageaudio, container, false);
+			var view = inflater.Inflate (Resource.Layout.fragment_textessayaudioimagefragment, container, false);
+			et_answer = view.FindViewById<EditText> (Resource.Id.et_answer);
+			ScreensActivity activity = Activity as ScreensActivity;
+			if (activity.answer.ContainsKey (screen.Id)) {
+				et_answer.Text = activity.answer [screen.Id];
+			}
 			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
 			if (screen.Texts == null) {
@@ -62,7 +67,6 @@ namespace CorpTraining.Droid
 				}
 			}
 			ll_images = view.FindViewById<LinearLayout> (Resource.Id.ll_images);
-			var activity = Activity as ScreensActivity;
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
 			mp.Prepared += delegate(object sender, EventArgs e) {
 				activity.validateBtns ();

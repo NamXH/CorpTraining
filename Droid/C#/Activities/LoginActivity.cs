@@ -127,17 +127,7 @@ namespace CorpTraining.Droid
 						});
 						ab.Create ().Show ();
 					}
-					if (result == null) {
-						ll_loginpage.Alpha = 1.0f;
-						EnableAllViews (true);
-						pop.Dismiss ();
-						AlertDialog.Builder ab = new AlertDialog.Builder (this);
-						ab.SetTitle ("Data error");
-						ab.SetMessage ("Data error,please try again later!");
-						ab.SetPositiveButton ("confirm", delegate(object sender, DialogClickEventArgs e) {
-						});
-						ab.Create ().Show ();
-					} else {
+					if (result != null) {
 						if (result.Item2 != null) {
 							//login successfully
 							//remember me?

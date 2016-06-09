@@ -28,11 +28,6 @@ namespace CorpTraining.Droid
 			return windowManager.DefaultDisplay.Height;
 		}
 
-		public static string EncodeURL (string str)
-		{
-			String url = str.Replace (" ", "%20");
-			return url;
-		}
 
 		public static string formatMillis (long time)
 		{
@@ -54,16 +49,16 @@ namespace CorpTraining.Droid
 			sb_audio = view.FindViewById<SeekBar> (Resource.Id.sb_audio);
 			tv_play_time = view.FindViewById<TextView> (Resource.Id.tv_play_time);
 			sb_voice = view.FindViewById<SeekBar> (Resource.Id.sb_voice);
-			Utils.openAudio (context, mp, audioUrl);
+			Utils.openAudio (context, mp, EncodeURL (audioUrl));
 			mp.Prepared += delegate(object sender, EventArgs e) {
 				//play
 				mp.Start ();
 				//update play button
 				int id;
 				if (mp.IsPlaying) {
-					id = Resource.Drawable.selector_btn_pause;
+					id = Resource.Drawable.selector_audio_btn_pause;
 				} else {
-					id = Resource.Drawable.selector_btn_play;
+					id = Resource.Drawable.selector_audio_btn_play;
 				}
 				btn_play.SetBackgroundResource (id);
 				//set play-time
@@ -97,10 +92,10 @@ namespace CorpTraining.Droid
 				int id;
 				if (mp.IsPlaying) {
 					mp.Pause ();
-					id = Resource.Drawable.selector_btn_play;
+					id = Resource.Drawable.selector_audio_btn_play;
 				} else {
 					mp.Start ();
-					id = Resource.Drawable.selector_btn_pause;
+					id = Resource.Drawable.selector_audio_btn_pause;
 				}
 				btn_play.SetBackgroundResource (id);
 
@@ -150,6 +145,40 @@ namespace CorpTraining.Droid
 			iv.SetImageBitmap (bitmap);
 		}
 
+		public static string EncodeURL (string str)
+		{
+			String url = str.Replace (" ", "%20");
+			return url;
+		}
+
+		public static string populateSelection (int order)
+		{
+			string selection = "";
+			switch (order) {
+			case 0:
+				selection = "A";
+				break;
+			case 1:
+				selection = "B";
+				break;
+			case 2:
+				selection = "C";
+				break;
+			case 3:
+				selection = "D";
+				break;
+			case 4:
+				selection = "E";
+				break;
+			case 5:
+				selection = "F";
+				break;
+			case 6:
+				selection = "G";
+				break;
+			}
+			return selection;
+		}
 	}
 }
 

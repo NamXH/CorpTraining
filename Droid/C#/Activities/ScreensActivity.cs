@@ -41,8 +41,8 @@ namespace CorpTraining.Droid
 		//record all answers
 		private InputMethodManager manager;
 		private List<string> ids;
-		private ISharedPreferences preference;
-		private ISharedPreferencesEditor editor;
+		public ISharedPreferences preference;
+		public ISharedPreferencesEditor editor;
 		private Dictionary<int,int> selectedAnswer;
 		//record the answer
 		public override void initListner ()
@@ -107,51 +107,48 @@ namespace CorpTraining.Droid
 			if (screen != null) {
 				nextBtn.Visibility = ViewStates.Invisible;
 				previousBtn.Visibility = ViewStates.Invisible;
-				switch (screen.Type) {
-				case "video":
-				case "video_text":
+				if (screen.Type == null) {
+					showNullFragment ();
+				} else {
+					switch (screen.Type) {
+					case "video":
+					case "video_text":
 					//must finish watching video
-					ids.Add (screen.Id + "");
-					showVideoTextFragment ();
-					break;
-
-				case "audio_question_image":
-					
-					break;
-				case "question_audio":
-				case "audio_question":
-					showQuestionAudioFragment ();
-					break;
-
-				case "audio_edittext":
-					
-					break;
-				case "text":
-					
-					break;
-				case "audio_image":
-					
-					break;
-				case "text_audio_image":
-				case "text_image_audio":
-					showTextImageAudioFragment ();
-					break;
-				case "audio_text_image_edittext":
-					
-					break;
-				case "text_audio":
-				case "audio_text":
-					showTextAudioFragment ();
-					break;
-				case "question":
-					showQuestionFragment ();
-					break;
-				case "audio_text_video":
-					ids.Add (screen.Id + "");
-					showAudioTextVideoFragment ();
-					break;
-				default:
-					break;
+						ids.Add (screen.Id + "");
+						showVideoTextFragment ();
+						break;
+					case "question_audio":
+					case "audio_question":
+						showQuestionAudioFragment ();
+						break;
+					case "text":
+						showTextFragment ();
+						break;
+					case "text_audio_image":
+					case "text_image_audio":
+						showTextImageAudioFragment ();
+						break;
+					case "text_question_audio_image":
+						showTextQuestionAudioImage ();
+						break;
+					case "text_audio":
+					case "audio_text":
+						showTextAudioFragment ();
+						break;
+					case "question":
+						showQuestionFragment ();
+						break;
+					case "audio_text_video":
+						ids.Add (screen.Id + "");
+						showAudioTextVideoFragment ();
+						break;
+					case "text_essay_audio_image":
+						showTextEssayAudioImage ();
+						break;
+					default:
+						showNullFragment ();
+						break;
+					}
 				}
 			}
 		}
@@ -171,60 +168,15 @@ namespace CorpTraining.Droid
 
 		private Boolean updateAnswers ()
 		{
-			switch (screen.Type) {
-			case "video":
-			case "video_text":
-				var videoText = fragment as VideoTextFragment;
-				string text_answer = videoText.et_answer.Text;
-				if (string.IsNullOrEmpty (text_answer)) {
-					//not answer the question
-					DialogFactory.ToastDialog (this, "Empty note", "Please take some note", 0);
+			switch (screen.Type) {			
+			case "text_essay_audio_image":
+				var textessayaudioimage = fragment as TextEssayAudioImageFragment;
+				var eText = textessayaudioimage.et_answer.Text;
+				if (string.IsNullOrEmpty (eText)) {
+					DialogFactory.ToastDialog (this, "Empty answer", "Please type your answer", 0);
 					return false;
 				}
-				//record the answer
-				recordAnswer (text_answer);
-				//record screenId
-				break;
-
-			case "audio_question_image":
-				
-				break;
-
-			case "audio_edittext":
-
-				break;
-			case "text":
-
-				break;
-			case "audio_image":
-
-				break;
-			case "text_audio_image":
-			case "text_image_audio":
-				var textimageaudio = fragment as TextImageAudioFragment;
-				string textimageaudio_answer = textimageaudio.et_note.Text;
-				if (string.IsNullOrEmpty (textimageaudio_answer)) {
-					//not answer the question
-					DialogFactory.ToastDialog (this, "Empty answer", "Please take some note", 0);
-					return false;
-				}
-				//record the answer
-				recordAnswer (textimageaudio_answer);
-				break;
-			case "audio_text_image_edittext":
-
-				break;
-			case "text_audio":
-			case "audio_text":
-				var textaudio = fragment as TextAudioFragment;
-				string textaudio_answer = textaudio.editText1.Text;
-				if (string.IsNullOrEmpty (textaudio_answer)) {
-					//not answer the question
-					DialogFactory.ToastDialog (this, "Empty answer", "Please take some note", 0);
-					return false;
-				}
-				//record the answer
-				recordAnswer (textaudio_answer);
+				recordAnswer (eText);
 				break;
 			case "question"://selected
 				var question = fragment as QuestionFragment;
@@ -249,12 +201,16 @@ namespace CorpTraining.Droid
 				recordAnswer (cId + "");
 				recordSelectedAnswer (screen.Id, audioquestion.options [cId].Id);
 				break;
-			case "audio_text_video":
-				var audioTextVideo = fragment as AudioVideoTextFragment;
-				string audioString = audioTextVideo.et_answer.Text;
-				//record the answer
-				recordAnswer (audioString);
-				//record screenId
+			case "text_question_audio_image":
+				var textquestionaudioimage = fragment as TextQuestionAudioImageFragment;
+				var tId = (textquestionaudioimage.choicesRadioGroup as RadioGroup).CheckedRadioButtonId;
+				if (tId < 0) {
+					//not selected
+					DialogFactory.ToastDialog (this, "No selection", "Please select one answer", 0);
+					return false;
+				}
+				recordAnswer (tId + "");
+				recordSelectedAnswer (screen.Id, textquestionaudioimage.options [tId].Id);
 				break;
 			default:
 				break;
@@ -406,6 +362,58 @@ namespace CorpTraining.Droid
 			ft.SetTransition (FragmentTransit.FragmentFade);
 			ft.Commit ();
 			fragment = audioTextVideo;
+		}
+
+		private void showTextQuestionAudioImage ()
+		{
+			// Make new fragment to show this selection.
+			var textquestionaudioimage = new TextQuestionAudioImageFragment (screen, lesson_id);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, textquestionaudioimage);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = textquestionaudioimage;
+		}
+
+		private void showTextFragment ()
+		{
+			// Make new fragment to show this selection.
+			var text = new TextFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, text);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = text;
+		}
+
+		private void showTextEssayAudioImage ()
+		{
+			// Make new fragment to show this selection.
+			var text = new TextEssayAudioImageFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, text);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = text;
+		}
+
+		private void showNullFragment ()
+		{
+			// Make new fragment to show this selection.
+			var text = new NullFragment ();
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, text);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = text;
 		}
 
 		/// <summary>

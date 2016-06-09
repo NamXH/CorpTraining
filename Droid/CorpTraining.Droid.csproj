@@ -96,6 +96,10 @@
     <Compile Include="C#\Activities\ResultActivity.cs" />
     <Compile Include="C#\Adapter\ResultListViewAdapter.cs" />
     <Compile Include="C#\Fragments\AudioVideoTextFragment.cs" />
+    <Compile Include="C#\Fragments\TextQuestionAudioImageFragment.cs" />
+    <Compile Include="C#\Fragments\TextFragment.cs" />
+    <Compile Include="C#\Fragments\TextEssayAudioImageFragment.cs" />
+    <Compile Include="C#\Fragments\NullFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -226,6 +230,10 @@
     <AndroidResource Include="Resources\drawable\progress_horizontal_score.xml" />
     <AndroidResource Include="Resources\layout\item_resultlistview.axml" />
     <AndroidResource Include="Resources\layout\fragment_audiovideotext.axml" />
+    <AndroidResource Include="Resources\layout\fragment_textquestionaudioimage.axml" />
+    <AndroidResource Include="Resources\layout\fragment_text.axml" />
+    <AndroidResource Include="Resources\layout\fragment_textessayaudioimagefragment.axml" />
+    <AndroidResource Include="Resources\layout\fragment_null.axml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

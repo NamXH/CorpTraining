@@ -78,8 +78,8 @@ namespace CorpTraining.Droid
 			view = inflater.Inflate (getLayoutResource (), container, false);
 			rootView = view;
 			//read isWatched from preferences
-			preference = Activity.GetSharedPreferences (Constants.PREFERENCE_CONFIG, FileCreationMode.Private);
-			editor = preference.Edit ();
+			preference = (Activity as ScreensActivity).preference;
+			editor = (Activity as ScreensActivity).editor;
 			isWatched = preference.GetBoolean (screen.Id + "", false);
 			initView ();
 			if (!isWatched) {
@@ -203,7 +203,7 @@ namespace CorpTraining.Droid
 				return;
 			}
 			//get video_url
-			video_url = getVideoUrl ();
+			video_url = Utils.EncodeURL (getVideoUrl ());
 			if (!string.IsNullOrEmpty (video_url)) {
 				vv.SetVideoURI (Android.Net.Uri.Parse (Utils.EncodeURL (video_url)));
 			} else {
@@ -296,6 +296,7 @@ namespace CorpTraining.Droid
 				Activity.UnregisterReceiver (batteryChangedReceiver);
 			}
 			handler.RemoveCallbacksAndMessages (null);
+			vv.StopPlayback ();
 		}
 
 

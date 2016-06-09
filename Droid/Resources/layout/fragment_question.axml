@@ -16,7 +16,8 @@
         android:scrollbars="vertical"
         android:overScrollMode="ifContentScrolls"
         android:verticalScrollbarPosition="defaultPosition"
-        android:fadeScrollbars="true" />
+        android:fadeScrollbars="true"
+        android:gravity="start" />
     <RadioGroup
         android:id="@+id/choicesRadioGrp"
         android:layout_width="match_parent"
