@@ -310,19 +310,29 @@ namespace CorpTraining
 
 			var jsonAnswers = JsonConvert.SerializeObject (screenAnswers);
 			var content = new StringContent (jsonAnswers, Encoding.UTF8, "application/json");
-
+			string result;
+			int totalScore, userScore;
 			HttpResponseMessage response = null;
 
 			response = await MakeServerPostRequest (Globals.LESSONS_URL + lessonId + "/" + Globals.ANSWER_URL, content);
+			JsonValue resultJson = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result);
 
 			try {
-
-				string result = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["result"];
-
-				int totalScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["totalScore"];
-
-				int userScore = JsonObject.Parse (response.Content.ReadAsStringAsync ().Result) ["userScore"];
-
+				try{
+					result = resultJson["result"];
+				}catch(KeyNotFoundException){
+					result = null;
+				}
+				try{
+					totalScore = resultJson["totalScore"];
+				}catch(KeyNotFoundException){
+					totalScore = 0;
+				}
+				try{
+					userScore = resultJson["userScore"];
+				}catch (KeyNotFoundException){
+					userScore = 0;
+				}
 				return new Tuple<string, int, int> (result, totalScore, userScore);
 
 			} catch  (NullReferenceException) {
