@@ -137,6 +137,8 @@ namespace CorpTraining
 
 				foreach (JObject screenJson in screenArray) {  //TODO Once the server returns every screen parameter in the screen list, this should be modified
 					Screen screen = await GetScreenByIdAsync (lessonId, (int)screenJson ["id"]);
+					screen.AudioUrl = EncodeURL(screen.AudioUrl);
+					screen.VideoUrl = EncodeURL(screen.VideoUrl);
 					screenList.Add (screen);
 				}
 			} catch (JsonSerializationException) {
@@ -163,6 +165,8 @@ namespace CorpTraining
 			if (screenJson.GetValue ("id").ToString ().Equals ("") || screenJson.GetValue ("id") == null)
 				return null;
 			screen = screenJson.ToObject<Screen> ();
+			screen.AudioUrl = EncodeURL(screen.AudioUrl);
+			screen.VideoUrl = EncodeURL(screen.VideoUrl);
 			return screen;
 		}
 
@@ -182,6 +186,8 @@ namespace CorpTraining
 			if (screenJson.GetValue ("id").ToString ().Equals ("") || screenJson.GetValue ("id") == null)
 				return null;
 			screen = screenJson.ToObject<Screen> ();
+			screen.AudioUrl = EncodeURL(screen.AudioUrl);
+			screen.VideoUrl = EncodeURL(screen.VideoUrl);
 			return screen;
 
 		}
@@ -202,6 +208,8 @@ namespace CorpTraining
 			if (screenJson.GetValue ("id").ToString ().Equals ("") || screenJson.GetValue ("id") == null)
 				return null;
 			screen = screenJson.ToObject<Screen> ();
+			screen.AudioUrl = EncodeURL(screen.AudioUrl);
+			screen.VideoUrl = EncodeURL(screen.VideoUrl);
 			return screen;
 		}
 
@@ -229,6 +237,9 @@ namespace CorpTraining
 			JArray imageArray = JArray.Parse (jsonDoc.ToString ());
 			imageList = JsonConvert.DeserializeObject<IList<Image>> (imageArray.ToString ());
 
+			foreach (Image image in imageList)
+				image.Url = EncodeURL (image.Url);
+			
 			return imageList;
 		}
 
@@ -273,6 +284,8 @@ namespace CorpTraining
 			screenJson ["options"] = JToken.FromObject (optionList);
 
 			screen = screenJson.ToObject<Screen> ();
+			screen.AudioUrl = EncodeURL(screen.AudioUrl);
+			screen.VideoUrl = EncodeURL(screen.VideoUrl);
 			return screen;
 		}
 
@@ -364,6 +377,7 @@ namespace CorpTraining
 			} catch (JsonSerializationException) {
 				throw new JsonSerializationException ("Json couldn't be serialized. " + jsonDoc);
 			}
+			image.Url = EncodeURL (image.Url);
 			return image;
 		}
 
@@ -383,6 +397,12 @@ namespace CorpTraining
 			}
 
 			return option;
+		}
+
+		public static string EncodeURL (string str)
+		{
+			String url = str.Replace (" ", "%20");
+			return url;
 		}
 	}
 }
