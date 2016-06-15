@@ -65,7 +65,7 @@ namespace CorpTraining
 		}
 
 		/// <summary>Get the lesson list
-		/// <para>Returns a list of lessons</para>
+		/// <para>Returns a list of lessons.</para>
 		/// </summary>
 		public static async Task<IList<Lesson>> GetLessonsAsync ()
 		{
