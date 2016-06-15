@@ -11,6 +11,9 @@ namespace CorpTraining.Droid
 		public const int RETURN_LIST = 2;
 		public const int TIME_UP = 3;
 		public const int LOGIN_TIMEOUT = 4;
+		public const int LESSON_ERROR = 5;
+		public const int TEXT_ERROR = 6;
+
 
 		public const int CHANGE_COLOR = 2;
 
@@ -41,6 +44,7 @@ namespace CorpTraining.Droid
 		public static readonly string PREFERENCE_NAME = "answer";
 		public static readonly string PREFERENCE_CONFIG = "config";
 		public static readonly string SELECTED_ANSWER = "selected_answer";
+		public static readonly string MODULE_ID = "module_id";
 
 		//record answer
 		public static List<ScreenAnswer> screenAnswers;

@@ -241,6 +241,7 @@ namespace CorpTraining.Droid
 		/// </summary>
 		private void submitAnswers ()
 		{
+			updateAnswers ();
 			//toast a dialog
 			DialogFactory.toastNegativePositiveDialog (this, "Submit", "Are you sure to submit the answers", Constants.SUBMIT_ANSWERS);
 		}

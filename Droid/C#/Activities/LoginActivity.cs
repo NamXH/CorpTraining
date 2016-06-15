@@ -98,69 +98,74 @@ namespace CorpTraining.Droid
 			email = login_accounts.Text;
 			password = login_password.Text;
 			//loginTest ();
-
-			//todo:check empty
-			if (string.IsNullOrEmpty (email) || string.IsNullOrEmpty (password)) {
-				DialogFactory.ToastDialog (this, "Login", "Username and password cannot be empty!", 0);
-			} else {
-				//check email
-				Match match = Regex.Match (email, "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,3}){1,3})$");
-				if (match.Success) {
-					//Authenticate
-					View popView = View.Inflate (this, Resource.Layout.popup_authenticate, null);
-					pop = new PopupWindow (popView, 320, 200);
-					pop.ShowAtLocation (login_btn, GravityFlags.Center, 0, 20);
-					//Modal
-					ll_loginpage.Alpha = 0.5f;
-					EnableAllViews (false);
-					//check email and password to server
-					try {
-						result = await UserUtil.AuthenticateUserAsync (email, password);
-					} catch (Exception ex) {
-						ll_loginpage.Alpha = 1.0f;
-						EnableAllViews (true);
-						pop.Dismiss ();
-						AlertDialog.Builder ab = new AlertDialog.Builder (this);
-						ab.SetTitle ("Server busy");
-						ab.SetMessage ("Server is busy,please try again later!");
-						ab.SetPositiveButton ("confirm", delegate(object sender, DialogClickEventArgs e) {
-						});
-						ab.Create ().Show ();
-					}
-					if (result != null) {
-						if (result.Item2 != null) {
-							//login successfully
-							//remember me?
-							bool check = auto_save_password.Checked;
-							if (auto_save_password.Checked) {
-								edit.PutString ("email", email);
-								edit.PutString ("password", password);
-								edit.PutBoolean ("checked", check);
-								edit.Commit ();
-							} else {
-								edit.PutBoolean ("checked", check);
-								edit.Commit ();
-							}
-							Toast.MakeText (this, "Login successfully!", ToastLength.Short).Show ();
-							Intent intent = new Intent (this, typeof(HomeActivity));
-							intent.PutExtra ("email", email);
-							intent.PutExtra ("token", result.Item2);
-							StartActivity (intent);
-							Finish ();
-						} else {
-							ll_loginpage.Alpha = 1.0f;
-							pop.Dismiss ();
-							EnableAllViews (true);
-							//failed
-							DialogFactory.ToastDialog (this, "Login", "Username or password is not correct!", 0);//to do:specific error msg
-						}
-					} 
+			//check internet
+			bool isNetWorking = Utils.isNetworkAvailable (this);
+			if (isNetWorking == true) {
+				//todo:check empty
+				if (string.IsNullOrEmpty (email) || string.IsNullOrEmpty (password)) {
+					DialogFactory.ToastDialog (this, "Login", "Username and password cannot be empty!", 0);
 				} else {
-					ll_loginpage.Alpha = 1.0f;
-					pop.Dismiss ();
-					EnableAllViews (true);
-					DialogFactory.ToastDialog (this, "Login", "Email format is incorrent!", 0);
+					//check email
+					Match match = Regex.Match (email, "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,3}){1,3})$");
+					if (match.Success) {
+						//Authenticate
+						View popView = View.Inflate (this, Resource.Layout.popup_authenticate, null);
+						pop = new PopupWindow (popView, 320, 200);
+						pop.ShowAtLocation (login_btn, GravityFlags.Center, 0, 20);
+						//Modal
+						ll_loginpage.Alpha = 0.5f;
+						EnableAllViews (false);
+						//check email and password to server
+						try {
+							result = await UserUtil.AuthenticateUserAsync (email, password);
+						} catch (Exception ex) {
+							ll_loginpage.Alpha = 1.0f;
+							EnableAllViews (true);
+							pop.Dismiss ();
+							AlertDialog.Builder ab = new AlertDialog.Builder (this);
+							ab.SetTitle ("Server busy");
+							ab.SetMessage ("Server is busy,please try again later!");
+							ab.SetPositiveButton ("confirm", delegate(object sender, DialogClickEventArgs e) {
+							});
+							ab.Create ().Show ();
+						}
+						if (result != null) {
+							if (result.Item2 != null) {
+								//login successfully
+								//remember me?
+								bool check = auto_save_password.Checked;
+								if (auto_save_password.Checked) {
+									edit.PutString ("email", email);
+									edit.PutString ("password", password);
+									edit.PutBoolean ("checked", check);
+									edit.Commit ();
+								} else {
+									edit.PutBoolean ("checked", check);
+									edit.Commit ();
+								}
+								Toast.MakeText (this, "Login successfully!", ToastLength.Short).Show ();
+								Intent intent = new Intent (this, typeof(HomeActivity));
+								intent.PutExtra ("email", email);
+								intent.PutExtra ("token", result.Item2);
+								StartActivity (intent);
+								Finish ();
+							} else {
+								ll_loginpage.Alpha = 1.0f;
+								pop.Dismiss ();
+								EnableAllViews (true);
+								//failed
+								DialogFactory.ToastDialog (this, "Login", "Username or password is not correct!", 0);//to do:specific error msg
+							}
+						} 
+					} else {
+						ll_loginpage.Alpha = 1.0f;
+						pop.Dismiss ();
+						EnableAllViews (true);
+						DialogFactory.ToastDialog (this, "Login", "Email format is incorrent!", 0);
+					}
 				}
+			} else {
+				DialogFactory.ToastDialog (this, "Connect Error", "There is no internet,please connect the internet!", 0);
 			}
 		}
 

@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Register New Account"
+            android:text="New Account"
             android:textColor="@android:color/black"
             android:textSize="20.0sp" />
     </RelativeLayout>

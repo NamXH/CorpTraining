@@ -21,7 +21,6 @@ namespace CorpTraining.Droid
 	{
 		private TextView tv_title;
 		private ImageButton ib_menu;
-		private ImageButton ib_exit;
 		private NoScrollViewPager vp_content;
 		private RadioGroup rg_functions;
 		private RadioButton rb_lessons;
@@ -38,10 +37,6 @@ namespace CorpTraining.Droid
 
 		public override void initListner ()
 		{
-			ib_exit.Click += delegate(object sender, EventArgs e) {
-				DialogFactory.toastNegativePositiveDialog (this, "Exit", "Are you sure to log out?", Constants.EXIT_CHOICE);
-
-			};
 			ib_menu.Click += delegate(object sender, EventArgs e) {
 				drawer.OpenDrawer (lv_menu);	
 			};
@@ -105,7 +100,6 @@ namespace CorpTraining.Droid
 		{
 			tv_title = FindViewById<TextView> (Resource.Id.tv_title);
 			ib_menu = FindViewById<ImageButton> (Resource.Id.ib_menu);
-			ib_exit = FindViewById<ImageButton> (Resource.Id.ib_exit);
 			vp_content = FindViewById<NoScrollViewPager> (Resource.Id.vp_content);
 			rg_functions = FindViewById<RadioGroup> (Resource.Id.rg_functions);
 			rb_lessons = FindViewById<RadioButton> (Resource.Id.rb_lessons);

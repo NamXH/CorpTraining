@@ -61,6 +61,7 @@ namespace CorpTraining.Droid
 					RadioButton rdBtn = new RadioButton (Application.Context);
 					rdBtn.Id = (i);
 					rdBtn.Text = option.Title;
+					rdBtn.SetTextSize (ComplexUnitType.Sp, 18.0f);
 					if (i == id) {
 						//set checked
 						rdBtn.Checked = true;

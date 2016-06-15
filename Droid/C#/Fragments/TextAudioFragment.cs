@@ -42,7 +42,7 @@ namespace CorpTraining.Droid
 				textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
 				textview.Gravity = GravityFlags.Start;
 				textview.Text = "Enter here...";
-				ll_text.AddView (textview);
+				ll_text.AddView (textview, param);
 			} else {
 				texts = new List<Text> (screen.Texts);
 				if (texts != null && texts.Count > 0) {
@@ -53,7 +53,8 @@ namespace CorpTraining.Droid
 						textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
 						textview.Gravity = GravityFlags.Start;
 						textview.Text = text.TextValue;
-						ll_text.AddView (textview);
+						param.BottomMargin = 10;
+						ll_text.AddView (textview, param);
 					}
 				}
 			}

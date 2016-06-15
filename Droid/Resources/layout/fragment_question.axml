@@ -18,10 +18,14 @@
         android:verticalScrollbarPosition="defaultPosition"
         android:fadeScrollbars="true"
         android:gravity="start" />
-    <RadioGroup
-        android:id="@+id/choicesRadioGrp"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_weight="60"
-        android:layout_height="0dp"
-        android:orientation="vertical" />
+        android:layout_height="0dp">
+        <RadioGroup
+            android:id="@+id/choicesRadioGrp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </ScrollView>
 </LinearLayout>

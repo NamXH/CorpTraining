@@ -3,27 +3,27 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/landingscape"
+    android:background="@mipmap/bg_coop"
     android:gravity="center"
     android:id="@+id/ll_root">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="50sp"
+        android:textSize="30sp"
         android:gravity="center_horizontal"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:text="CorpTraining"
         android:alpha="0"
         android:id="@+id/tv_maintitle" />
     <Button
         android:id="@+id/btn_start"
-        android:background="@drawable/login_button_bg_selector"
+        android:background="@drawable/login_button_bg_selector_red"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="Getting Started"
+        android:text="Start"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:visibility="invisible" />

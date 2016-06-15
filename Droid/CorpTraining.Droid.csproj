@@ -100,6 +100,12 @@
     <Compile Include="C#\Fragments\TextFragment.cs" />
     <Compile Include="C#\Fragments\TextEssayAudioImageFragment.cs" />
     <Compile Include="C#\Fragments\NullFragment.cs" />
+    <Compile Include="C#\Activities\PracticesActivity.cs" />
+    <Compile Include="C#\Activities\PolicesActivity.cs" />
+    <Compile Include="C#\Models\SortModel.cs" />
+    <Compile Include="C#\Adapter\SortAdapter.cs" />
+    <Compile Include="C#\CustomedView\ClearEditText.cs" />
+    <Compile Include="C#\Activities\TextActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -234,6 +240,19 @@
     <AndroidResource Include="Resources\layout\fragment_text.axml" />
     <AndroidResource Include="Resources\layout\fragment_textessayaudioimagefragment.axml" />
     <AndroidResource Include="Resources\layout\fragment_null.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\bg_coop.png" />
+    <AndroidResource Include="Resources\drawable\login_button_bg_selector_red.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\coop_logo.png" />
+    <AndroidResource Include="Resources\layout\activity_practices.axml" />
+    <AndroidResource Include="Resources\layout\item_modulelist.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\right_arrow.png" />
+    <AndroidResource Include="Resources\drawable\btn_modulelist_selector.xml" />
+    <AndroidResource Include="Resources\layout\activity_polices.axml" />
+    <AndroidResource Include="Resources\layout\item_users.axml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\emotionstore_progresscancelbtn.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\search_bar_icon_normal.png" />
+    <AndroidResource Include="Resources\layout\activity_text.axml" />
+    <AndroidResource Include="Resources\drawable\btn_red_selector.xml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
@@ -259,5 +278,6 @@
     <Folder Include="C#\Adapter\" />
     <Folder Include="C#\Receiver\" />
     <Folder Include="C#\Fragments\" />
+    <Folder Include="C#\Models\" />
   </ItemGroup>
 </Project>

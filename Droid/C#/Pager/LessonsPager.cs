@@ -10,12 +10,12 @@ namespace CorpTraining.Droid
 {
 	public class LessonsPager: BasePager
 	{
-		private RefreshListView lv_list;
+		private ListView lv_list;
 		private LinearLayout ll_load;
-		private List<Lesson> lessonList;
 		private int lessonId;
-		private Lesson currentLesson;
+		private Module currentModule;
 		private int position = 0;
+		private List<Module> moduleList;
 
 		public LessonsPager (Android.App.Activity activity) : base (activity)
 		{
@@ -26,69 +26,64 @@ namespace CorpTraining.Droid
 			View view = View.Inflate (activity, Resource.Layout.viewpager_lessonspager, null);
 			fl_content.RemoveAllViews ();
 			fl_content.AddView (view);
-			lv_list = view.FindViewById<RefreshListView> (Resource.Id.lv_list);
+			lv_list = view.FindViewById<ListView> (Resource.Id.lv_list);
 			ll_load = view.FindViewById<LinearLayout> (Resource.Id.ll_load);
 			lv_list.Visibility = ViewStates.Invisible;
 			ll_load.Visibility = ViewStates.Visible;
-			currentLesson = new Lesson ();
 			Constants.currentUser = new User ();
-			//load data
-			getLessonsFromServer ();
+			//load module
+			getModulesFromServer ();
 			lv_list.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs e) {
-				lv_list.Visibility = ViewStates.Invisible;
-				ll_load.Visibility = ViewStates.Visible;
-				position = e.Position - 1;
-				lessonId = lessonList [position].Id;
-				currentLesson = lessonList [position];
-				getVideoUrlFromServer ();
+				//jump to activity according to Module ID
+				currentModule = moduleList [e.Position];
+				Intent intent = null;
+				switch (currentModule.Id) {
+				case 1:
+					intent = new Intent (activity, typeof(PolicesActivity));
+					break;
+				case 2:
+					
+					break;
+				case 3:
+					intent = new Intent (activity, typeof(PracticesActivity));
+					break;
+				default:
+					break;
+				}
+				if (intent != null) {
+					intent.PutExtra (Constants.MODULE_ID, currentModule.Id);
+					activity.StartActivity (intent);
+					activity.Finish ();
+				}
 			};
 		}
 
-		private async void getVideoUrlFromServer ()
-		{
-			var result = await LessonUtil.GetScreensByLessonAsync (lessonId);
-			if (result != null && result.Count > 0) {
-				Constants.screens = result;
-				//jump to screenactivity
-				Intent intent = new Intent (activity, typeof(ScreensActivity));
-				intent.PutExtra (Constants.LESSON_TITLE, currentLesson.Title);
-				intent.PutExtra (Constants.LESSON_DES, currentLesson.Description);
-				intent.PutExtra (Constants.LESSON_ID, currentLesson.Id);
-				activity.StartActivity (intent);
-			} else {
-				lv_list.Visibility = ViewStates.Visible;
-				ll_load.Visibility = ViewStates.Invisible;
-				DialogFactory.ToastDialog (activity, "Empty lesson", "This lesson has not uploaded yet!Please try again later", 0);
-			}
-		}
-
-		public async void getLessonsFromServer ()
+		public async void getModulesFromServer ()
 		{
 			try {
-				var lessons = await LessonUtil.GetLessonsAsync ();
+				var modules = await LessonUtil.GetModulesAsync ();
 				Constants.currentUser = await UserUtil.GetCurrentUserAsync ();
-				lessonList = new List<Lesson> (lessons);
+				moduleList = new List<Module> (modules);
 			} catch (Exception ex) {
-				DialogFactory.ToastDialog (activity, "Server busy", "Server is busy,please drag down to refresh later", 0);
+				DialogFactory.ToastDialog (activity, "Server busy", "Server is busy,please login later", Constants.LOGIN_TIMEOUT);
 			}
 			if (Constants.currentUser == null) {
 				//illegal login
 				DialogFactory.ToastDialog (activity, "Login timeout", "Timeout,please login again", Constants.LOGIN_TIMEOUT);
+			} else {
+				lv_list.Adapter = new MyModuleListAdapter (moduleList, this.activity);
+				lv_list.Visibility = ViewStates.Visible;
+				ll_load.Visibility = ViewStates.Invisible;
 			}
-			lv_list.onRefreshComplete ();
-			lv_list.Adapter = new MyListViewAdapter (activity, lessonList);
-			lv_list.setOnRefreshListener (new MyRefreshListener (this));
-			lv_list.Visibility = ViewStates.Visible;
-			ll_load.Visibility = ViewStates.Invisible;
 		}
 	}
 
-	class MyListViewAdapter: BaseAdapter
+	public class MyModuleListAdapter:BaseAdapter
 	{
-		private List<Lesson> list;
+		private List<Module> list;
 		private Context context;
 
-		public MyListViewAdapter (Context context, List<Lesson> list)
+		public MyModuleListAdapter (List<Module> list, Context context)
 		{
 			this.list = list;
 			this.context = context;
@@ -96,7 +91,7 @@ namespace CorpTraining.Droid
 
 		public override Java.Lang.Object GetItem (int position)
 		{
-			return new JavaObjectWrapper<Lesson> (){ Obj = list [position] };
+			return new JavaObjectWrapper<Module> (){ Obj = list [position] };
 		}
 
 		public override long GetItemId (int position)
@@ -106,21 +101,18 @@ namespace CorpTraining.Droid
 
 		public override View GetView (int position, View convertView, ViewGroup parent)
 		{
-			ViewHolder holder = new ViewHolder ();
+			ModuleViewHolder holder = null;
+			Module cModule;
 			if (convertView == null) {
-				View view = View.Inflate (context, Resource.Layout.item_videolist, null);
-				holder.tv_title = view.FindViewById<TextView> (Resource.Id.tv_title);
-				holder.tv_size = view.FindViewById<TextView> (Resource.Id.tv_size);
-				holder.tv_description = view.FindViewById<TextView> (Resource.Id.tv_description);
-				convertView = view;
+				convertView = View.Inflate (context, Resource.Layout.item_modulelist, null);
+				holder = new ModuleViewHolder ();
+				holder.tv_title = convertView.FindViewById<TextView> (Resource.Id.tv_title);
 				convertView.Tag = holder;
 			} else {
-				holder = (ViewHolder)convertView.Tag;
+				holder = (ModuleViewHolder)convertView.Tag;
 			}
-			//set values
-			holder.tv_title.Text = list [position].Title;
-			holder.tv_description.Text = list [position].Description;
-			holder.tv_size.Text = list [position].ScreenCount + " pages in total";
+			cModule = list [position];
+			holder.tv_title.Text = (cModule.Name == null) ? "No theme Lessons" : cModule.Name;
 			return convertView;
 		}
 
@@ -131,32 +123,9 @@ namespace CorpTraining.Droid
 		}
 	}
 
-	class ViewHolder:Java.Lang.Object
+	class ModuleViewHolder:Java.Lang.Object
 	{
 		public TextView tv_title;
-		public TextView tv_size;
-		public TextView tv_description;
-	}
-
-	class MyRefreshListener:onRefreshListener
-	{
-
-		private LessonsPager pager;
-
-		public MyRefreshListener (LessonsPager pager)
-		{
-			this.pager = pager;
-		}
-
-		public void onRefresh ()
-		{
-			pager.getLessonsFromServer ();
-		}
-
-		public void onLoadMore ()
-		{
-			//todo:load more lessons
-		}
 	}
 }
 

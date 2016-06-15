@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 
 namespace CorpTraining.Droid
 {
@@ -36,6 +37,16 @@ namespace CorpTraining.Droid
 					var ha = context as HomeActivity;
 					ha.StartActivity (new Intent (ha, typeof(LoginActivity)));
 					ha.Finish ();
+					break;
+				case Constants.LESSON_ERROR:
+					var policeactivity = context as PolicesActivity;
+					policeactivity.tv_pull_list_header_title.Text = "Data error,please try again later";
+					policeactivity.tv_pull_list_header_title.SetTextColor (Color.Red);
+					break;
+				case Constants.TEXT_ERROR:
+					var textactivity = context as TextActivity;
+					textactivity.tv_pull_list_header_title.Text = "Data error,please try again later";
+					textactivity.tv_pull_list_header_title.SetTextColor (Color.Red);
 					break;
 				default:
 					break;

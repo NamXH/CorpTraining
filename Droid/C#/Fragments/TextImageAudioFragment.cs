@@ -39,28 +39,7 @@ namespace CorpTraining.Droid
 			var view = inflater.Inflate (Resource.Layout.fragment_textimageaudio, container, false);
 			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
-			if (screen.Texts == null) {
-				TextView textview = new TextView (Activity);
-				var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
-				textview.SetTextColor (Color.White);
-				textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
-				textview.Gravity = GravityFlags.Start;
-				textview.Text = "Enter here...";
-				ll_text.AddView (textview);
-			} else {
-				texts = new List<Text> (screen.Texts);
-				if (texts != null && texts.Count > 0) {
-					foreach (var text in texts) {
-						TextView textview = new TextView (Activity);
-						var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
-						textview.SetTextColor (Color.White);
-						textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
-						textview.Gravity = GravityFlags.Start;
-						textview.Text = text.TextValue;
-						ll_text.AddView (textview);
-					}
-				}
-			}
+			Utils.makeTextViews (screen.Texts, this.Activity, ll_text);
 			ll_images = view.FindViewById<LinearLayout> (Resource.Id.ll_images);
 			var activity = Activity as ScreensActivity;
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
@@ -69,23 +48,7 @@ namespace CorpTraining.Droid
 			};
 			//dynamically make textview
 			images = new List<Image> (screen.Images);
-			if (images != null && images.Count > 0) {
-				foreach (var image in images) {
-					//imageview
-					ImageView iv = new ImageView (activity);
-					var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, 0, 4.0f);
-					//set default image
-					iv.SetImageResource (Resource.Mipmap.default_bitmap);
-					Utils.setImageView (iv, image.Url);
-					ll_images.AddView (iv, param);
-					//textview
-					TextView tv = new TextView (activity);
-					var textparam = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, 0, 1.0f);
-					tv.Text = image.Title;
-					ll_images.AddView (tv, textparam);
-				}
-			}
-
+			Utils.makeTextImages (activity, ll_images, images);
 			return view;
 		}
 

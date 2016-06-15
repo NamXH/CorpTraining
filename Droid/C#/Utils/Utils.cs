@@ -10,6 +10,10 @@ using Android.OS;
 using Android.Graphics;
 using System.Threading.Tasks;
 using System.Net;
+using System.Collections.Generic;
+using Android.Util;
+using Android.Net;
+using Android.App;
 
 
 namespace CorpTraining.Droid
@@ -178,6 +182,89 @@ namespace CorpTraining.Droid
 				break;
 			}
 			return selection;
+		}
+
+		public static void makeTextViews (IList<Text> texts, Context context, LinearLayout ll_text)
+		{
+			if (texts == null) {
+				TextView textview = new TextView (context);
+				var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
+				textview.SetTextColor (Color.White);
+				textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
+				textview.Gravity = GravityFlags.Start;
+				textview.Text = "Watching Video...";
+				ll_text.AddView (textview, param);
+			} else {
+				texts = new List<Text> (texts);
+				if (texts != null && texts.Count > 0) {
+					foreach (var text in texts) {
+						TextView textview = new TextView (context);
+						var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
+						textview.SetTextColor (Color.DarkGray);
+						textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
+						textview.Gravity = GravityFlags.Start;
+						textview.Text = text.TextValue;
+						textview.LayoutParameters = param;
+						param.BottomMargin = 10;
+						ll_text.AddView (textview, param);
+					}
+				}
+			}
+		}
+
+		public static bool isNetworkAvailable (Context context)
+		{   
+			ConnectivityManager cm = (ConnectivityManager)context   
+				.GetSystemService (Context.ConnectivityService);   
+			if (cm == null) {   
+			} else {
+				NetworkInfo[] info = cm.GetAllNetworkInfo ();   
+				if (info != null) {   
+					for (int i = 0; i < info.Length; i++) {   
+						if (info [i].GetState () == NetworkInfo.State.Connected) {   
+							return true;   
+						}   
+					}   
+				}   
+			}   
+			return false;   
+		}
+
+		public static void makeTextImages (Context context, LinearLayout ll_images, List<Image> images)
+		{
+			if (images != null && images.Count > 0) {
+				foreach (var image in images) {
+					//imageview
+					ImageView iv = new ImageView (context);
+					var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, 0, 4.0f);
+					//set default image
+					iv.SetImageResource (Resource.Mipmap.default_bitmap);
+					Utils.setImageView (iv, image.Url);
+					ll_images.AddView (iv, param);
+					//textview
+					TextView tv = new TextView (context);
+					var textparam = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.WrapContent, 0, 1.0f);
+					tv.Text = image.Title;
+					ll_images.AddView (tv, textparam);
+				}
+			}
+		}
+
+		public static void makeReturnButton (Context context, LinearLayout ll_content)
+		{
+			Button button = new Button (context);
+			var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.WrapContent);
+			button.Text = "Back to Lesson List";
+			button.SetBackgroundResource (Resource.Drawable.btn_red_selector);
+			button.SetTextSize (ComplexUnitType.Sp, 20.0f);
+			button.SetTextColor (Color.Black);
+			param.LeftMargin = 10;
+			param.RightMargin = 10;
+			param.TopMargin = 15;
+			button.Click += delegate(object sender, EventArgs e) {
+				(context as TextActivity).OnBackPressed ();
+			};
+			ll_content.AddView (button, param);
 		}
 	}
 }
