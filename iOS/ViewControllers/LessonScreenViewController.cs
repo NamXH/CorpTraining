@@ -271,7 +271,6 @@ namespace CorpTraining.iOS
                         alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
                         PresentViewController(alert, true, null); 
                     }
-
                     var imageRatio = imageView.IntrinsicContentSize.Width / imageView.IntrinsicContentSize.Height;
                     var stackViewWidth = View.Frame.Width - twiceHorizontalPad;
                     var resizedHeight = stackViewWidth / imageRatio; // Pretty hacky!! Maybe can achieve the same thing by setting vertical hugging priority?
@@ -386,7 +385,7 @@ namespace CorpTraining.iOS
             }
 
             // Start media automatically
-            if (!String.IsNullOrEmpty(mediaPlayerUrl))
+            if ((MediaPlayer != null) && (!String.IsNullOrWhiteSpace(mediaPlayerUrl)))
             {
                 MediaPlayer.Play();
             }
