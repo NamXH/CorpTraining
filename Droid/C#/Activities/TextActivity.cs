@@ -56,7 +56,7 @@ namespace CorpTraining.Droid
 				string type = screen.Type;
 				if (type.Contains ("text")) {
 					var texts = screen.Texts;
-					Utils.makeTextViews (texts, this, ll_content);
+					Utils.makeTextViews (texts, this, ll_content, Color.Black);
 				} 
 				if (type.Contains ("image")) {
 					var imageslist = screen.Images;

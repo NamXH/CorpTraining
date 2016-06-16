@@ -44,7 +44,7 @@ namespace CorpTraining.Droid
 			}
 			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
-			Utils.makeTextViews (screen.Texts, this.Activity, ll_text);
+			Utils.makeTextViews (screen.Texts, this.Activity, ll_text, Color.White);
 			ll_images = view.FindViewById<LinearLayout> (Resource.Id.ll_images);
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);
 			mp.Prepared += delegate(object sender, EventArgs e) {

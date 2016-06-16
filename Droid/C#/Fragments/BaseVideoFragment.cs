@@ -145,6 +145,7 @@ namespace CorpTraining.Droid
 					var activity = Activity as ScreensActivity;
 					//set iswatched
 					editor.PutBoolean (screen.Id + "", true).Commit ();
+					tv_loading.Text = "You have watched this video!";
 					activity.validateBtns ();
 				};
 			}

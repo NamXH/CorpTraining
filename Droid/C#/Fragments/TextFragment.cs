@@ -32,7 +32,7 @@ namespace CorpTraining.Droid
 			var view = inflater.Inflate (Resource.Layout.fragment_text, container, false);
 			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
-			Utils.makeTextViews (screen.Texts, this.Activity, ll_text);
+			Utils.makeTextViews (screen.Texts, this.Activity, ll_text, Color.White);
 			var activity = Activity as ScreensActivity;
 			activity.validateBtns ();
 			return view;

@@ -184,7 +184,7 @@ namespace CorpTraining.Droid
 			return selection;
 		}
 
-		public static void makeTextViews (IList<Text> texts, Context context, LinearLayout ll_text)
+		public static void makeTextViews (IList<Text> texts, Context context, LinearLayout ll_text, Color color)
 		{
 			if (texts == null) {
 				TextView textview = new TextView (context);
@@ -200,7 +200,7 @@ namespace CorpTraining.Droid
 					foreach (var text in texts) {
 						TextView textview = new TextView (context);
 						var param = new LinearLayout.LayoutParams (LinearLayout.LayoutParams.MatchParent, 0, 1.0f);
-						textview.SetTextColor (Color.DarkGray);
+						textview.SetTextColor (color);
 						textview.SetTextSize (ComplexUnitType.Sp, 20.0f);
 						textview.Gravity = GravityFlags.Start;
 						textview.Text = text.TextValue;

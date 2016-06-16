@@ -75,9 +75,7 @@ namespace CorpTraining.Droid
 		private void initListener ()
 		{
 			btn_back.Click += delegate(object sender, EventArgs e) {
-				Intent intent = new Intent (this, typeof(HomeActivity));
-				intent.PutExtra ("email", Constants.currentUser.Email);
-				intent.PutExtra ("token", UserUtil.GetCurrentToken ());
+				Intent intent = new Intent (this, typeof(PracticesActivity));
 				StartActivity (intent);	
 				Finish ();
 			};

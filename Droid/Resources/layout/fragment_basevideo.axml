@@ -167,7 +167,8 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:text="NOW LOADING......"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginLeft="8dp"
+                android:id="@+id/tv_loading" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"

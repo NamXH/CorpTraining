@@ -27,8 +27,8 @@ namespace CorpTraining.Droid
 		private RadioButton rb_account;
 		private RadioButton rb_settings;
 		public List<BasePager> pagerList;
-		public string token;
 		public string email;
+		public string token;
 		//left menu content
 		public string[] menus = new string[]{ "Search", "Watched Lessons", "Contact Us" };
 		public int[] imgsources = new int[]{ Resource.Mipmap.search, Resource.Mipmap.notepad, Resource.Mipmap.mailback };

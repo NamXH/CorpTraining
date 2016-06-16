@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/title_red_bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Core Procedures"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:layout_centerInParent="true"
+            android:id="@+id/tv_title"
+            android:padding="5dp" />
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="33dp"
+            android:src="@mipmap/coop_logo"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <CorpTraining.Droid.ClearEditText
+        android:id="@+id/filter_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/login_input"
+        android:drawableLeft="@mipmap/search_bar_icon_normal"
+        android:hint="Please input key word:"
+        android:singleLine="true"
+        android:textSize="15sp"
+        android:layout_margin="5dp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fl_content"
+            android:visibility="invisible">
+            <ListView
+                android:id="@+id/country_lvcountry"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:divider="@null" />
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:id="@+id/ll_load">
+            <ProgressBar
+                android:id="@+id/pb_pull_list_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/customer_progress"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/tv_pull_list_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Now Loading..."
+                android:textColor="#ff0000"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

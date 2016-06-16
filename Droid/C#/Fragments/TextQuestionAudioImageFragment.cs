@@ -44,7 +44,7 @@ namespace CorpTraining.Droid
 			var view = inflater.Inflate (Resource.Layout.fragment_textquestionaudioimage, container, false);
 			ll_text = view.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
-			Utils.makeTextViews (screen.Texts, this.Activity, ll_text);
+			Utils.makeTextViews (screen.Texts, this.Activity, ll_text, Color.White);
 			ll_images = view.FindViewById<LinearLayout> (Resource.Id.ll_images);
 			var activity = Activity as ScreensActivity;
 			Utils.setAndPlayMusic (Activity, view, screen.AudioUrl, ScreensActivity.handler, mp);

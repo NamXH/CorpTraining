@@ -10,14 +10,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Text;
 using System.Threading.Tasks;
-using Android.Graphics;
+using Android.Text;
 
 namespace CorpTraining.Droid
 {
-	[Activity (Label = "CorpTraining", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]			
-	public class PolicesActivity : BaseActivity
+	[Activity (Label = "ProceduresActivity")]			
+	public class ProceduresActivity : BaseActivity
 	{
 		public ListView sortListView;
 		public SortAdapter adapter;
@@ -31,7 +30,7 @@ namespace CorpTraining.Droid
 		public override void initListner ()
 		{
 			//set edittext listener
-			mClearEditText.AddTextChangedListener (new MyTextChangedListener (this));
+			mClearEditText.AddTextChangedListener (new MyProcedureTextChangedListener (this));
 			//set item click listener
 			sortListView.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs e) {
 				SortModel user = sourceDateList [e.Position];
@@ -112,12 +111,12 @@ namespace CorpTraining.Droid
 		}
 	}
 
-	public class MyTextChangedListener:Java.Lang.Object,ITextWatcher
+	public class MyProcedureTextChangedListener:Java.Lang.Object,ITextWatcher
 	{
 
-		private PolicesActivity mUser;
+		private ProceduresActivity mUser;
 
-		public MyTextChangedListener (PolicesActivity mUser)
+		public MyProcedureTextChangedListener (ProceduresActivity mUser)
 		{
 			this.mUser = mUser;
 		}

@@ -42,7 +42,7 @@ namespace CorpTraining.Droid
 		{
 			ll_text = rootView.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			var activity = Activity as ScreensActivity;
-			Utils.makeTextViews (screen.Texts, this.Activity, ll_text);
+			Utils.makeTextViews (screen.Texts, this.Activity, ll_text, Color.White);
 			if (isWatched) {
 				Utils.setAndPlayMusic (Activity, rootView, screen.AudioUrl, ScreensActivity.handler, mp);
 			} else {

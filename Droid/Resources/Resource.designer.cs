@@ -253,6 +253,9 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f09001c
 			public const int btn_regback = 2131296284;
 			
+			// aapt resource value: 0x7f090062
+			public const int btn_save = 2131296354;
+			
 			// aapt resource value: 0x7f090042
 			public const int btn_share = 2131296322;
 			
@@ -294,6 +297,9 @@ namespace CorpTraining.Droid
 			
 			// aapt resource value: 0x7f090020
 			public const int et_lastname = 2131296288;
+			
+			// aapt resource value: 0x7f090061
+			public const int et_password = 2131296353;
 			
 			// aapt resource value: 0x7f090024
 			public const int et_phonenumber = 2131296292;
@@ -469,6 +475,9 @@ namespace CorpTraining.Droid
 			// aapt resource value: 0x7f09004f
 			public const int tv_order = 2131296335;
 			
+			// aapt resource value: 0x7f090060
+			public const int tv_password = 2131296352;
+			
 			// aapt resource value: 0x7f090023
 			public const int tv_phonenumber = 2131296291;
 			
@@ -537,94 +546,97 @@ namespace CorpTraining.Droid
 			public const int activity_practices = 2130968580;
 			
 			// aapt resource value: 0x7f040005
-			public const int activity_register = 2130968581;
+			public const int activity_procedures = 2130968581;
 			
 			// aapt resource value: 0x7f040006
-			public const int activity_result = 2130968582;
+			public const int activity_register = 2130968582;
 			
 			// aapt resource value: 0x7f040007
-			public const int activity_screens = 2130968583;
+			public const int activity_result = 2130968583;
 			
 			// aapt resource value: 0x7f040008
-			public const int activity_text = 2130968584;
+			public const int activity_screens = 2130968584;
 			
 			// aapt resource value: 0x7f040009
-			public const int base_pager = 2130968585;
+			public const int activity_text = 2130968585;
 			
 			// aapt resource value: 0x7f04000a
-			public const int fragment_audio = 2130968586;
+			public const int base_pager = 2130968586;
 			
 			// aapt resource value: 0x7f04000b
-			public const int fragment_audiovideotext = 2130968587;
+			public const int fragment_audio = 2130968587;
 			
 			// aapt resource value: 0x7f04000c
-			public const int fragment_basevideo = 2130968588;
+			public const int fragment_audiovideotext = 2130968588;
 			
 			// aapt resource value: 0x7f04000d
-			public const int fragment_null = 2130968589;
+			public const int fragment_basevideo = 2130968589;
 			
 			// aapt resource value: 0x7f04000e
-			public const int fragment_question = 2130968590;
+			public const int fragment_null = 2130968590;
 			
 			// aapt resource value: 0x7f04000f
-			public const int fragment_questionaudio = 2130968591;
+			public const int fragment_question = 2130968591;
 			
 			// aapt resource value: 0x7f040010
-			public const int fragment_text = 2130968592;
+			public const int fragment_questionaudio = 2130968592;
 			
 			// aapt resource value: 0x7f040011
-			public const int fragment_textaudio = 2130968593;
+			public const int fragment_text = 2130968593;
 			
 			// aapt resource value: 0x7f040012
-			public const int fragment_textessayaudioimagefragment = 2130968594;
+			public const int fragment_textaudio = 2130968594;
 			
 			// aapt resource value: 0x7f040013
-			public const int fragment_textimageaudio = 2130968595;
+			public const int fragment_textessayaudioimagefragment = 2130968595;
 			
 			// aapt resource value: 0x7f040014
-			public const int fragment_textquestionaudioimage = 2130968596;
+			public const int fragment_textimageaudio = 2130968596;
 			
 			// aapt resource value: 0x7f040015
-			public const int fragment_video = 2130968597;
+			public const int fragment_textquestionaudioimage = 2130968597;
 			
 			// aapt resource value: 0x7f040016
-			public const int fragment_videotext = 2130968598;
+			public const int fragment_video = 2130968598;
 			
 			// aapt resource value: 0x7f040017
-			public const int item_leftmenu = 2130968599;
+			public const int fragment_videotext = 2130968599;
 			
 			// aapt resource value: 0x7f040018
-			public const int item_modulelist = 2130968600;
+			public const int item_leftmenu = 2130968600;
 			
 			// aapt resource value: 0x7f040019
-			public const int item_resultlistview = 2130968601;
+			public const int item_modulelist = 2130968601;
 			
 			// aapt resource value: 0x7f04001a
-			public const int item_users = 2130968602;
+			public const int item_resultlistview = 2130968602;
 			
 			// aapt resource value: 0x7f04001b
-			public const int item_videolist = 2130968603;
+			public const int item_users = 2130968603;
 			
 			// aapt resource value: 0x7f04001c
-			public const int mediacontroller = 2130968604;
+			public const int item_videolist = 2130968604;
 			
 			// aapt resource value: 0x7f04001d
-			public const int popup_authenticate = 2130968605;
+			public const int mediacontroller = 2130968605;
 			
 			// aapt resource value: 0x7f04001e
-			public const int refresh_footer = 2130968606;
+			public const int popup_authenticate = 2130968606;
 			
 			// aapt resource value: 0x7f04001f
-			public const int refresh_header = 2130968607;
+			public const int refresh_footer = 2130968607;
 			
 			// aapt resource value: 0x7f040020
-			public const int viewpager_accountpager = 2130968608;
+			public const int refresh_header = 2130968608;
 			
 			// aapt resource value: 0x7f040021
-			public const int viewpager_lessonspager = 2130968609;
+			public const int viewpager_accountpager = 2130968609;
 			
 			// aapt resource value: 0x7f040022
-			public const int viewpager_settingspager = 2130968610;
+			public const int viewpager_lessonspager = 2130968610;
+			
+			// aapt resource value: 0x7f040023
+			public const int viewpager_settingspager = 2130968611;
 			
 			static Layout()
 			{

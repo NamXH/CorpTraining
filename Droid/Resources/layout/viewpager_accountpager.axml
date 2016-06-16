@@ -1,13 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is account pager!"
-        android:textSize="20sp"
-        android:layout_gravity="center"
-        android:textColor="@android:color/holo_blue_dark" />
-</LinearLayout>
+        android:layout_marginLeft="20.0dip"
+        android:layout_marginRight="20.0dip"
+        android:layout_marginTop="30.0dip"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/ll_content"
+        android:visibility="invisible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <TextView
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="First Name"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:id="@+id/tv_firstname" />
+            <EditText
+                android:id="@+id/et_firstname"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_weight="3"
+                android:inputType="textPersonName"
+                android:maxLength="20"
+                android:paddingLeft="10.0dip"
+                android:textColor="#ff545454"
+                android:textSize="18sp"
+                android:background="@drawable/shape_bg" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Last Name"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:id="@+id/tv_lastname" />
+            <EditText
+                android:id="@+id/et_lastname"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_weight="3"
+                android:inputType="textPersonName"
+                android:maxLength="20"
+                android:paddingLeft="10.0dip"
+                android:textColor="#ff545454"
+                android:textSize="18sp"
+                android:background="@drawable/shape_bg" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="0dp"
+                android:text="Email"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:id="@+id/tv_email" />
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_weight="3"
+                android:inputType="textEmailAddress"
+                android:maxLength="25"
+                android:paddingLeft="10.0dip"
+                android:textColor="#ff545454"
+                android:textSize="18sp"
+                android:background="@drawable/shape_bg" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="0dp"
+                android:text="Phone Number"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:id="@+id/tv_phonenumber" />
+            <EditText
+                android:id="@+id/et_phonenumber"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_weight="3"
+                android:inputType="phone"
+                android:maxLength="25"
+                android:paddingLeft="10.0dip"
+                android:textColor="#ff545454"
+                android:textSize="18sp"
+                android:background="@drawable/shape_bg" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:paddingLeft="0dp"
+                android:text="Password"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:id="@+id/tv_password" />
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_weight="3"
+                android:inputType="textPassword"
+                android:maxLength="25"
+                android:paddingLeft="10.0dip"
+                android:textColor="#ff545454"
+                android:textSize="18sp"
+                android:background="@drawable/shape_bg" />
+        </LinearLayout>
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_red_selector"
+            android:gravity="center"
+            android:text="Save"
+            android:textColor="@android:color/white"
+            android:textSize="18.0sp"
+            android:id="@+id/btn_save"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:id="@+id/ll_load">
+        <ProgressBar
+            android:id="@+id/pb_pull_list_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/customer_progress"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/tv_pull_list_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Now Loading..."
+            android:textColor="#ff0000"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</FrameLayout>

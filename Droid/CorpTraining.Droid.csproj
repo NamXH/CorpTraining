@@ -106,6 +106,7 @@
     <Compile Include="C#\Adapter\SortAdapter.cs" />
     <Compile Include="C#\CustomedView\ClearEditText.cs" />
     <Compile Include="C#\Activities\TextActivity.cs" />
+    <Compile Include="C#\Activities\ProceduresActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -253,6 +254,7 @@
     <AndroidResource Include="Resources\mipmap-hdpi\search_bar_icon_normal.png" />
     <AndroidResource Include="Resources\layout\activity_text.axml" />
     <AndroidResource Include="Resources\drawable\btn_red_selector.xml" />
+    <AndroidResource Include="Resources\layout\activity_procedures.axml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

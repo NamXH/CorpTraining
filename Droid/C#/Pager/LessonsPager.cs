@@ -42,7 +42,7 @@ namespace CorpTraining.Droid
 					intent = new Intent (activity, typeof(PolicesActivity));
 					break;
 				case 2:
-					
+					intent = new Intent (activity, typeof(ProceduresActivity));
 					break;
 				case 3:
 					intent = new Intent (activity, typeof(PracticesActivity));
@@ -51,7 +51,7 @@ namespace CorpTraining.Droid
 					break;
 				}
 				if (intent != null) {
-					intent.PutExtra (Constants.MODULE_ID, currentModule.Id);
+					Constants.module_id = currentModule.Id;
 					activity.StartActivity (intent);
 					activity.Finish ();
 				}

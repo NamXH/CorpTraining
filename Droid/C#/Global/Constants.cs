@@ -50,6 +50,8 @@ namespace CorpTraining.Droid
 		public static List<ScreenAnswer> screenAnswers;
 		//record current user
 		public static User currentUser;
+
+		public static int module_id;
 	}
 }
 

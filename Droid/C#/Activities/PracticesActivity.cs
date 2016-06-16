@@ -43,7 +43,7 @@ namespace CorpTraining.Droid
 			currentLesson = new Lesson ();
 			//load data
 			//receive
-			module_id = Intent.GetIntExtra (Constants.MODULE_ID, -1);
+			module_id = Constants.module_id;			
 			getLessonsFromServer ();
 		}
 
@@ -72,6 +72,7 @@ namespace CorpTraining.Droid
 				intent.PutExtra (Constants.LESSON_DES, currentLesson.Description);
 				intent.PutExtra (Constants.LESSON_ID, currentLesson.Id);
 				StartActivity (intent);
+				Finish ();
 			} else {
 				lv_list.Visibility = ViewStates.Visible;
 				ll_load.Visibility = ViewStates.Invisible;

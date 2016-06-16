@@ -40,7 +40,7 @@ namespace CorpTraining.Droid
 			var activity = Activity as ScreensActivity;
 			ll_text = rootView.FindViewById<LinearLayout> (Resource.Id.ll_text);
 			//dynamically make text
-			Utils.makeTextViews (screen.Texts, this.Activity, ll_text);
+			Utils.makeTextViews (screen.Texts, this.Activity, ll_text, Color.White);
 		}
 
 	}
