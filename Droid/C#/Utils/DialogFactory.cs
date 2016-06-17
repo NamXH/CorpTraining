@@ -40,13 +40,11 @@ namespace CorpTraining.Droid
 					break;
 				case Constants.LESSON_ERROR:
 					var policeactivity = context as PolicesActivity;
-					policeactivity.tv_pull_list_header_title.Text = "Data error,please try again later";
-					policeactivity.tv_pull_list_header_title.SetTextColor (Color.Red);
+					policeactivity.OnBackPressed ();
 					break;
 				case Constants.TEXT_ERROR:
 					var textactivity = context as TextActivity;
-					textactivity.tv_pull_list_header_title.Text = "Data error,please try again later";
-					textactivity.tv_pull_list_header_title.SetTextColor (Color.Red);
+					textactivity.OnBackPressed ();
 					break;
 				default:
 					break;

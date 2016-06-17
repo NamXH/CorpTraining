@@ -76,7 +76,7 @@ namespace CorpTraining.Droid
 			} else {
 				lv_list.Visibility = ViewStates.Visible;
 				ll_load.Visibility = ViewStates.Invisible;
-				DialogFactory.ToastDialog (this, "Empty lesson", "This lesson has not uploaded yet!Please try again later", 0);
+				DialogFactory.ToastDialog (this, "Empty lesson", "Oops,this lesson has not uploaded yet!", 0);
 			}
 		}
 

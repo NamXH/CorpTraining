@@ -35,10 +35,14 @@ namespace CorpTraining.Droid
 			//set item click listener
 			sortListView.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs e) {
 				SortModel user = sourceDateList [e.Position];
-				Intent intent = new Intent (this, typeof(TextActivity));
-				intent.PutExtra ("lesson_id", user.LessonId);
-				intent.PutExtra ("lesson_name", user.Name);
-				StartActivity (intent);
+				if (user.ScreenCount > 0) {
+					Intent intent = new Intent (this, typeof(TextActivity));
+					intent.PutExtra ("lesson_id", user.LessonId);
+					intent.PutExtra ("lesson_name", user.Name);
+					StartActivity (intent);
+				} else {
+					DialogFactory.ToastDialog (this, "Empty lesson", "Oops,this lesson has not uploaded yet!", 0);
+				}
 			};
 		}
 
@@ -91,6 +95,7 @@ namespace CorpTraining.Droid
 						temp.SortLetters = firstAlpha;
 						temp.Name = name;
 						temp.LessonId = lesson.Id;
+						temp.ScreenCount = lesson.ScreenCount;
 						sourceDateList.Add (temp);
 					} else {
 						continue;

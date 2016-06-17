@@ -10,6 +10,17 @@ namespace CorpTraining.Droid
 		private string sortLetters;
 		//user_id
 		private int lessonId;
+
+		private int screenCount;
+
+		public int ScreenCount {
+			get {
+				return this.screenCount;
+			}
+			set {
+				screenCount = value;
+			}
+		}
 		//first letter of data
 		public string Name {
 			get {
