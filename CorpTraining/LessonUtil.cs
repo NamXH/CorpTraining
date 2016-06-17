@@ -401,6 +401,8 @@ namespace CorpTraining
 
 		public static string EncodeURL (string str)
 		{
+			if (str == null)
+				return null;
 			String url = str.Replace (" ", "%20");
 			return url;
 		}
