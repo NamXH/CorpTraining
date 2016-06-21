@@ -107,12 +107,14 @@ namespace CorpTraining.Droid
 			if (screen != null) {
 				nextBtn.Visibility = ViewStates.Invisible;
 				previousBtn.Visibility = ViewStates.Invisible;
-				if (screen.Type == null) {
+				string type = screen.Type;
+				if (type == null) {
 					showNullFragment ();
 				} else {
-					switch (screen.Type) {
+					switch (type) {
 					case "video":
 					case "video_text":
+					case "text_video":
 					//must finish watching video
 						ids.Add (screen.Id + "");
 						showVideoTextFragment ();
@@ -126,6 +128,10 @@ namespace CorpTraining.Droid
 						break;
 					case "text_audio_image":
 					case "text_image_audio":
+					case "audio_image_text":
+					case "audio_text_image":
+					case "image_audio_text":
+					case "image_text_audio":
 						showTextImageAudioFragment ();
 						break;
 					case "text_question_audio_image":
@@ -144,6 +150,10 @@ namespace CorpTraining.Droid
 						break;
 					case "text_essay_audio_image":
 						showTextEssayAudioImage ();
+						break;
+					case "image_audio":
+					case "audio_image":
+						showImageAudioFragment ();
 						break;
 					default:
 						showNullFragment ();
@@ -395,6 +405,19 @@ namespace CorpTraining.Droid
 		{
 			// Make new fragment to show this selection.
 			var text = new TextEssayAudioImageFragment (screen);
+			// Execute a transaction, replacing any existing
+			// fragment with this one inside the frame.
+			var ft = FragmentManager.BeginTransaction ();
+			ft.Replace (Resource.Id.fragmentContainer, text);
+			ft.SetTransition (FragmentTransit.FragmentFade);
+			ft.Commit ();
+			fragment = text;
+		}
+
+		private void showImageAudioFragment ()
+		{
+			// Make new fragment to show this selection.
+			var text = new ImageAudioFragment (screen);
 			// Execute a transaction, replacing any existing
 			// fragment with this one inside the frame.
 			var ft = FragmentManager.BeginTransaction ();

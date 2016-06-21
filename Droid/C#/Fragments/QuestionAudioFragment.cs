@@ -60,7 +60,9 @@ namespace CorpTraining.Droid
 				if (option != null) {
 					RadioButton rdBtn = new RadioButton (Application.Context);
 					rdBtn.Id = (i);
-					rdBtn.Text = option.Title;
+					if (!option.Title.Contains (".")) {
+						rdBtn.Text = Utils.populateSelection (option.Order) + ". " + option.Title;
+					}
 					rdBtn.SetTextSize (ComplexUnitType.Sp, 18.0f);
 					if (i == id) {
 						//set checked

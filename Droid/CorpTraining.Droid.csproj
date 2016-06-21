@@ -107,6 +107,7 @@
     <Compile Include="C#\CustomedView\ClearEditText.cs" />
     <Compile Include="C#\Activities\TextActivity.cs" />
     <Compile Include="C#\Activities\ProceduresActivity.cs" />
+    <Compile Include="C#\Fragments\ImageAudioFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -255,6 +256,7 @@
     <AndroidResource Include="Resources\layout\activity_text.axml" />
     <AndroidResource Include="Resources\drawable\btn_red_selector.xml" />
     <AndroidResource Include="Resources\layout\activity_procedures.axml" />
+    <AndroidResource Include="Resources\layout\fragment_imageaudio.axml" />
   </ItemGroup>
   <Import Project="..\CorpTraining\CorpTraining.projitems" Label="Shared" Condition="Exists('..\CorpTraining\CorpTraining.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
